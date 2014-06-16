@@ -1,5 +1,6 @@
 \documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
 \title{Manet Routing Algorithms}
 \author{Andrew Rosen}
 \date{\today}
@@ -7,9 +8,38 @@
 
 \maketitle
 \section{Ara}
-Ara \cite{ara-ants} is short for Ant-Colony-Based Routing Algorithm; this paper is an application of ant communication applied on-demand ad-hoc routing in Mobile Ad-Hoc Networks (MANETs)
+Ara \cite{ara-ants} is short for Ant-Colony-Based Routing Algorithm; this paper is an application of ant communication applied on-demand ad-hoc routing in Mobile Ad-Hoc Networks (MANETs).
 Ant colony algorithms are a type of swarm intelligence where simple workers following simple rules produce complex behaviors.  
 
-A key feature is that ants don't directly communicate with each other; ants rely on stigmergy, whereby communcation is established by modifying the environment.
 
+A key feature is that ants don't directly communicate with each other; ants rely on stigmergy, whereby communcation is established by modifying the environment.
+When an individual ant is seeking food for the nest, they deposit pheromones along the path.  An important aspect of pheromones is that they dissipate over time.  In addition, ants carrying food back to the nest deposit greater amounts of pheromone, avoiding dead end behaviors.  This allows for the ant colony to find the shortest path by choosing the route with the greater concentrations of pheromones. 
+
+The behavior is modelled by a graph $G = (V, E)$ with ants trying to get from from a source to a destination node. Edges have a pheromone strength $\varphi_{i,j}$, the stronger the pheromone, the more likely the ant is to traverse the edge from $i$ to $j$.  When an ant travels along an edge, that edge's pheromone is incremented.  In addition, when an ant travels alopng the edge, all edges in the routing table lose some of the pheromone strength (This is a simplified version of the process below).
+\[
+\varphi_{i,j} =
+\begin{cases}
+    (1-q) \cdot \varphi_{i,j} + \Delta\varphi & \text{if j is the next node}  \\
+    (1-q) \cdot \varphi_{i,j}       & \text{else}
+\end{cases}
+\]
+
+Ants (or messages) will positively reinforce the correct path, even in a changing topology.  There's no reason why other attributes, such as signal strength can't be used to help impact a local node's table.
+
+The actual algorithm:
+\begin{itemize}
+    \item \textit{Route Discovery}, in which the routing table tuples \texttt{destination, next hop, pheromone} are established via initial broadcast messages.
+    \item \textit{Route Maintenence} multiplicatively decreases the pheromone strength of entries in the routing table each second, but entries increase whenever a message is forwarded along that entry (the decrease and increase are seperated in ARA).
+    \item The algorithm handles \textit{Loops} by having nodes keep track of message identifiers and sending a special message to any node fowarding a duplicate. 
+    \item  The \textit{fault tolerance} aspect still needs some more description, but failure to communicate sets the entry's  $\varphi$ to 0.  When a node renenters the network, it reinitiates route discovery.
+\end{itemize}
+
+
+In simulations the messages took the shortest path more often than in DSR or AODV.  However, the author's conclusions were that the algorithm still  needed more work.
+
+
+
+
+\bibliography{notes}
+\bibliographystyle{plain}
 \end{document}
