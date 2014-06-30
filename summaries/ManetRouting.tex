@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \title{Manet Routing Algorithms}
@@ -7,6 +7,7 @@
 \begin{document}
 
 \maketitle
+\chapter{Swarm Intelligence}
 \section{Ara}
 Ara \cite{ara-ants} is short for Ant-Colony-Based Routing Algorithm; this paper is an application of ant communication applied on-demand ad-hoc routing in Mobile Ad-Hoc Networks (MANETs).
 Ant colony algorithms are a type of swarm intelligence where simple workers following simple rules produce complex behaviors.  
@@ -40,6 +41,9 @@ In simulations the messages took the shortest path more often than in DSR or AOD
 
 \section{SARA - Simple Ant Routing Algorithm}
 
+
+\subsection{Controlled Neighbor Broadcast}
+Normally route discovery works by the mechanism of ``Forward Ant'' or FANT being broadcast by the source node, which is then rebroadcast by all nodes in the network.  Controlled Neighbor Broadcast (CNB) is used to help with this process, by limiting the rebroadcasting of the FANT to a single node.
 \section{RatNest}
 
 Of note is that RatNest is for a specific military survailence application.  Nodes are assumed to have essential unlimited power.
@@ -47,6 +51,9 @@ RatNest is not "bio-inspired" in the same way the other algorithms are, the link
 
 \chapter{Distributed Hash Tables on MANETs}
 One of the key features that make a DHT ideally suited for MANETs is the WYZYG nature of the network.  When you create an overlay on computers over the Internet, each hop on the overlay is actually multiple hops on the ``underlay''.  This is never the case on MANETs.
+
+
+
 
 
 \bibliography{notes}
