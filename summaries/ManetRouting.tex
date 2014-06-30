@@ -1,4 +1,4 @@
-\documentclass[a4paper]{report}
+\documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \title{Manet Routing Algorithms}
@@ -7,7 +7,22 @@
 \begin{document}
 
 \maketitle
-\chapter{Swarm Intelligence}
+
+\section{Terminology}
+
+Routing protocols for MANETs can be classified as the following types \cite{singh2012ant} \cite{correia2010simple}  [Deepalakshmi and Radgkrishnan]:
+
+\begin{itemize}
+	\item Proactive or table-driven routing algorithms.  Routing tables are calculated in advanced and stored in tables.  The mobile nature of MANETs make it difficult to maintain the network
+	\item Reactive and on demand routing.   No route data is maintained
+	\item Hybrid
+	\item Opportunistic/Epidemic
+\end{itemize}
+
+\section{Swarm Intelligence}
+
+\section{Key Concepts}
+
 \section{Ara}
 Ara \cite{ara-ants} is short for Ant-Colony-Based Routing Algorithm; this paper is an application of ant communication applied on-demand ad-hoc routing in Mobile Ad-Hoc Networks (MANETs).
 Ant colony algorithms are a type of swarm intelligence where simple workers following simple rules produce complex behaviors.  
@@ -44,12 +59,15 @@ In simulations the messages took the shortest path more often than in DSR or AOD
 
 \subsection{Controlled Neighbor Broadcast}
 Normally route discovery works by the mechanism of ``Forward Ant'' or FANT being broadcast by the source node, which is then rebroadcast by all nodes in the network.  Controlled Neighbor Broadcast (CNB) is used to help with this process, by limiting the rebroadcasting of the FANT to a single node.
+
+When a node with a route to the destination receives a FANT, it broadcasts a BANT back.
+
 \section{RatNest}
 
 Of note is that RatNest is for a specific military survailence application.  Nodes are assumed to have essential unlimited power.
 RatNest is not "bio-inspired" in the same way the other algorithms are, the link to naked mole-rats (eusocial mammals) is for aiding the metaphor
 
-\chapter{Distributed Hash Tables on MANETs}
+\section{Distributed Hash Tables on MANETs}
 One of the key features that make a DHT ideally suited for MANETs is the WYZYG nature of the network.  When you create an overlay on computers over the Internet, each hop on the overlay is actually multiple hops on the ``underlay''.  This is never the case on MANETs.
 
 
