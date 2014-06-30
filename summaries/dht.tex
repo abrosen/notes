@@ -29,6 +29,8 @@ There's typically a distance function, but it's not very interesting.
 The domain of the keyspace can be m-bit identifiers, or floats from 0-1.  So long as m is the same it is possible to map from one to another.
 \subsection{Closest Metrics}
 
+The advantage of using a successor or predecessor metric that changes in responsibility due to node failure are recognized immediately.  In a literal ``closest to the key'' metric, there is computation involved.
+
 
 \subsubsection{Literal}
 As in literally the closest.  The cost is computation, but the benefit is that the metric is natural and easy to understand
@@ -36,7 +38,7 @@ As in literally the closest.  The cost is computation, but the benefit is that t
 \subsubsection{Successors}
 
 
-\subsubsection{Predecescors}
+\subsubsection{Predecesscors}
 The node with the ID closest without going over a key is responsible for that key.
 
 
@@ -63,6 +65,8 @@ However, Kleinberg Small World Networks have inspired networks that have a polyl
 \section{Churn and Fault Tolerance}  % not nessuicarily the same, ie what happens when we route wrong
 
 DHTs can choose various ways to implement fault tolerance.  First, a DHT must have some mechanism for neighbors to take over for node failure (although it doesn't have to).  Next is peerlist maintenance.  How are failed lookups handled?  How do you handle churn?
+
+Reactive vs periodic
 
 \section{Security}
 
