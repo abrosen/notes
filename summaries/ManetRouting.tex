@@ -20,10 +20,26 @@ Routing protocols for MANETs can be classified as the following types \cite{sing
 \end{itemize}
 
 
+\section{Geographic Routing }
+Began with \cite{ratnasamy2002ght}
+
+
+
 
 \section{LORD}
+How do we search for data in dense and mobile networks?  Flooding techniques are, as a rule, not energy efficient.  Neither are local broadcast methods with the additional drawback of being unreliable for data discovery.  Geographic routing, whihc maps files to locations, is interesting but with mobile nodes, maintanence costs become an issue.
 
-\cite{shen2013scalable}
+
+Shen et al.\ present LOcality-based distRibuted Data search system.\cite{shen2013scalable}.  LORD maps metadata of files to a geographic region and stores the metadata in a subset of the nodes\footnote{All nodes in a region is a subset of all nodes in a region} in the region.  Nodes only update their data mapping when they move between regions.  Nodes only need to use the located region (not their exact location) and their angle information.
+
+Of note is the dijointness between the storage of the metadata and the file itself.  When a node stores it's metadata for a file, it maps the metadata to a key, which is $(x,y)$ geographic coordinates in this case, and that metadata is stored in the region covering those coordinates.
+
+
+\begin{description}
+	\item[Cases] LORD assumes operation in a dense and mobile environment with landmarks.  Nodes in the network are ``idependently and identically distributed.''  
+	\item[Patitioning]   
+\end{description}
+
 
 \section{Swarm Intelligence}
 
