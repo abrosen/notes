@@ -36,8 +36,11 @@ Of note is the dijointness between the storage of the metadata and the file itse
 
 
 \begin{description}
-	\item[Cases] LORD assumes operation in a dense and mobile environment with landmarks.  Nodes in the network are ``idependently and identically distributed.''  
-	\item[Patitioning]   
+	\item[Cases] LORD assumes operation in a dense and mobile environment with landmarks.  Nodes in the network are ``idependently and identically distributed.''  Nodes are not equipped with GPS but do have Angle of Arrival information in some form.
+	\item[Patitioning] Regions are partitioned by landmarks.  Not sure how, but assume Voronoi.  Nodes are members of the region if the region's landmark is the closest landmark
+	\item[Mapping] The metadata of files is hashed using LSH \cite{datar2004locality} to produce some location $(x,y)$  and stored at the region responsible for that location. 
+	
+	Nodes
 \end{description}
 
 
