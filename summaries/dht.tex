@@ -298,7 +298,9 @@ Proposed/implemented improvements not independent to Symphony
 Bidirectional routing
 1-ahead lookup - The node retrieves the peerlist of all it's peers and uses that in routing decisions.  While more expensive, there is a significant reduction in latency (not sure if a mathematically demonstrated amount, but it is experimentally demonstrated).  Using this could expose a network to an Eclipse attack.
 
-\section{ZHT}
+\section{Omniscient Routing}
+
+\subsection{ZHT}
 The world is small because here, you know everyone.
 
 Summary: ZHT uses O(n) degree to achieve O(1) hops.   It gets aways with this because it's intended for deployment in an isolated environment, so churn and updating the routing tables essentially  become a non-issue. It should be taken seriously because it has been successfully implemented.
@@ -321,9 +323,36 @@ The other notable feature of DHT is it's append operation, which allows stored d
 
 \section{Voronoi Based Schemes}
 
+
+
 \subsection{RayNet}
 
 Beaumont et al argues that a loose structure enough for searching.  Assume a $d$-dimension space, each dimension tied to some attribute of an object and each object identified by a unique set of values.  Objects should be linked to other objects that are close in the space.
+
+
+\section{Sloppy Hashing}
+
+Okay!  My misunderstanding was that this isn't a DHT.  It's a service the runs on top of a DHT (Chord, as it turns out).  But it gets really interesting.
+
+Claims
+The underlying point is  that many nodes in the network should have local copies of a popular file, but the DHT won't direct traffic to these copies, just the  (which  might be handled by a replica, unbeknownst to the person doing the lookup.
+Storing data on the DHT (see CFS) is wasteful.
+The last hops of a lookup are the ones that can be least optimized (can we fix that?  The reason is that lg n lookup time works by reducing the search space by half each hop.  The last few are over a very small space.  Would it help optimize routing in any way if an equal amount was covered at each hop?  Instincts say no, but I don't think it's been explored conclusively)
+Concepts
+Nodes are members of multiple DSHTs of differing diameters. 
+Rather than each key being associated with one value, a key has multiple values (values typically being addresses that can be used to access the file associated with the key).  Rather than storing the data, metadata about file access is stored.  This actually seems like a good idea
+Metadata of some kind (access info) is what is stored on the DSHT, not data.
+Insertion works like normal until the max values are reached, in which  case we backtrack (somehow) and insert there (with a timestamp).
+Get(key) traverses the overlay like normal.  Once a node holding values for the sought key is found.  Those values, as previously noted, are addresses for actually obtaining the file. 
+The spillover helps with load balancing and eliminate (or mitigate hot spots)
+Still have to deal with the issue of latency.  Create a heirarchical lookup layer.
+Instead of a single system, multple DSHTs exist at different levels.
+Nodes are members of one  DSHT at each level (default 3), using the same nodeid in each.
+Insertion inserts the key value on all three levels 
+Getting looks locally first, then expands outwards.  The scheme has a guarantee that it will not take longer than a lookup on a  global table, but initial lookups are fast  (is this really different than a regular DHT, though?)
+Clusters have two conflicting goals
+Clusters should be large, so files can be found
+Clusters should have a small diameter. for better latency.
 
 
 
