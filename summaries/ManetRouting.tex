@@ -35,13 +35,15 @@ Shen et al.\ present LOcality-based distRibuted Data search system.\cite{shen201
 Of note is the dijointness between the storage of the metadata and the file itself.  When a node stores it's metadata for a file, it maps the metadata to a key, which is $(x,y)$ geographic coordinates in this case, and that metadata is stored in the region covering those coordinates.
 
 
-\begin{description}
-	\item[Cases] LORD assumes operation in a dense and mobile environment with landmarks.  Nodes in the network are ``idependently and identically distributed.''  Nodes are not equipped with GPS but do have Angle of Arrival information in some form.
-	\item[Patitioning] Regions are partitioned by landmarks.  Not sure how, but assume Voronoi.  Nodes are members of the region if the region's landmark is the closest landmark
-	\item[Mapping] The metadata of files is hashed using LSH \cite{datar2004locality} to produce some location $(x,y)$  and stored at the region responsible for that location. 
-	
-	Nodes
-\end{description}
+\begin{itemize}
+		\item LORD assumes operation in a dense and mobile environment with landmarks.  Nodes in the network are ``idependently and identically distributed.''  Nodes are not equipped with GPS but do have Angle of Arrival information in some form.
+	\item Regions are partitioned by landmarks.  Not sure how, but assume Voronoi.  Nodes are members of the region if the region's landmark is the closest landmark
+	\item The metadata of files is hashed using LSH \cite{datar2004locality} to produce some location $(x,y)$  and stored at the region responsible for that location (as opposed to the node closest to the location).   A similarity threshold can be used so when searching by keywords, queries return meradata of similar files as well.  The  Mapping updates are reactive, rather than proactive, to reduce maintenence.
+	\item File retreival is done in parallel.  Since files are stored in the region, different pieces of the file can be sent simultaniously from different nodes.
+
+
+
+\end{itemize}
 
 
 \section{Swarm Intelligence}
