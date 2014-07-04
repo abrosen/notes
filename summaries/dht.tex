@@ -1,13 +1,21 @@
 \documentclass[10pt,letterpaper]{report}
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{graphicx}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{graphicx}
+
+
+\usepackage[T1]{fontenc}
+%\usepackage[urw-garamond]{mathdesign}
+\usepackage{venturis2}
+
 \author{Andrew Rosen}
 \title{Attributes of Distributed Hash Tables and Their Ramifications}
 \begin{document}
 \maketitle
+
+
 
 
 \chapter{Introduction}
@@ -186,7 +194,6 @@ One possible way:  Most DHTs store node information in a tuple: (ID, ip, port). 
 \section*{Shared Attributes}
 % log routing log table
 
-\section{Chord}
 
 \section{Pastry}
 
@@ -218,12 +225,13 @@ Fault Tolerance -  A failed node doesn't delay  routing, because Pastry's routin
 
 
 \section{Tapestry}
+\cite{tapestry}
 
 \section{CAN}
-
+\cite{can}
 
 \section{Chord}
-Chord \cite{Chord} is a peer-to-peer (P2P) protocol for file sharing and distributed storage that guarantees a high probability $\log_{2} N$ lookup time for a particular node or file in the network. 
+Chord \cite{chord} is a peer-to-peer (P2P) protocol for file sharing and distributed storage that guarantees a high probability $\log_{2} N$ lookup time for a particular node or file in the network. 
 It is highly fault-tolerant to node failures and churn, the constant joining and leaving of nodes.  It scales extremely well and the network requires little maintenance to handle individual nodes.  
 Files in the network are distributed evenly among its members.
 
@@ -236,15 +244,17 @@ A node in the network is responsible for all the data with keys \textit{above or
 Robustness in the network is accomplished by having nodes backup their contents to their $s$ (often 1) immediate successors, the closest nodes upstream.  
 This is done because when a node leaves the or fail, the most immediate successor would be responsible for the content its content.
 
-Each node maintains a table of $m$ shortcuts to other peers, called the finger table.   The $i$th entry of a node $n$'s finger table corresponds to the node that is the successor of the key $n+2^{i-1} \mod 2^m $.  Nodes route messages to the finger that is closest to the sought key without going past it, until it is received by the responsible node.  This provides Chord with a highly scalable $\log_2(N)$ lookup time for any key \cite{Chord}.
+Each node maintains a table of $m$ shortcuts to other peers, called the finger table.   The $i$th entry of a node $n$'s finger table corresponds to the node that is the successor of the key $n+2^{i-1} \mod 2^m $.  Nodes route messages to the finger that is closest to the sought key without going past it, until it is received by the responsible node.  This provides Chord with a highly scalable $\log_2(N)$ lookup time for any key \cite{chord}.
 
-As nodes enter and leave the ring, the nodes use their maintenance procedures to guide them into the right place and repair any links with failed nodes.  Full details on Chord's maintenance cycle are beyond the scope of this paper and can be found here \cite{Chord}.
+As nodes enter and leave the ring, the nodes use their maintenance procedures to guide them into the right place and repair any links with failed nodes.  Full details on Chord's maintenance cycle are beyond the scope of this paper and can be found here \cite{chord}.
 
 
 
 \chapter{The Challengers}
 
 \section{Kademlia}
+
+\cite{kademlia}
 Motivation of Kademlia was to learn better routing information with each query made (the security ramifications of gossip based routing tables being ignored, I suppose).
 
 Addressing  -  Nodes and files are given n-bit identifiers, typically 160 (exactly like chord Chord).  Nodes are arranged in a tree and distance between any two nodes is calculated by XORing the addressed.  The XOR distance metric means that distances are symmetric, which is not the case in Chord.
@@ -303,7 +313,7 @@ Bidirectional routing
 \subsection{ZHT}
 The world is small because here, you know everyone.
 
-Summary: ZHT uses O(n) degree to achieve O(1) hops.   It gets aways with this because it's intended for deployment in an isolated environment, so churn and updating the routing tables essentially  become a non-issue. It should be taken seriously because it has been successfully implemented.
+Summary: ZHT\cite{li2013zht} uses O(n) degree to achieve O(1) hops.   It gets aways with this because it's intended for deployment in an isolated environment, so churn and updating the routing tables essentially  become a non-issue. It should be taken seriously because it has been successfully implemented.
 
 ZHT is a DHT specifically designed for high-end computing.  The paper initially discusses  some areas of difficulty in scaling parallel deployments.  The two big issues are 1)  separating the storage and computation over a network cannot scale from peta to exa.  2) Basic metadata operations must scale.  Google's GFS and Yahoo's HDFS both use a centralized metadata manager that performs worse than other options.
 
@@ -364,6 +374,6 @@ Clusters should have a small diameter. for better latency.
 One of the key features that make a DHT ideally suited for MANETs is the WYZYG nature of the network.  When you create an overlay on computers over the Internet, each hop on the overlay is actually multiple hops on the ``underlay''.  This is never the case on MANETs.
 
 \bibliography{notes}
-\bibliographystyle{plain}
+\bibliographystyle{ieeetr}
 
 \end{document}
