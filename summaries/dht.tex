@@ -14,13 +14,15 @@
 \title{Attributes of Distributed Hash Tables and Their Ramifications}
 \begin{document}
 \maketitle
+\setcounter{tocdepth}{4}
 
 
 
+\tableofcontents
 
 \chapter{Introduction}
 
-Let's begin with a discussion of definitions:  what is a Distributed Hash Table?   The goal of a Distributed Hash Table, or DHT, is to allow nodes to lookup and route to other nodes in the network
+Let's begin with a discussion of definitions:  what is a Distributed Hash Table?   The goal of a Distributed Hash Table, or DHT, is to allow nodes to lookup and route to other nodes in the network.
 
 One node in a DHT a can, without any single node knowing all the routing information for the network\footnote{Two exceptions here.  The first is in a sufficiently small network, nodes will naturally know  all node in the network. This scenario can largely be ignored.  The second case is ZHT, which assumes a network with very specific conditions} 
 
@@ -46,9 +48,27 @@ The domain of the keyspace can be $m$-bit identifiers, or floats from 0-1.  So l
 \subsubsection{Hashing Algorithms}
 SHA1, LSH
 
+
+\subsubsection{What Gets hashed}
+There are two types of objects that are covered by DHTs.  
+The first are nodes - the actual members of the DHT that store  a portion of the DHT (if each member of the DHT is equal).
+
+The other category what gets store
+
+So a key in a DHT may refer to:
+\begin{itemize}
+	\item A Node.
+	\item A file.
+	\item A portion of a file
+	\item The file's metadata.
+\end{itemize}
+
+These are important distinctions; a lookup oper
+
 \subsection{Closest Metrics}
 
-The advantage of using a successor or predecessor metric that changes in responsibility due to node failure are recognized immediately.  In a literal ``closest to the key'' metric, there is computation involved.
+The advantage of using a successor or predecessor metric that changes in responsibility due to node failure are recognized immediately.  
+In a literal ``closest to the key'' metric, there is computation involved.
 
 
 \subsubsection{Literal}
@@ -70,8 +90,12 @@ In a Voronoi or georgraphic based hashing environment, a node's responsibility w
 
 
 
-\section{Finding Peers}
 
+
+\section{The Peerlist}
+
+
+\subsection{Creating the Peerlist}
 We can (can we?) break this down in a couple of ways.  Gossip vs nongossip (security)
 
 
@@ -81,11 +105,16 @@ Others DHTs choose their peers by finding the node closest to a particular ID.  
 
 
 
-\section{Routing}
+\section{The Lookup Operation} 
+
+Lookup and Routing are synonymous
+
 All routing algorithms follow the same scheme:  the next hop  brings me closest to my destination.  The very nature of DHTs makes the routing process greedy, and the node chooses the best path based on its peer list (It is possible to use a 1-ahead lookup, thereby keeping a record of your peer's peerlist.  The cost becomes quite large for more than two, but routing does speed up.).  Specifics aside, there are two ways to look at routing.  The first way  answers the question ``Who is responsible for this particular key?''  but rather than asking the entire network, it assumes the entire network consists only of it and the peer list.  The other way to look at it that routing is the process of greedily  eliminating possible recipients, until the final node must be the node responsible.  
 
 Almost every DHT has a $lg(n)$ routing time, eliminating  half of the remaining nodes each step.
 However, Kleinberg Small World Networks have inspired networks that have a polylogarithmic time in exchange for smaller peerlists and routing tables.
+
+What happens at the 
 
 
 \section{Churn and Fault Tolerance}  % not nessuicarily the same, ie what happens when we route wrong
