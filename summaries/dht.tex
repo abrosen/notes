@@ -22,12 +22,15 @@
 
 \chapter{Introduction}
 
-Let's begin with a discussion of definitions:  what is a Distributed Hash Table?   The goal of a Distributed Hash Table, or DHT, is to allow nodes to lookup and route to other nodes in the network.
+Let's begin with a discussion of definitions:  what is a Distributed Hash Table?   
+The goal of a Distributed Hash Table, or DHT, is to allow nodes to lookup and route to other nodes in the network.
 
-One node in a DHT a can, without any single node knowing all the routing information for the network\footnote{Two exceptions here.  The first is in a sufficiently small network, nodes will naturally know  all node in the network. This scenario can largely be ignored.  The second case is ZHT, which assumes a network with very specific conditions} 
+One node in a DHT a can find the node responsible for any particular key  without any single node knowing all the routing information for the network\footnote{Two exceptions here.  The first is in a sufficiently small network, nodes will naturally know  all node in the network. This scenario can largely be ignored.  The second case is ZHT, which assumes a network with very specific conditions.}
 
 
 Structured P2P overlays and DHTs are so closely related that they often can be talked about interchangeably \cite{wu2004handbook}. 
+
+
 \section{History}
 
 
@@ -48,10 +51,10 @@ The domain of the keyspace can be $m$-bit identifiers, or floats from 0-1.  So l
 \subsubsection{Hashing Algorithms}
 SHA1, LSH
 
-
+Hash Collisions are ignored since the size is so large.
 \subsubsection{What Gets hashed}
 There are two types of objects that are covered by DHTs.  
-The first are nodes - the actual members of the DHT that store  a portion of the DHT (if each member of the DHT is equal).
+The first are nodes - the actual members of the DHT that store a portion of the DHT (if each member of the DHT is equal).
 
 The other category what gets store
 
@@ -116,6 +119,24 @@ However, Kleinberg Small World Networks have inspired networks that have a polyl
 
 What happens at the 
 
+
+\subsection{Who Decides The Search Stops}
+Iterative vs Recursive
+
+Should the owner decide?  Should it predecessor?
+
+\subsection{Lookup Time vs Table size}
+
+Average lookup times and average degrees are not useful metric:
+Contrived hypersphere has constant lookup time and avg constant degree,
+
+
+
+Actual worst, actual best, and the distribution between them.
+
+\subsection{}
+
+\subsection{Bidirectional links don't matter except when they do.}
 
 \section{Churn and Fault Tolerance}  % not nessuicarily the same, ie what happens when we route wrong
 
@@ -290,7 +311,7 @@ Motivation of Kademlia was to learn better routing information with each query m
 
 Addressing  -  Nodes and files are given n-bit identifiers, typically 160 (exactly like chord Chord).  Nodes are arranged in a tree and distance between any two nodes is calculated by XORing the addressed.  The XOR distance metric means that distances are symmetric, which is not the case in Chord.
 
-A node's location in the tree given by the shortest unique prefix of it's ID.   For each bit in the prefix, there would be a subtree which does not contain that node.  Kademlia guarantees that the node will know at least one node in each of these subtrees.
+A node's location in the tree given by the shortest unique prefix of its ID.   For each bit in the prefix, there would be a subtree which does not contain that node.  Kademlia guarantees that the node will know at least one node in each of these subtrees.
 
 
 Peerlist  (using 160-bit keys)-  The routing table contains 160 list, called k-buckets.  Each k-bucket corresponds to a subtree not containing the node. In other words, the k-bucket is a list of nodes distance $2^i$ to $2^{i+1}$ away $(0 \leq i < 160)$.  The list is of maximum size k and is sorted by least recently seen  (note that live nodes are never evicted).  Whenever the node receives a message, it puts the sender's info in the k-bucket.  
