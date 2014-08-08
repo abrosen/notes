@@ -22,22 +22,23 @@
 
 \chapter{Introduction}
 
-Let's begin with a discussion of definitions:  what is a Distributed Hash Table?   
+Let's begin with a discussion of definitions:  what is a Distributed Hash Table?  
 The goal of a Distributed Hash Table, or DHT, is to allow nodes to lookup and route to other nodes in the network.
+One node in a DHT a can find the node responsible for any particular key  without any single node knowing all the routing information for the network\footnote{Two exceptions here.  
+The first is in a sufficiently small network, nodes will naturally know  all node in the network. This scenario can largely be ignored.  The second case is ZHT, which assumes a network with very specific conditions.}
 
-One node in a DHT a can find the node responsible for any particular key  without any single node knowing all the routing information for the network\footnote{Two exceptions here.  The first is in a sufficiently small network, nodes will naturally know  all node in the network. This scenario can largely be ignored.  The second case is ZHT, which assumes a network with very specific conditions.}
 
-
-Structured P2P overlays and DHTs are so closely related that they often can be talked about interchangeably \cite{wu2004handbook}. 
-
+Structured Peer-to-Peer (P2P) overlays and DHTs are so closely related that they often can be talked about interchangeably \cite{wu2004handbook}. 
+Peer-to-Peer networks are networks in which nodes coordinate with one another to achieve a common task. 
+Typically \footnote{My no internet definination}.  In general, a P2P network. 
 
 \section{History}
 
 
 \section{The Coordinate System, Responsibility and Neighbors}
-
-
-The vast majority of overlays only use a single coordinate (and therefore a single dimension).  This coordinate is assigned essentially at random through a hash function, typically by hashing the IP address and port.  If more than one dimension is used, coordinates can be chosen to map to a particular physical feature (geographical location  or available bandwidth) or a metric (trust or influence).
+The vast majority of overlays only use a single coordinate (and therefore a single dimension).  
+This coordinate is assigned essentially at random through a hash function, .  
+If more than one dimension is used, coordinates can be chosen to map to a particular physical feature (geographical location  or available bandwidth) or a metric (trust or influence).
 
 All DHTs assign responsibility the same way:  the node with an ID that is ``closest'' to a particular key is responsible for that key.  What differs is the metric being used to determine which node is closest.  One metric used by Chord (others) is "the node with the closest id larger than the key" (presumably, this is much easier to code than ``the closest without going over.'').
 
@@ -132,7 +133,7 @@ Contrived hypersphere has constant lookup time and avg constant degree,
 
 
 
-Actual worst, actual best, and the distribution between them.
+Actual worst, actual best, and the distribution between them.  Expected worst case is important to analyze.
 
 \subsection{}
 
