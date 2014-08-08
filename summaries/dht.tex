@@ -21,31 +21,43 @@
 \tableofcontents
 
 \chapter{Introduction}
-
-Let's begin with a discussion of definitions:  what is a Distributed Hash Table?  
-The goal of a Distributed Hash Table, or DHT, is to allow nodes to lookup and route to other nodes in the network.
+Let's begin with a discussion of definitions:  what is a Distributed Hash Table?
+A Distributed Hash Table, or DHT, is a data structure with the key-value mapping capabilities of a Hash Table, but distributed among nodes in a network.
+Each node stores a subset of the entire lookup table and a subset of all the stored values.
+The goal of a Distributed Hash Tabl is to allow nodes to lookup the value associated with any particular key.
 One node in a DHT a can find the node responsible for any particular key  without any single node knowing all the routing information for the network\footnote{Two exceptions here.  
 The first is in a sufficiently small network, nodes will naturally know  all node in the network. This scenario can largely be ignored.  The second case is ZHT, which assumes a network with very specific conditions.}
 
 
-Structured Peer-to-Peer (P2P) overlays and DHTs are so closely related that they often can be talked about interchangeably \cite{wu2004handbook}. 
-Peer-to-Peer networks are networks in which nodes coordinate with one another to achieve a common task. 
-Typically \footnote{My no internet definination}.  In general, a P2P network. 
+Structured P2P systems and DHTs are so closely related that they often are talked about interchangeably \cite{wu2004handbook}. 
+
+
 
 \section{History}
 
 
 \section{The Coordinate System, Responsibility and Neighbors}
+
+
+There are two  broad types of objects that exist in a DHT: Nodes and data.  
+Nodes are the actual members of the DHT; they store a portion of the lookup table and a subset of the data they are responsible for. 
+For clarity, I will call the keys mapped to nodes \textit{ID}s. 
+
+All DHTs assign responsibility the same way:  the node with an ID that is ``closest'' to a particular key is responsible for that key.  
+However, the definition of ``closest'' differs from protocol to protocol.
+One metric used by Chord (others) is "the node with the closest id larger than the key" (presumably, this is much easier to code than ``the closest without going over.'').
+
+
+Almost every DHT operates in a modulus space.  The space can be either bidirectional (symphony) or unidirectional (Chord).
+The overlay shape/layout is actually as important as the peer list or routing algorithm.
+There's typically a distance function, but it's not very interesting.
+
 The vast majority of overlays only use a single coordinate (and therefore a single dimension).  
 This coordinate is assigned essentially at random through a hash function, .  
 If more than one dimension is used, coordinates can be chosen to map to a particular physical feature (geographical location  or available bandwidth) or a metric (trust or influence).
 
-All DHTs assign responsibility the same way:  the node with an ID that is ``closest'' to a particular key is responsible for that key.  What differs is the metric being used to determine which node is closest.  One metric used by Chord (others) is "the node with the closest id larger than the key" (presumably, this is much easier to code than ``the closest without going over.'').
-
-Almost every DHT operates in a modulus space.  The space can be either bidirectional (symphony) or unidirectional (Chord).
-The overlay shape/layout is actually as important as the peer list or  routing algorithm.
-There's typically a distance function, but it's not very interesting.
-
+\subsubsection{The Keyspace}
+The keyspace is the domain of keys that can be assigned to nodes and data using the  consistent hashing algorithm.  
 
 The domain of the keyspace can be $m$-bit identifiers, or floats from 0-1.  So long as $m$ is the same it is possible to map from one to another.
 
@@ -53,21 +65,7 @@ The domain of the keyspace can be $m$-bit identifiers, or floats from 0-1.  So l
 SHA1, LSH
 
 Hash Collisions are ignored since the size is so large.
-\subsubsection{What Gets hashed}
-There are two types of objects that are covered by DHTs.  
-The first are nodes - the actual members of the DHT that store a portion of the DHT (if each member of the DHT is equal).
-
-The other category what gets store
-
-So a key in a DHT may refer to:
-\begin{itemize}
-	\item A Node.
-	\item A file.
-	\item A portion of a file
-	\item The file's metadata.
-\end{itemize}
-
-These are important distinctions; a lookup oper
+Consistent Hashing is a must.
 
 \subsection{Closest Metrics}
 
@@ -135,8 +133,6 @@ Contrived hypersphere has constant lookup time and avg constant degree,
 
 Actual worst, actual best, and the distribution between them.  Expected worst case is important to analyze.
 
-\subsection{}
-
 \subsection{Bidirectional links don't matter except when they do.}
 
 \section{Churn and Fault Tolerance}  % not nessuicarily the same, ie what happens when we route wrong
@@ -149,7 +145,7 @@ Reactive vs periodic
 
 \subsection{Design Considerations of Churn}
 
-Any comparison of DHTs have to be done with respect to churn.    Any analysis  that focuses on a unchanging network is sorely lacking (unless the DHT is designed to work solely in an essentially static network. \cite{lichurn}  evaluates DHTs in terms of cost vs performance, cost being the cost of keeping the routing tables up to date and performance being latency, not hop count.  \cite{lichurn} examined Tapestry, Chord, Kademlia, and Kelips and simulated a size1024 network in a $2^64$ keyspace.   
+Any comparison of DHTs have to be done with respect to churn.    Any analysis  that focuses on a unchanging network is sorely lacking (unless the DHT is designed to work solely in an essentially static network. \cite{lichurn}  evaluates DHTs in terms of cost vs performance, cost being the cost of keeping the routing tables up to date and performance being latency, not hop count.  \cite{lichurn} examined Tapestry, Chord, Kademlia, and Kelips and simulated a size 1024 network in a $2^64$ keyspace.   
 
 They found no optimal configuration of DHT settings, but for a given cost, there is an optimal latency, and vice-versa.  This is represented by convex hulls on a graph (Chord had the best looking convex hull, but it should be noted among the authors are people involved in Chord).   The authors tested each parameter to find the effect each had on the cost/performance ratio.
 
@@ -303,7 +299,7 @@ As nodes enter and leave the ring, the nodes use their maintenance procedures to
 
 
 
-\chapter{The Challengers}
+\chapter{Kademlia and the XOR Metric}
 
 \section{Kademlia}
 
@@ -329,7 +325,7 @@ Maintenance costs-  Interestingly enough, so long as $\alpha >1$, Kademlia recei
 Implementations
 
 
-
+\chapter{Small World Networks}
 \section{The Small World}
 %When my wife and I work looking for a Rabbi to officiate over our wedding, we had to do some searching.  While I am Jewish, my wife most certainly isn't.  In the end, we met Mitch Cohen, who was a complete stranger to me, but it turned out that my parents knew of him.  Mitch's wife was the childhood best friend of my mother's friend who on the same street as we did when .  Practically family.  
 
@@ -361,6 +357,8 @@ Proposed/implemented improvements not independent to Symphony
 Bidirectional routing
 1-ahead lookup - The node retrieves the peerlist of all it's peers and uses that in routing decisions.  While more expensive, there is a significant reduction in latency (not sure if a mathematically demonstrated amount, but it is experimentally demonstrated).  Using this could expose a network to an Eclipse attack.
 
+
+\chapter{Outliers}
 \section{Omniscient Routing}
 
 \subsection{ZHT}
