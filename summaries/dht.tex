@@ -1,14 +1,14 @@
 \documentclass[10pt,letterpaper]{report}
 %\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
-%\usepackage{amsfonts}
-%\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amssymb}
 %\usepackage{graphicx}
 
 
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 %\usepackage[urw-garamond]{mathdesign}
-\usepackage{venturis2}
+%\usepackage{venturis2}
 
 \author{Andrew Rosen}
 \title{Attributes of Distributed Hash Tables and Their Ramifications}
@@ -22,14 +22,15 @@
 
 \chapter{Introduction}
 Let's begin with a discussion of definitions:  what is a Distributed Hash Table?
-A Distributed Hash Table, or DHT, is a data structure with the key-value mapping capabilities of a Hash Table, but distributed among nodes in a network.
+A Distributed Hash Table, or DHT, is a data structure with the key-value mapping capabilities of a Hash Table, but the contents of the table is distributed among nodes in a network.
 Each node stores a subset of the entire lookup table and a subset of all the stored values.
-The goal of a Distributed Hash Tabl is to allow nodes to lookup the value associated with any particular key.
-One node in a DHT a can find the node responsible for any particular key  without any single node knowing all the routing information for the network\footnote{Two exceptions here.  
+One node in DHT a can find the node responsible for any particular key-value pair without any single node knowing all the routing information for the network\footnote{Two exceptions here.  
 The first is in a sufficiently small network, nodes will naturally know  all node in the network. This scenario can largely be ignored.  The second case is ZHT, which assumes a network with very specific conditions.}
 
 
-Structured P2P systems and DHTs are so closely related that they often are talked about interchangeably \cite{wu2004handbook}. 
+
+
+Structured P2P systems and DHTs are so closely related that they often are talked about interchangeably  \cite{wu2004handbook} \cite{lua2005survey}. 
 
 
 
@@ -337,6 +338,17 @@ Almost everyone can to relate to this phenomenon, where a complete stranger turn
 \paragraph{Kleinberg}
 If this experiment can get a message across the US, how can we model this behavior mathematically and use it for computer messages.
 
+
+\subsection{Algorithmic View}
+
+
+
+
+
+\cite{kleinberg2000navigation}
+\cite{kleinberg2000small}
+
+\section{Symphony}
 
 (this section is being done from memory at the moment)
 Symphony closely resembles Chord, in that both use a 1-d ring structure and that the improvements made in here can be applied to Chord
