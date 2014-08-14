@@ -328,20 +328,23 @@ Implementations
 
 \chapter{Small World Networks}
 \section{The Small World}
-%When my wife and I work looking for a Rabbi to officiate over our wedding, we had to do some searching.  While I am Jewish, my wife most certainly isn't.  In the end, we met Mitch Cohen, who was a complete stranger to me, but it turned out that my parents knew of him.  Mitch's wife was the childhood best friend of my mother's friend who on the same street as we did when .  Practically family.  
-
-Almost everyone can to relate to this phenomenon, where a complete stranger turns out not to be so strange and that this person although distant relation to you, is closer than you thought thru your friend's relations.  In the 1960's researchers took an interest in this ``small world'' phenomena.	
-
-If this experiment can get a message across the US, how can we model this behavior mathematically and use it for computer messages.
 
 
-\cite{milgram1967small}
+Milgram and his fellow scientists performed a short series of experiments to study and quantify this phenomenon \cite{milgram1967small}.  
+Subjects in these experiments were to route a postal message to a target person; for example the wife of a Cambridge divinity student in one experiment and a Boston stockbroker in another \cite{milgram1967small}.
+The messages were only to be routed by forwarding them to a friend they thought most likely to know the target.
+
+In the experiment with the target Boston stockbroker \cite{travers1969experimental}, 296 subjects from Nebraska were chosen as starting points.
+Of the 64 messages that successfully made their way to the destination, the average path length from a subject to a participant was only 5 hops.  
+People separated by great distances were nevertheless connected by short sequence of connections.
+
+Researchers began to ask the question: if this experiment can get a message across the US, how can we model this behavior mathematically and use it for computer messages?
 
 
 \subsection{Algorithmic View}
 
 
-\cite{watts1998collective}
+\cite{watts1998collective} 
 
 
 Kleinberg examined a 2x2 lattice grid rather than a ring, which was examined in previous experiments by Watts and Strogatz  \cite{watts1998collective}
@@ -356,6 +359,8 @@ Kleinberg examined a 2x2 lattice grid rather than a ring, which was examined in 
 \cite{kleinberg2000navigation}
 \cite{kleinberg2000small}
 
+
+What happens when things aren't uniform?
 \section{Symphony}
 
 (this section is being done from memory at the moment)
