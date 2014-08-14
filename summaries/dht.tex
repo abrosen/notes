@@ -407,7 +407,29 @@ The other notable feature of DHT is it's append operation, which allows stored d
 
 
 
+\section{Geographic Hashing}
+
+
+Under certain circumstances, it is sometimes more beneficial to store data according to the data's ``name,'' rather than being stored at the point where it was gathered.
+This approach is data-centric storage or DCS.
+The Geographic Hash Table (GHT) 
+\cite{ratnasamy2002ght} was a system created to meet the demands of DCS, namely a scalable system that is resilient in the face of node failures and changes to the topology.  
+It must also be able to take in to account energy resources.
+
+
+The context assumes that nodes know their location via GPS or some other mechanism, that only a small number of access points connect the network to the outside, and energy is an essential resource that needs to be managed.
+
+
+The central feature of GHT is the hashing of a key to a geographic location.  The node responsible for the key's location (and the thus the key) is called the \textit{home node}.
+
+
+%fault tolerence
+Data is replicated at nodes around the home node.
+
+
+
 \section{Voronoi Based Schemes}
+
 
 
 
