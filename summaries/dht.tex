@@ -415,13 +415,27 @@ This approach is data-centric storage or DCS.
 The Geographic Hash Table (GHT) 
 \cite{ratnasamy2002ght} was a system created to meet the demands of DCS, namely a scalable system that is resilient in the face of node failures and changes to the topology.  
 It must also be able to take in to account energy resources.
-
-
 The context assumes that nodes know their location via GPS or some other mechanism, that only a small number of access points connect the network to the outside, and energy is an essential resource that needs to be managed.
 
 
-The central feature of GHT is the hashing of a key to a geographic location.  The node responsible for the key's location (and the thus the key) is called the \textit{home node}.
+The central feature of GHT is the hashing of a key to a geographic location.  
+The node responsible for the key's location (and the thus the key) is called the \textit{home node}.  
+It is built atop the GSPR \cite{karp2000gpsr} routing system, which is a greedy, position-based routing scheme and exploits their characteristics
 
+\subsection*{GPSR}
+Greedy Perimeter Stateless Routing (GPSR) \cite{karp2000gpsr} uses a greedy approach to find a path from the source to the destination.
+Upon obtaining the physical location of the destination \footnote{GPSR assumes that some given server is available to all nodes in the network. This location server would be able to provide the physical location all nodes in the network. It would only need to be communicated with once at the start of each connection.}, the node will forward it to the neighbor closest to the destination. 
+That neighbor will in turn forward the message to his neighbor closest to the destination.
+This continues until the destination receives the message.
+Once a connection is successfully established, each the two endpoints append their location to each packet to keep each other informed of their positions.
+
+Due to the nature of greedy forwarding, the protocol need a way to deal with the problem of a local maximum. 
+In other words, the node has to have another option if it is the closest to the destination among the set of it and its neighbors.
+The perimeter part of the name comes from how GPSR deals with this situation.
+When some node is the local maximum, it will use the right hand rule to select a neighbor in an attempt to ``circle around'' the gap separating the node from the destination.
+GHT exploits this this failsafe perimeter routing.  
+
+\subsection*{GHT}
 
 %fault tolerence
 Data is replicated at nodes around the home node.
@@ -453,15 +467,14 @@ Metadata of some kind (access info) is what is stored on the DSHT, not data.
 Insertion works like normal until the max values are reached, in which  case we backtrack (somehow) and insert there (with a timestamp).
 Get(key) traverses the overlay like normal.  Once a node holding values for the sought key is found.  Those values, as previously noted, are addresses for actually obtaining the file. 
 The spillover helps with load balancing and eliminate (or mitigate hot spots)
-Still have to deal with the issue of latency.  Create a heirarchical lookup layer.
-Instead of a single system, multple DSHTs exist at different levels.
+Still have to deal with the issue of latency.  Create a hierarchical lookup layer.
+Instead of a single system, multiple DSHTs exist at different levels.
 Nodes are members of one  DSHT at each level (default 3), using the same nodeid in each.
 Insertion inserts the key value on all three levels 
 Getting looks locally first, then expands outwards.  The scheme has a guarantee that it will not take longer than a lookup on a  global table, but initial lookups are fast  (is this really different than a regular DHT, though?)
 Clusters have two conflicting goals
 Clusters should be large, so files can be found
 Clusters should have a small diameter. for better latency.
-
 
 
 
