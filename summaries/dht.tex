@@ -36,7 +36,7 @@ Structured P2P systems and DHTs are so closely related that they often are talke
 
 \section{History}
 
-
+Flooding is not scalable \cite{can} (which cited something else).
 \section{The Coordinate System, Responsibility and Neighbors}
 
 
@@ -277,8 +277,7 @@ Fault Tolerance -  A failed node doesn't delay  routing, because Pastry's routin
 \section{Tapestry}
 \cite{tapestry}
 
-\section{CAN}
-\cite{can}
+
 
 \section{Chord}
 Chord \cite{chord} is a peer-to-peer (P2P) protocol for file sharing and distributed storage that guarantees a high probability $\log_{2} N$ lookup time for a particular node or file in the network. 
@@ -298,6 +297,21 @@ Each node maintains a table of $m$ shortcuts to other peers, called the finger t
 
 As nodes enter and leave the ring, the nodes use their maintenance procedures to guide them into the right place and repair any links with failed nodes.  Full details on Chord's maintenance cycle are beyond the scope of this paper and can be found here \cite{chord}.
 
+\section{CAN}
+Unlike the other DHT presented in this chapter, the Content Addressable Network (CAN) \cite{can} works in a $d$-dimensional torus, with the entire coordinate space divided among members.
+A node is responsible for the key-value pairs that fall within the ``zone'' it owns.
+Each key is hashed into some point in the coordinate system.
+
+\subsection*{Lookup}
+Each node maintains a routing table corresponding to their neighbors, those nodes it shares a face with.
+Each hop forwards the lookup to the neighbor closest to the destination, until it comes to the responsible node.
+This simple routing scheme uses only $ 2d$ space while giving average path length of $\frac{d}{4}\cdot n^{\frac{1}{d}}$, for a lookup time of $O(n^{\frac{1}{d}})$ hops\footnote{Around the same time CAN was being developed, Kleinberg was doing research into small world networks \cite{kleinberg2000small}.  He proved similar properties for lattice networks with a single shortcut.  What makes this network remarkable is lack of shortcuts.}.
+If a node encounters a failure during lookup, the node simply chooses the next best path.
+
+\subsection*{Joining}
+Joining works by splitting the coordinate space.  
+If node $n$ with location $P$ wishes to join the network, it contacts a member of the node to find the node $m$ currently responsible for location $P$.
+Node $n$ informs $m$ that it is joining and they divide such that each becomes responsible for half.
 
 
 \chapter{Kademlia and the XOR Metric}
