@@ -408,8 +408,6 @@ The other notable feature of DHT is it's append operation, which allows stored d
 
 
 \section{Geographic Hashing}
-
-
 Under certain circumstances, it is sometimes more beneficial to store data according to the data's ``name,'' rather than being stored at the point where it was gathered.
 This approach is data-centric storage or DCS.
 The Geographic Hash Table (GHT) 
@@ -432,13 +430,17 @@ Once a connection is successfully established, each the two endpoints append the
 Due to the nature of greedy forwarding, the protocol need a way to deal with the problem of a local maximum. 
 In other words, the node has to have another option if it is the closest to the destination among the set of it and its neighbors.
 The perimeter part of the name comes from how GPSR deals with this situation.
-When some node is the local maximum, it will use the right hand rule to select a neighbor in an attempt to ``circle around'' the gap separating the node from the destination.
+When some node is the local maximum, it will use the right hand rule to select a neighbor in an attempt to ``circle around'' the gap separating the node from the destination\footnote{A failure of GSPR is that it doesn't take velocity into account.}.
 GHT exploits this this failsafe perimeter routing.  
 
 \subsection*{GHT}
-
+Data is stored in the home node, the node closest to the geographic destination.
+GHT does not explicitly spell out how a node determines the home node, but under GPSR nodes should know the location of all the neighboring nodes in their perimeter.  
 %fault tolerence
-Data is replicated at nodes around the home node.
+Data is replicated at nodes around the home node.  This is done using the perimeter routing mode in GSPR.
+The \textit{Perimeter Refresh Protocol} means nodes check for network changes each defined period of time and update the replicas and home node as network changes dictate.
+
+
 
 
 
