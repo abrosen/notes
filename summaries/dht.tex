@@ -117,7 +117,6 @@ All routing algorithms follow the same scheme:  the next hop  brings me closest 
 Almost every DHT has a $lg(n)$ routing time, eliminating  half of the remaining nodes each step.
 However, Kleinberg Small World Networks have inspired networks that have a polylogarithmic time in exchange for smaller peerlists and routing tables.
 
-What happens at the 
 
 
 \subsection{Who Decides The Search Stops}
@@ -245,6 +244,7 @@ One possible way:  Most DHTs store node information in a tuple: (ID, ip, port). 
 % log routing log table
 
 
+\textbf{Stretch} \cite{hildrum2004distributed} - The ratio of distance traveled by the lookup compared to the actual lookup distance.
 \section{Pastry}
 
 Addressing - 128 bit ID, 0 to $2^128 -1$, assigned randomly using hash.   but thought of as base $2^b$ numbers (typically b=4).  This creates a hypercube topology \cite{induced}.
@@ -264,7 +264,7 @@ Eclipse attack would basically work like this -  when a node asks the malicious 
 
 Routing - Forwarded to (node/peer?) whose shared prefix is longer.  If no one  has a better shared prefix than the current node, the message is forwarded to the closest  node.
 
-Pastry's goal is to minimize the "distance " messages travel, but distance can be defined by some metric, typically the number of hops.
+Pastry's goal is to minimize the ``distance'' messages travel, but distance can be defined by some metric, typically the number of hops.
 
 
 The leaf set is the  of nodes closest to the node in the keyspace.  The neighborhood set is the  of nodes closest to the node according to the distance metric
@@ -276,6 +276,7 @@ Fault Tolerance -  A failed node doesn't delay  routing, because Pastry's routin
 
 \section{Tapestry}
 \cite{tapestry}
+\cite{hildrum2004distributed}
 
 
 
