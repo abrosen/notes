@@ -275,8 +275,10 @@ Fault Tolerance -  A failed node doesn't delay  routing, because Pastry's routin
 
 
 \section{Tapestry}
-\cite{tapestry}
+Tapestry \cite{tapestry} is based off the same prefix-based lookup as Pastry \cite{pastry}.
+Tapestry views itself more as a DOLR \cite{dolr}.
 \cite{hildrum2004distributed}
+
 
 
 
@@ -497,9 +499,17 @@ Clusters should have a small diameter. for better latency.
 
 
 
+
+
 \chapter{MANETS}
 %Or who's idea was it that the darn things don't actually move!
 One of the key features that make a DHT ideally suited for MANETs is the WYZYG nature of the network.  When you create an overlay on computers over the Internet, each hop on the overlay is actually multiple hops on the ``underlay''.  This is never the case on MANETs.
+
+\chapter{DOLR}
+
+\cite{rhea2003structured}
+
+A key feature of DHTs is that nobody need tell anyone who is responsible for what.
 
 \bibliography{notes}
 \bibliographystyle{ieeetr}
