@@ -399,24 +399,42 @@ Let the $i$th level of the routing table correspond to the peers with that match
 In addition to the routing table, each link to a node is bidirectional.
 
 
+\subsubsection*{Construction and Maintenence}
+Need to look at other paper.
+
 \subsection*{Lookup and Publishing}
 Tapestry \cite{tapestry} implements a version of the prefix-based lookup introduces by Plaxton et al.\ \cite{prr}. 
 However, as a DOLR, lookups in Tapestry differ subtly.
 Objects with some $k$ advertised or \textit{published} at the node with the ID closest\footnote{Not explicitly defined, but assumed to be in distance.} to the key.
 This node is referred to as the \textit{root node}.
 
+To find the root node for some key $k$, nodes forward lookup requests to the entry in the routing table with the closest ID to $k$. 
+This is an extremely simple operation because of the prefix-based organization.
 
+When a node receives a lookup request for key $k$, it looks at the $i$th level of the routing table, where $i$ is the length of the shared prefix between the node's ID and $k$.
+If the ID and $k$ match, or the lookup request cannot be forwarded any further, then the node is the root for $k$.
+
+During the publish operation, each node along the lookup to the root node stores a copy of the ?advertisement?. 
+These copies can be used as a short-circuit to the advertiser.
+It is assumed these copies expire as the publisher is required to periodically republish each key.
 
 
 
 \subsection*{Joining}
 
+A joining node $j$ finds the root node for $j_{ID}$, which we will refer to as the parent.
+The parent node will share prefix of length $p$ with the joining node.
+The parent sends a message  that notifies each node in the network with the same prefix of joining node.
+These nodes adjust their routing tables and contact the joining node.
+The joining node uses the notified nodes as the basis to start building its routing table and accepts responsibility for root from notified nodes, if necessary.
+
+
 \subsection*{Repairing}
 
 \subsection*{Metric}
 
-
-
+\subsection*{Attacking}
+Need to know more about table construction first.
 
 \chapter{Kademlia and the XOR Metric}
 
