@@ -42,6 +42,7 @@ Flooding is not scalable \cite{can} (which cited something else).
 
 There are two  broad types of objects that exist in a DHT: Nodes and data.  
 Nodes are the actual members of the DHT; they store a portion of the lookup table and a subset of the data they are responsible for. 
+% \cite{dolr} defines as ``A node represents an instance of a participant in the overlay''
 For clarity, I will call the keys mapped to nodes \textit{ID}s. 
 
 All DHTs assign responsibility the same way:  the node with an ID that is ``closest'' to a particular key is responsible for that key.  
@@ -71,8 +72,14 @@ Consistent Hashing is a must.
 \subsection{Closest Metrics}
 
 The advantage of using a successor or predecessor metric that changes in responsibility due to node failure are recognized immediately.  
-In a literal ``closest to the key'' metric, there is computation involved.
+In a literal ``closest to the key'' metric, there is computation involved. The closest node can be referred to as the 
 
+\begin{itemize}
+	\item The responsible node.
+	\item Predecessor/Successor \cite{chord}
+	\item The \textit{root} node or just the \textit{root} \cite{tapestry}.
+
+\end{itemize}
 
 \subsubsection{Literal}
 As in literally the closest.  The cost is computation, but the benefit is that the metric is natural and easy to understand
@@ -238,46 +245,25 @@ One possible way:  Most DHTs store node information in a tuple: (ID, ip, port). 
 
 
 
-\chapter{The Four Kings}% Structured Overlays for Distributed Hash Tables
+\chapter{The Fourfathers}% Structured Overlays for Distributed Hash Tables
 
-\section*{Shared Attributes}
+\subsection*{Shared Attributes}
 % log routing log table
 
+\begin{itemize}
+	\item \textbf{Stretch} \cite{hildrum2004distributed} - The ratio of distance traveled by the lookup compared to the actual lookup distance. Our VHash experiments were some about determining that VHash had a lower stretch that Chord.
+	\item $n$ will always refer to the network size.
+	\item Lookup $\equiv $ Routing
+	\item Attacks only focus on attacking the base implementation.  
 
-\textbf{Stretch} \cite{hildrum2004distributed} - The ratio of distance traveled by the lookup compared to the actual lookup distance.
-\section{Pastry}
-
-Addressing - 128 bit ID, 0 to $2^128 -1$, assigned randomly using hash.   but thought of as base $2^b$ numbers (typically b=4).  This creates a hypercube topology \cite{induced}.
-
-Peerlist  -   A routing table, neighborhood set and a leaf set.  The Routing table consists of log n rows and  b-columns each.  The 0th row contains peers which don't share a common prefix.  The 1st row contains those that share a length 1 common prefix, the 2nd a length 2 common prefix, etc.  Since each ID is a base $2^b$ number, there is one column for each possible difference.   The i,j entry of the table contains an ID that shares the same first i digits, with digit i+1 having a value of j (yes, a slot is wasted in each row).
-
-The neighborhood set hold the ID and Ip address of the closest nodes, defined by a metric.  It is not used for routing.  The leaf set is used to hold the numerically closest nodes. Half of it for smaller and half for larger.
-
-The table is populated at first by a join message to the node responsible for the joining node id.  As part of the join message, nodes  along the path send their routing tables.  After the joining node creates it's routing table, it sends a copy to each node in the table, who then can update their routing tables.   Node join cost is $O(log_2^b n)$ messages  with  a constant  coefficient  of $3*2^b$
-
-When a node leaves the network, its neighbor contacts it's leaf closest to the failed node  for its leaf table.  That information is used to repair the leaf set.  A failed routing node is replaced with another appropriate node for that slot.  
+\end{itemize}
 
 
-Who do we actively back up to? Pastry is only about routing. PAST stores a file  to the k closest nodes with id's closest to the file.  This allows messages to make it to any one of the k nodes that can respond to that file lookup (most likely the closest one to the originator)
-
-Eclipse attack would basically work like this -  when a node asks the malicious one for peer info, the malicious node replies with IDs it makes up on the spot, each bound to it's IP. These IPs would be spread throughout the keyspace so that any malicious value has a good chance of being chosen.
-
-Routing - Forwarded to (node/peer?) whose shared prefix is longer.  If no one  has a better shared prefix than the current node, the message is forwarded to the closest  node.
-
-Pastry's goal is to minimize the ``distance'' messages travel, but distance can be defined by some metric, typically the number of hops.
 
 
-The leaf set is the  of nodes closest to the node in the keyspace.  The neighborhood set is the  of nodes closest to the node according to the distance metric
-Guarantees  routing time is  < lg n in typical operation.  Guarantees eventual delivery except when half of the leaf nodes fail simultaneously.
 
 
-Fault Tolerance -  A failed node doesn't delay  routing, because Pastry's routing table allows it to just send to the next closest node.  Damage to the routing table is replaced by contacting other nodes and requesting a suitable replacement
 
-
-\section{Tapestry}
-Tapestry \cite{tapestry} is based off the same prefix-based lookup as Pastry \cite{pastry}.
-Tapestry views itself more as a DOLR \cite{dolr}.
-\cite{hildrum2004distributed}
 
 
 
@@ -308,13 +294,101 @@ Each key is hashed into some point in the coordinate system.
 \subsection*{Lookup}
 Each node maintains a routing table corresponding to their neighbors, those nodes it shares a face with.
 Each hop forwards the lookup to the neighbor closest to the destination, until it comes to the responsible node.
-This simple routing scheme uses only $ 2d$ space while giving average path length of $\frac{d}{4}\cdot n^{\frac{1}{d}}$, for a lookup time of $O(n^{\frac{1}{d}})$ hops\footnote{Around the same time CAN was being developed, Kleinberg was doing research into small world networks \cite{kleinberg2000small}.  He proved similar properties for lattice networks with a single shortcut.  What makes this network remarkable is lack of shortcuts.}.
+This simple routing scheme uses only $2d$ space while giving average path length of $\frac{d}{4}\cdot n^{\frac{1}{d}}$, for a lookup time of $O(n^{\frac{1}{d}})$ hops\footnote{Around the same time CAN was being developed, Kleinberg was doing research into small world networks \cite{kleinberg2000small}.  He proved similar properties for lattice networks with a single shortcut.  What makes this network remarkable is lack of shortcuts.}.
 If a node encounters a failure during lookup, the node simply chooses the next best path.
 
 \subsection*{Joining}
 Joining works by splitting the coordinate space.  
 If node $n$ with location $P$ wishes to join the network, it contacts a member of the node to find the node $m$ currently responsible for location $P$.
 Node $n$ informs $m$ that it is joining and they divide such that each becomes responsible for half.
+
+
+
+\subsection*{Repairing}
+
+\subsection*{Attacks}
+
+
+
+\section{Pastry}
+
+Addressing - 128 bit ID, 0 to $2^128 -1$, assigned randomly using hash.   but thought of as base $2^b$ numbers (typically b=4).  This creates a hypercube topology \cite{induced}.
+
+\subsection*{Peerlist}
+Pastry's peerlist consists of three components: the routing table, a neighborhood set and a leaf set.  The Routing table consists of $\log(n)$ rows and $b$ columns each. Each  
+The 0th row contains peers which don't share a common prefix.  The 1st row contains those that share a length 1 common prefix, the 2nd a length 2 common prefix, etc.  Since each ID is a base $2^b$ number, there is one column for each possible difference.   The i,j entry of the table contains an ID that shares the same first i digits, with digit i+1 having a value of j (yes, a slot is wasted in each row).
+
+The neighborhood set hold the ID and Ip address of the closest nodes, defined by a metric.  It is not used for routing.  The leaf set is used to hold the numerically closest nodes. Half of it for smaller and half for larger.
+
+
+\subsection*{Lookup}
+Forwarded to (node/peer?) whose shared prefix is longer.  If no one  has a better shared prefix than the current node, the message is forwarded to the closest  node.
+
+
+
+
+\subsection*{Joining}
+The table is populated at first by a join message to the node responsible for the joining node ID.  
+As part of the join message, nodes  along the path send their routing tables.  
+After the joining node creates it's routing table, it sends a copy to each node in the table, who then can update their routing tables.   
+Node join cost is $O(log_2^b n)$ messages  with  a constant  coefficient  of $3*2^b$
+
+
+
+
+\subsection*{Fault Tolerance}
+
+When a node leaves the network, its neighbor contacts its leaf closest to the failed node  for its leaf table.  That information is used to repair the leaf set.  A failed routing node is replaced with another appropriate node for that slot.  
+
+Who do we actively back up to? 
+Pastry is only about routing.
+PAST stores a file to the $k$ closest nodes with IDs closest to the file.  
+This allows messages to make it to any one of the $k$ nodes that can respond to that file lookup (most likely the closest one to the originator)
+%Fault Tolernence
+A failed node doesn't delay  routing, because Pastry's routing table allows it to just send to the next closest node.  
+Damage to the routing table is replaced by contacting other nodes and requesting a suitable replacement
+
+
+
+
+\subsection*{Metric}
+Pastry's goal is to minimize the ``distance'' messages travel, but distance can be defined by some metric, typically the number of hops.
+The leaf set is the  of nodes closest to the node in the keyspace.  
+The neighborhood set is the of nodes closest to the node according to the distance metric. 
+Guarantees routing time is  $<\log n$ in typical operation.  
+Guarantees eventual delivery except when half of the leaf nodes fail simultaneously.
+
+
+
+\subsection*{Metric}
+
+
+\subsection*{Attacks and Vulnerabilities}
+Eclipse attack would basically work like this -  when a node asks the malicious one for peer info, the malicious node replies with IDs it makes up on the spot, each bound to it's IP. These IPs would be spread throughout the keyspace so that any malicious value has a good chance of being chosen.
+
+
+
+\section{Tapestry}
+Tapestry \cite{tapestry} is based off the same prefix-based lookup \cite{prr}  as Pastry \cite{pastry}.
+Tapestry views itself more as a DOLR \cite{dolr}.
+This essentially means that it is a distributed key-based lookup system like a DHT \cite{hildrum2004distributed}, but with some subtle differences at the abstract level which manifest as large implementation changes.
+The essential difference here is that Tapestry has servers \textit{publish} records/objects on the network, which direct lookups to the server.  
+The assumption here seems to be that the servers, not the responsible node, serve the actual data.  
+DHTs care or don't care on an application to application basis whether keys are records or content. 
+
+
+\subsection*{Lookup}
+Tapestry \cite{tapestry} implements a version  of the prefix-based lookup based \cite{prr}
+\subsection*{Routing Table}
+
+
+\subsection*{Joining}
+
+\subsection*{Repairing}
+
+\subsection*{Metric}
+
+
 
 
 \chapter{Kademlia and the XOR Metric}
@@ -329,9 +403,8 @@ Addressing  -  Nodes and files are given n-bit identifiers, typically 160 (exact
 A node's location in the tree given by the shortest unique prefix of its ID.   For each bit in the prefix, there would be a subtree which does not contain that node.  Kademlia guarantees that the node will know at least one node in each of these subtrees.
 
 
-Peerlist  (using 160-bit keys)-  The routing table contains 160 list, called k-buckets.  Each k-bucket corresponds to a subtree not containing the node. In other words, the k-bucket is a list of nodes distance $2^i$ to $2^{i+1}$ away $(0 \leq i < 160)$.  The list is of maximum size k and is sorted by least recently seen  (note that live nodes are never evicted).  Whenever the node receives a message, it puts the sender's info in the k-bucket.  
-
-(If I'm an eclipse attacker, I just keep spamming messages of different ids, but with my own ip address and port info, or with sybils)
+Peerlist  (using 160-bit keys)-  The routing table contains 160 list, called k-buckets.  Each k-bucket corresponds to a subtree not containing the node. In other words, the k-bucket is a list of nodes distance $2^i$ to $2^{i+1}$ away $(0 \leq i < 160)$.  The list is of maximum size k and is sorted by least recently seen  (note that live nodes are never evicted).  Whenever the node receives a message, it puts the sender's info in the $k$-bucket.  
+(If I'm an eclipse attacker, I just keep spamming messages of different IDs, but with my own ip address and port info, or with sybils)
 
 
 
