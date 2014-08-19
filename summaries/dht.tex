@@ -253,8 +253,10 @@ One possible way:  Most DHTs store node information in a tuple: (ID, ip, port). 
 \begin{itemize}
 	\item \textbf{Stretch} \cite{hildrum2004distributed} - The ratio of distance traveled by the lookup compared to the actual lookup distance. Our VHash experiments were some about determining that VHash had a lower stretch that Chord.
 	\item $n$ will always refer to the network size.
+	\item $N$ should be used to explicitly refer to the Namespace/keyspace size.
 	\item Lookup $\equiv $ Routing
-	\item Attacks only focus on attacking the base implementation.  
+	\item Attacks only focus on attacking the base implementation. 
+	
 
 \end{itemize}
 
@@ -369,7 +371,7 @@ Eclipse attack would basically work like this -  when a node asks the malicious 
 
 
 \section{Tapestry}
-Tapestry \cite{tapestry} is based off the same prefix-based lookup \cite{prr}  as Pastry \cite{pastry}.
+Tapestry \cite{tapestry} is based off the same prefix-based lookup \cite{prr} as Pastry \cite{pastry} and the peerlist and lookup operation share many similarities.
 Tapestry views itself more as a DOLR \cite{dolr}.
 This essentially means that it is a distributed key-based lookup system like a DHT \cite{hildrum2004distributed}, but with some subtle differences at the abstract level which manifest as large implementation changes.
 The essential difference here is that Tapestry has servers \textit{publish} records/objects on the network, which direct lookups to the server.  
@@ -377,9 +379,34 @@ The assumption here seems to be that the servers, not the responsible node, serv
 DHTs care or don't care on an application to application basis whether keys are records or content. 
 
 
-\subsection*{Lookup}
-Tapestry \cite{tapestry} implements a version  of the prefix-based lookup based \cite{prr}
-\subsection*{Routing Table}
+
+
+\subsection*{Peerlist}
+Node IDs are stored in base-$\beta$, which influences the size of the peerlist and the lookup time.
+Nodes maintain a routing table with $\log_{\beta}N$ levels and $\beta$ entries each level.
+Each level corresponds to peers with IDs that match the node's ID up to a certain length, with each entry corresponding to a different digit following that prefix.
+
+For example, let is consider a node in system where $\beta = 16 $ and the keyspace ranges from $0000$ to FFFF.
+Our example node has the ID 05AF.
+Let the $i$th level of the routing table correspond to the peers with that match first $i$ digits of the example nodes ID.
+\begin{itemize}
+	\item 0AF2 would be an appropriate peer for the 10th\footnote{0 is the 0th level.  It's easier that way.} entry of level 1.
+	\item 09AA would be an appropriate peer for the 9th entry of level 1.	
+	\item 05F2 would be an appropriate peer for the 2nd entry of level 3.
+	\item 1322 would be an appropriate peer for the 1st entry of level 0.
+\end{itemize}
+
+In addition to the routing table, each link to a node is bidirectional.
+
+
+\subsection*{Lookup and Publishing}
+Tapestry \cite{tapestry} implements a version of the prefix-based lookup introduces by Plaxton et al.\ \cite{prr}. 
+However, as a DOLR, lookups in Tapestry differ subtly.
+Objects with some $k$ advertised or \textit{published} at the node with the ID closest\footnote{Not explicitly defined, but assumed to be in distance.} to the key.
+This node is referred to as the \textit{root node}.
+
+
+
 
 
 \subsection*{Joining}
