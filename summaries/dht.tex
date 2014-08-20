@@ -293,6 +293,8 @@ Unlike the other DHT presented in this chapter, the Content Addressable Network 
 A node is responsible for the key-value pairs that fall within the ``zone'' it owns.
 Each key is hashed into some point in the coordinate system.
 
+\subsection*{Routing Table}
+
 \subsection*{Lookup}
 Each node maintains a routing table corresponding to their neighbors, those nodes it shares a face with.
 Each hop forwards the lookup to the neighbor closest to the destination, until it comes to the responsible node.
@@ -304,7 +306,7 @@ Joining works by splitting the coordinate space.
 If node $n$ with location $P$ wishes to join the network, it contacts a member of the node to find the node $m$ currently responsible for location $P$.
 Node $n$ informs $m$ that it is joining and they divide such that each becomes responsible for half.
 
-
+Node insertion affects only $O(d)$ nodes.
 
 \subsection*{Repairing}
 
@@ -430,8 +432,8 @@ The joining node uses the notified nodes as the basis to start building its rout
 
 
 \subsection*{Repairing}
+Most of the fault tolerant features are provided by multiple entries per level  in the routing table and a heartbeat function to periodically check if the root is still live.
 
-\subsection*{Metric}
 
 \subsection*{Attacking}
 Need to know more about table construction first.
