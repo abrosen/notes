@@ -63,11 +63,21 @@ The keyspace is the domain of keys that can be assigned to nodes and data using 
 
 The domain of the keyspace can be $m$-bit identifiers, or floats from 0-1.  So long as $m$ is the same it is possible to map from one to another.
 
-\subsubsection{Hashing Algorithms}
+\subsection{Hashing Algorithms}
 SHA1, LSH
 
 Hash Collisions are ignored since the size is so large.
 Consistent Hashing is a must.
+
+\subsubsection{Landmark Based}
+Ratnasamy et al. \cite{can} present the concept own using landmarks to choose coordinates, rather than a has function.
+Each node measures the round-trip time (RTT) to each to of the $m$ landmarks, which yields one of $m!$ permutations.
+The keyspace is partitioned into $m!$ regions, each corresponding to one of the orderings.  
+A joining node now chooses a random location from the region corresponding to its landmark ordering.
+
+This scheme greatly decreases stretch, but at the cost of losing the random and uniform distributed provided by hash functions.  
+Fault tolerance in the network is compromised, since geographically close nodes will be assigned close locations. 
+An event that disables a large geographic region can now disable the entire network, since the damage will affect an entire region, rather than being spread throughout the network.
 
 \subsection{Closest Metrics}
 
@@ -168,7 +178,9 @@ There is a ``base'' parameter, which is different than the base used to describe
 
 
 \subsection{Failure Detection}
-
+DHTs can have different methods of detecting failure.
+The consequences of this are largely unexplored.
+Perhaps check churn convex hulls.
 \begin{itemize}
 	\item Heartbeat based scheme involve nodes periodically broadcasting their existence to their neighbors, possibly with other data.  A failure is detected when a node fails to hear from the neighbor after a certain number of cycles.  CAN uses this.
 	\item Checking schemes involve a node periodically checking its neighbors, querying them to see if they're alive.  This can be combined with maintenence operations to adjust the routing tables of nodes.
@@ -338,13 +350,26 @@ As a result, the join operation affects only $O(d)$ nodes.
 
 
 \subsection*{Repairing}
+
 Churn that occurs with warning has almost no effect on the network.
 A leaving node, $f$, simply hands over its zone to one of its neighbors of the same size, which merges the two zones together.
 The complications occur if this is not possible, in which case  $f$ hands the zone to its smallest neighbor, who must wait for this fragmentation to be fixed.
 
 Unplanned failures are also relatively simple to deal with.
-%failure detection
+%failure detection is heartbeat based
+Each node broadcasts a heartbeat to its neighbors, containing its and its neighbors' coordinates.
+If a node fails to hear a heartbeat from $f$ after a number of cycles, it assumes $f$ must have failed and begins a \texttt{takeover} countdown.
+When this countdown ends, the node broadcasts\footnote{This message is sent to all of $f$'s neighbors;  I assume that nodes must keep track of their neighbors' neighbors.} a \texttt{takeover} message in an attempt to claim $f$'s space.
+This message contains the node's volume.
+When a node receives a \texttt{takeover} message, it either cancels the countdown or, if the node's zone is smaller than the broadcaster's, responds with its own \texttt{takeover}.
 
+The general rule of thumb for node failures in CAN is that the neighbor with the smallest zone takes over the zone of the failed node.
+This rule leads to quick recoveries that affect only $O(d)$ nodes, but requires  a zone reassignment algorithm to remove the fragmentation that occurs from \texttt{takeovers}.
+
+As mentioned earlier in the text, Ratnasamy et al. \cite{can}  also present the concept own using landmarks to choose coordinates, rather than a has function.
+Each node measures the round-trip time (RTT) to each to of the $m$ landmarks, which yields one of $m!$ permutations.
+The keyspace is partitioned into $m!$ regions, each corresponding to one of the orderings.  
+A joining node now chooses a random location from the region corresponding to its landmark ordering.
 
 \subsection*{Attacks}
 
@@ -357,8 +382,18 @@ Unplanned failures are also relatively simple to deal with.
 
 \subsection*{Design Improvements}
 Ratnasamy et al.\ identified a number of improvements that could be made to CAN \cite{can}.
-Some of these improvements have already be explored in Chapter1.
+Some of these improvements have already be explored in Chapter 1.
 
+One modification to the system is increasing the number of dimensions in the coordinate space.
+Increasing $d$ improves fault tolerance and reduces path length.
+
+One concept Ratnasamy et al.\  introduces is the idea of multiple coordinate spaces existing simultaneously, called \textit{realities}. 
+Each object in the DHT exists at a different set of coordinates for each reality simultaneously.
+So a node might have coordinates $(x_0,y_0,z_0)$ in one reality, while having coordinates $(x_1,y_1,z_1)$ in another.
+Independent sets of neighbors for each reality yield different the overall topologies and mappings of keys to nodes.
+Multiple realities increase the cost of maintenance and routing table sizes, but provide greater fault tolerance and greater data availability.
+ 
+A final  modification is to allow multiple nodes shares the same zone (ie zones don't necessarily split as a result of a join operation).    
 \section{Pastry}
 
 Addressing - 128 bit ID, 0 to $2^128 -1$, assigned randomly using hash.   but thought of as base $2^b$ numbers (typically b=4).  This creates a hypercube topology \cite{induced}.
