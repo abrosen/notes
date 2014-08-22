@@ -167,6 +167,14 @@ When looking for a node to put in finger f, Chord first finds the node appropria
 There is a ``base'' parameter, which is different than the base used to describe the size of the keyspace;  a base of $b$ means each node  holds $(b-1)(log_b n)$ fingers.  The network being tested is size 1024, but in a $2^64$ keyspace;  Chord would typically use 64 fingers.   Unsurprisingly and not discussed, as $(b-1)(log_b n)$ approaches 64, the shape of the convex hull improves and slowly degrades as $b$ increases, as unnecessary cost is introduced  (uninteresting but necessary for the paper's conclusion).
 
 
+\subsection{Failure Detection}
+
+\begin{itemize}
+	\item Heartbeat based scheme involve nodes periodically broadcasting their existence to their neighbors, possibly with other data.  A failure is detected when a node fails to hear from the neighbor after a certain number of cycles.  CAN uses this.
+	\item Checking schemes involve a node periodically checking its neighbors, querying them to see if they're alive.  This can be combined with maintenence operations to adjust the routing tables of nodes.
+	\item Reactive detect only when a query fails
+\end{itemize}
+
 \subsection{Induced Churn}
 
 Other authors have examined using manually causing  churn to help with network performance.
@@ -245,7 +253,7 @@ One possible way:  Most DHTs store node information in a tuple: (ID, ip, port). 
 
 
 
-\chapter{The Fourfathers}% Structured Overlays for Distributed Hash Tables
+\chapter{The Essential DHTs}% Structured Overlays for Distributed Hash Tables
 
 \subsection*{Shared Attributes}
 % log routing log table
@@ -256,6 +264,7 @@ One possible way:  Most DHTs store node information in a tuple: (ID, ip, port). 
 	\item $N$ should be used to explicitly refer to the Namespace/keyspace size.
 	\item Lookup $\equiv $ Routing
 	\item Attacks only focus on attacking the base implementation. 
+	\item Geometry and organization of the network as a whole is a function of the peerlist.
 	
 
 \end{itemize}
@@ -288,31 +297,67 @@ Each node maintains a table of $m$ shortcuts to other peers, called the finger t
 
 As nodes enter and leave the ring, the nodes use their maintenance procedures to guide them into the right place and repair any links with failed nodes.  Full details on Chord's maintenance cycle are beyond the scope of this paper and can be found here \cite{chord}.
 
+
 \section{CAN}
 Unlike the other DHT presented in this chapter, the Content Addressable Network (CAN) \cite{can} works in a $d$-dimensional torus, with the entire coordinate space divided among members.
 A node is responsible for the key-value pairs that fall within the ``zone'' it owns.
 Each key is hashed into some point in the coordinate system.
 
-\subsection*{Routing Table}
+\subsection*{Peerlist and Geometry}
+CAN uses an exceptionally simple routing table.  
+Every node in the CAN network is assigned a geometric region in the coordinate space and each node maintains a routing table consisting each node that borders the node's region.
+
+The size of the routing table is a function of the number of dimensions $O(d)$. 
+The lower bound on the routing tables size in a populated network (eg, a network with at least $2d$ nodes) is $\Omega(2d)$.  
+This follows that along each axis, there is at least one node bordering the zone along each end of the axis.
+The size of the routing table can grow as more nodes join and the space gets further divided; however, maintenance algorithms prevent the regions from becoming too fragmented.
+
+
 
 \subsection*{Lookup}
-Each node maintains a routing table corresponding to their neighbors, those nodes it shares a face with.
+As previously mentioned, each node maintains a routing table corresponding to their neighbors, those nodes it shares a face with.
 Each hop forwards the lookup to the neighbor closest to the destination, until it comes to the responsible node.
-This simple routing scheme uses only $2d$ space while giving average path length of $\frac{d}{4}\cdot n^{\frac{1}{d}}$, for a lookup time of $O(n^{\frac{1}{d}})$ hops\footnote{Around the same time CAN was being developed, Kleinberg was doing research into small world networks \cite{kleinberg2000small}.  He proved similar properties for lattice networks with a single shortcut.  What makes this network remarkable is lack of shortcuts.}.
+In a space that is evenly divided among $n$ nodes, this simple routing scheme uses only $2 \cdot d$ space while giving average path length of $\frac{d}{4}\cdot n^{\frac{1}{d}}$
+The overall lookup time of in CAN is bounded by $O(n^{\frac{1}{d}})$ hops\footnote{Around the same time CAN was being developed, Kleinberg was doing research into small world networks \cite{kleinberg2000small}.  He proved similar properties for lattice networks with a single shortcut.  What makes this network remarkable is lack of shortcuts.}.
+
+% fault tolerence in routing
 If a node encounters a failure during lookup, the node simply chooses the next best path.
+However, if lookups occur before a node can recover from damage inflicted by churn, it is possible for the greedy lookup to fail.
+The fallback method is to use an expanding ring search until a candidate is found, which recommences greedy forwarding.
 
 \subsection*{Joining}
 Joining works by splitting the coordinate space.  
 If node $n$ with location $P$ wishes to join the network, it contacts a member of the node to find the node $m$ currently responsible for location $P$.
-Node $n$ informs $m$ that it is joining and they divide such that each becomes responsible for half.
+Node $n$ informs $m$ that it is joining and they divide $m$'s region such that each becomes responsible for half.
 
-Node insertion affects only $O(d)$ nodes.
+
+Once the new zones have been defined, $n$ and $m$ create its routing table from $m$ and its former neighbors.
+These nodes are then informed of the changes that just occurred and update their tables.
+As a result, the join operation affects only $O(d)$ nodes.  
+
+
 
 \subsection*{Repairing}
+Churn that occurs with warning has almost no effect on the network.
+A leaving node, $f$, simply hands over its zone to one of its neighbors of the same size, which merges the two zones together.
+The complications occur if this is not possible, in which case  $f$ hands the zone to its smallest neighbor, who must wait for this fragmentation to be fixed.
+
+Unplanned failures are also relatively simple to deal with.
+%failure detection
+
 
 \subsection*{Attacks}
 
 
+
+
+
+
+
+
+\subsection*{Design Improvements}
+Ratnasamy et al.\ identified a number of improvements that could be made to CAN \cite{can}.
+Some of these improvements have already be explored in Chapter1.
 
 \section{Pastry}
 
@@ -364,11 +409,10 @@ Guarantees eventual delivery except when half of the leaf nodes fail simultaneou
 
 
 
-\subsection*{Metric}
-
-
 \subsection*{Attacks and Vulnerabilities}
 Eclipse attack would basically work like this -  when a node asks the malicious one for peer info, the malicious node replies with IDs it makes up on the spot, each bound to it's IP. These IPs would be spread throughout the keyspace so that any malicious value has a good chance of being chosen.
+
+
 
 
 
@@ -438,7 +482,6 @@ Most of the fault tolerant features are provided by multiple entries per level  
 \subsection*{Attacking}
 Need to know more about table construction first.
 
-\chapter{Kademlia and the XOR Metric}
 
 \section{Kademlia}
 
@@ -461,6 +504,23 @@ Maintenance costs-  Interestingly enough, so long as $\alpha >1$, Kademlia recei
 
 
 Implementations
+
+
+
+
+\chapter{Other DHTs}
+This section may get shuffled apart
+
+\section{Viceroy}
+\section{Kelips}
+
+
+
+
+
+
+
+
 
 
 \chapter{Small World Networks}
