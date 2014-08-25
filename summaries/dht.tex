@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-%\usepackage{graphicx}
+\usepackage{graphicx}
 
 
 %\usepackage[T1]{fontenc}
@@ -33,10 +33,17 @@ The first is in a sufficiently small network, nodes will naturally know  all nod
 Structured P2P systems and DHTs are so closely related that they often are talked about interchangeably  \cite{wu2004handbook} \cite{lua2005survey}. 
 
 
-
 \section{History}
 
 Flooding is not scalable \cite{can} (which cited something else).
+
+
+\subsection{Why DHTs}
+\cite{malkhi2001viceroy} -  Between congestion, cost of join/leaves, and lookup time there are tradeoffs.  
+Optimizing for two can be done but has bad cost.
+For example, a balanced binary tree has congestion at root.
+
+
 \section{The Coordinate System, Responsibility and Neighbors}
 
 
@@ -190,15 +197,24 @@ Perhaps check churn convex hulls.
 \subsection{Induced Churn}
 
 Other authors have examined using manually causing  churn to help with network performance.
-Inducing churn keeps the network in continuous flux, making it hard to keep tables poisoned.   This isn't a good idea where data needs to be stored, but for anything else, like query processing and monitoring, there's considerable benefits. 
+Inducing churn keeps the network in continuous flux, making it hard to keep tables poisoned.   
+This isn't a good idea where data needs to be stored, but for anything else, like query processing and monitoring, there's considerable benefits. 
 
-The motivation of this paper was to create a  defense against route poisoning that didn't rely on a trusted central authority and create a defence against eclipse attacks that helped boost performance.  It expands on the idea of keeping two routing tables, one that is optimized for speed, the other for robustness and security.
+The motivation of this paper was to create a  defense against route poisoning that didn't rely on a trusted central authority and create a defense against eclipse attacks that helped boost performance.  
+It expands on the idea of keeping two routing tables, one that is optimized for speed, the other for robustness and security.
 
-The goal is to keep the average level of table poisoning down.  Rather than using the secure table as a fallback, the optimized table is always used, but periodically resets to the secure table.  Optimizing the table then starts again.
+The goal is to keep the average level of table poisoning down.  
+Rather than using the secure table as a fallback, the optimized table is always used, but periodically resets to the secure table.  
+Optimizing the table then starts again.
 
-Furthermore, nodes choose a new ID periodically, thus making the network more unpredictable to the attacker.   The authors suggest adding a deterministic nocne to the ip/port hashing (and they seem to describe the measure that Brendan described to to predict where a node is, but there's no use of public keys, as far as I can tell)
+Furthermore, nodes choose a new ID periodically, thus making the network more unpredictable to the attacker.  
+The authors suggest adding a deterministic nocne to the ip/port hashing (and they seem to describe the measure that Brendan described to to predict where a node is, but there's no use of public keys, as far as I can tell)
 
 Their implementation is called maewlstrom, and it is built on top of the Bamboo DHT.
+
+
+
+\section{Geometry}
 
 
 \section{Security}
@@ -548,6 +564,27 @@ This section may get shuffled apart
 
 \section{Viceroy}
 \cite{malkhi2001viceroy}
+
+
+\subsection*{Peerlist}
+
+
+
+Viceroy's topology is based off of Chord, with each node having a successor and predecessor.  
+Each node follows the same guidelines as Chord for determining responsibility, e.g.\ the successor.
+Unlike Chord, Viceroy uses a constant number of fingers, or ``long-distance links'' as inspired by Klienberg \cite{kleinberg2000small}.
+
+
+Each node in Tapestry resides randomly in a specific \textit{level}. 
+The levels are arranged such that for some $n$ nodes in the network, there is a roughly equal chance that a joining node chooses one of the $\log(n)$ levels.
+
+
+
+\begin{figure}
+  \caption{Viceroy network from \cite{malkhi2001viceroy}}
+  \centering
+  \includegraphics[width=1.0\textwidth]{viceroy}
+\end{figure}
 
 
 \section{Kelips}
