@@ -338,7 +338,7 @@ Every node in the CAN network is assigned a geometric region in the coordinate s
 The size of the routing table is a function of the number of dimensions $O(d)$. 
 The lower bound on the routing tables size in a populated network (eg, a network with at least $2d$ nodes) is $\Omega(2d)$.  
 This follows that along each axis, there is at least one node bordering the zone along each end of the axis.
-The size of the routing table can grow as more nodes join and the space gets further divided; however, maintenance algorithms prevent the regions from becoming too fragmented.
+The size of the routing table can grow as more nodes join and the space gets further divided; however, \textbf{•}algorithms prevent the regions from becoming too fragmented.
 
 
 
@@ -576,7 +576,28 @@ Unlike Chord, Viceroy uses a constant number of fingers, or ``long-distance link
 
 
 Each node in Tapestry resides randomly in a specific \textit{level}. 
-The levels are arranged such that for some $n$ nodes in the network, there is a roughly equal chance that a joining node chooses one of the $\log(n)$ levels.
+The levels are arranged such that when $n$ nodes in the network, there is an equal chance that a joining node chooses one of the $\log(n)$ levels.
+Level 1 is considered the highest level.
+A node in level $l$ has five long distance connections, broken up into three categories:
+\begin{itemize}
+	\item \textit{The Up Link} connects the node to the closest upstream node in the level above it, $ l - 1$.
+	\item \textit{Down Links} connect the node to two nodes in the level below, level  $l + 1$.  One link is to the closest upstream node in  level $l + 1$, the other is to the closest upstream node from the location $nodeID + \frac{1}{2}^{l}$
+	\item Level Ring Links go to the closest upstream and downstream nodes on the same level.
+\end{itemize}
+Theses links are calculated on join by searching sequentially.
+\subsection*{Lookup}
+Lookup is broken up into three steps.
+First, the lookup travels to a node on level 1 by following the up links.  Next, the lookup travels the down links until the path terminates or the lookup passes the target key. 
+In the final step, the lookup travels using the ring links, successors, and predecessors to reach the destination.
+
+
+The each step takes only $O(\log n)$ time with a high probability. Proof is given in \citep{malkhi2001viceroy}.
+While the lookup operation is the same order as Chord, Kademlia, and other protocols, the lookup will take slightly longer due to multiple steps.  However, it is a reasonable trade-off for a constant sized routing table.
+
+\subsection*{Joining}
+The joining node obtains an ID and contacts a member of the network, which we'll call the parent.
+The node  finds the current successor of its ID from a lookup request courtesy of the parent. 
+The node joins this new location, notifying its successor and predecessor of its existence and exchanging keys and values as necessary.
 
 
 
