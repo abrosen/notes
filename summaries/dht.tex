@@ -338,7 +338,7 @@ Every node in the CAN network is assigned a geometric region in the coordinate s
 The size of the routing table is a function of the number of dimensions $O(d)$. 
 The lower bound on the routing tables size in a populated network (eg, a network with at least $2d$ nodes) is $\Omega(2d)$.  
 This follows that along each axis, there is at least one node bordering the zone along each end of the axis.
-The size of the routing table can grow as more nodes join and the space gets further divided; however, maintenance algorithms prevent the regions from becoming too fragmented.
+The size of the routing table can grow as more nodes join and the space gets further divided; however, \textbf{•}algorithms prevent the regions from becoming too fragmented.
 
 
 
@@ -576,7 +576,28 @@ Unlike Chord, Viceroy uses a constant number of fingers, or ``long-distance link
 
 
 Each node in Tapestry resides randomly in a specific \textit{level}. 
-The levels are arranged such that for some $n$ nodes in the network, there is a roughly equal chance that a joining node chooses one of the $\log(n)$ levels.
+The levels are arranged such that when $n$ nodes in the network, there is an equal chance that a joining node chooses one of the $\log(n)$ levels.
+Level 1 is considered the highest level.
+A node in level $l$ has five long distance connections, broken up into three categories:
+\begin{itemize}
+	\item \textit{The Up Link} connects the node to the closest upstream node in the level above it, $ l - 1$.
+	\item \textit{Down Links} connect the node to two nodes in the level below, level  $l + 1$.  One link is to the closest upstream node in  level $l + 1$, the other is to the closest upstream node from the location $nodeID + \frac{1}{2}^{l}$
+	\item Level Ring Links go to the closest upstream and downstream nodes on the same level.
+\end{itemize}
+Theses links are calculated on join by searching sequentially.
+\subsection*{Lookup}
+Lookup is broken up into three steps.
+First, the lookup travels to a node on level 1 by following the up links.  Next, the lookup travels the down links until the path terminates or the lookup passes the target key. 
+In the final step, the lookup travels using the ring links, successors, and predecessors to reach the destination.
+
+
+The each step takes only $O(\log n)$ time with a high probability. Proof is given in \cite{malkhi2001viceroy}.
+While the lookup operation is the same order as Chord, Kademlia, and other protocols, the lookup will take slightly longer due to multiple steps.  However, it is a reasonable trade-off for a constant sized routing table.
+
+\subsection*{Joining}
+The joining node obtains an ID and contacts a member of the network, which we'll call the parent.
+The node  finds the current successor of its ID from a lookup request courtesy of the parent. 
+The node joins this new location, notifying its successor and predecessor of its existence and exchanging keys and values as necessary.
 
 
 
@@ -658,24 +679,7 @@ Bidirectional routing
 \chapter{Outliers}
 \section{Omniscient Routing}
 
-\subsection{ZHT}
-The world is small because here, you know everyone.
 
-Summary: ZHT\cite{li2013zht} uses O(n) degree to achieve O(1) hops.   It gets aways with this because it's intended for deployment in an isolated environment, so churn and updating the routing tables essentially  become a non-issue. It should be taken seriously because it has been successfully implemented.
-
-ZHT is a DHT specifically designed for high-end computing.  The paper initially discusses  some areas of difficulty in scaling parallel deployments.  The two big issues are 1)  separating the storage and computation over a network cannot scale from peta to exa.  2) Basic metadata operations must scale.  Google's GFS and Yahoo's HDFS both use a centralized metadata manager that performs worse than other options.
-
-As ZHT is specifically designed for a massively parallel deployment, certain constraints normally necessary for DHT operation are relaxed.  ZHT assumes that it is deployed on a network that is fast, trusted, and churn happens at a much much lower degree.  The latter two have the most significant impact to design.
-
- As the network can safely be assumed to be trusted, security is handed off to the local firewalls and network details.   The assumption is that an adversary should not be able to interact with the DHT at all.  
-
-The largest design factor is that there is no significant churn to speak of.  In general, all the nodes start up when the network starts and shutdown when the network shuts down.  This  allows the process of building the routing tables to be done all as part of network boot (in effect, it now doesn't matter how long it takes to build them now, or what the overhead is, because that's just part of "booting").  It also implies that the routing tables will rarely change.  
-
-These features let each node in ZHT hold a routing table with an entry with each other node in the network, which would incur much greater and overwhelming level of overhead in any  other typical deployment.  Implementation demonstrated that the memory cost was 32 bytes per entry in the node's routing table and they achieved a goal of < 1% memory footprint.
-
-ZHT does work with dynamic networks, where nodes join and leave (at much lower rates than normal,  joining controlled by the network admin, leaving will typically only happen because of hardware failure or maintenance).  Joins and departures  are handled by migrating partitions, contiguous portions of keyspace, but partitioning is only discussed in abstract terms.
-
-The other notable feature of DHT is it's append operation, which allows stored data  to be concurrently modified.  ZHT has been thoroughly tested using  supercomputers and large clusters and the paper is more of a discussion of implementation. 
 
 
 
@@ -760,12 +764,39 @@ Clusters should have a small diameter. for better latency.
 %Or who's idea was it that the darn things don't actually move!
 One of the key features that make a DHT ideally suited for MANETs is the WYZYG nature of the network.  When you create an overlay on computers over the Internet, each hop on the overlay is actually multiple hops on the ``underlay''.  This is never the case on MANETs.
 
-\chapter{DOLR}
+\chapter{Computing on A DHT}
 
-\cite{rhea2003structured}
+\section{Features that lend to Distributed Computing}
+\subsection{Metadata reduction}
+\subsection{Decentralization}
+\subsection{Caching and Replication}
+\subsection{Fault Tolerance}
 
-A key feature of DHTs is that nobody need tell anyone who is responsible for what.
+\section{MapReduce With DHTs}
+\subsection{ChordReduce}
 
+\section{ZHT}
+The world is small because here, you know everyone.
+
+Summary: ZHT\cite{li2013zht} uses O(n) degree to achieve O(1) hops.   It gets aways with this because it's intended for deployment in an isolated environment, so churn and updating the routing tables essentially  become a non-issue. It should be taken seriously because it has been successfully implemented.
+
+ZHT is a DHT specifically designed for high-end computing.  The paper initially discusses  some areas of difficulty in scaling parallel deployments.  The two big issues are 1)  separating the storage and computation over a network cannot scale from peta to exa.  2) Basic metadata operations must scale.  Google's GFS and Yahoo's HDFS both use a centralized metadata manager that performs worse than other options.
+
+As ZHT is specifically designed for a massively parallel deployment, certain constraints normally necessary for DHT operation are relaxed.  ZHT assumes that it is deployed on a network that is fast, trusted, and churn happens at a much much lower degree.  The latter two have the most significant impact to design.
+
+ As the network can safely be assumed to be trusted, security is handed off to the local firewalls and network details.   The assumption is that an adversary should not be able to interact with the DHT at all.  
+
+The largest design factor is that there is no significant churn to speak of.  In general, all the nodes start up when the network starts and shutdown when the network shuts down.  This  allows the process of building the routing tables to be done all as part of network boot (in effect, it now doesn't matter how long it takes to build them now, or what the overhead is, because that's just part of "booting").  It also implies that the routing tables will rarely change.  
+
+These features let each node in ZHT hold a routing table with an entry with each other node in the network, which would incur much greater and overwhelming level of overhead in any  other typical deployment.  Implementation demonstrated that the memory cost was 32 bytes per entry in the node's routing table and they achieved a goal of < 1$\%$ memory footprint.
+
+ZHT does work with dynamic networks, where nodes join and leave (at much lower rates than normal,  joining controlled by the network admin, leaving will typically only happen because of hardware failure or maintenance).  Joins and departures  are handled by migrating partitions, contiguous portions of keyspace, but partitioning is only discussed in abstract terms.
+
+The other notable feature of DHT is its append operation, which allows stored data  to be concurrently modified.  ZHT has been thoroughly tested using  supercomputers and large clusters and the paper is more of a discussion of implementation. 
+
+
+\section{Volunteer Computing With DHTs}
+\section{Grid Based Computing with DHTs}
 \bibliography{notes}
 \bibliographystyle{ieeetr}
 
