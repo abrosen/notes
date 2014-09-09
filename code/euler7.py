@@ -15,9 +15,15 @@ def seiveEratosthenes(limit):
     return nums
 
 def main():
-    n =  10
+    # the nth prime number is approximately n * ln(n)
+    # This is a HORRIBLE approximation, but good enough for this
+    n =  20001
     limit = int(n * math.log(n)) + 1
-    print seiveEratosthenes(limit) 
+    nums=  seiveEratosthenes(limit)
+    primes =  [x for x in nums.keys() if nums[x]]
+    print len(primes)
+    print primes
+    print primes[10000]
 
 if __name__ == '__main__':
     main()
