@@ -10,4 +10,7 @@ def generateFibonacci(limit):
 
 if __name__ == "__main__":
     fibs = generateFibonacci(4000000)
-    print map(lambda x: x if x % 2 == 0 else 0, f)
+    print fibs
+    fibs  =  map(lambda x: x if x % 2 == 0 else 0, fibs)
+    print fibs
+    print sum(fibs)
