@@ -1,0 +1,23 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\begin{document}
+
+\section{ILP}
+MLP :
+Find the maximum subset of nodes in graph $G = (V,E)$ which are pairwise non-adjacent
+ILP
+\begin{itemize}
+\item $\forall v \in V$ let $x_v \in {0,1}$  
+\end{itemize}
+
+By turning MIS into Integer Linear Programming, we've shown that ILP is NPC.
+
+Translate Vertex count problem
+Given graph $G = (V,E)$, find $VC \subset V$, where $VC$ covers each $e \in E$
+
+Want some linear formula to be minimized, Obj $\Sigma x_v \rightarrow \min$, where $\forall e \in E$ with vertices $(u,v)$, $x_u + x_v \geq 1$
+
+\end{document}
