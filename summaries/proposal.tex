@@ -18,10 +18,18 @@
 \chapter{Hypotheses}
 
 \section{DHTs are better for distributed computing under many circumstances}
-Distributed Hash Tables (DHTs) are traditionally used as the backbone of P2P file-sharing applications and thus 
+Distributed Hash Tables (DHTs) are traditionally used as the backbone of P2P file-sharing applications.
+
 
 
 \subsubsection{Robustness and Fault-Tolerance}
+Distributed Hash Tables are designed with a couple of assumptions in mind.  One of the most prominent is that DHTs are deployed on a non-static network.
+DHTs need to be built to account for a high level what is called \textit{churn}.  Churn refers to the disruption of routing caused by the constant 
+
+Recent research in using DHTs for High End Computing \cite{zht} shows what can happen if we remove this assumption by placing the network that is almost completely static.
+
+
+
 \subsubsection{Load Balancing}
 \subsubsection{Scalability}
 \subsubsection{Heterogeneity}
