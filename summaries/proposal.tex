@@ -21,10 +21,29 @@
 Distributed Hash Tables (DHTs) are traditionally used as the backbone of P2P file-sharing applications.
 
 
-
+\subsection{Really Cool Qualities}
+Many DHTs are built upon the assumption that they will be used in some kind of P2P application.  
 \subsubsection{Robustness and Fault-Tolerance}
-Distributed Hash Tables are designed with a couple of assumptions in mind.  One of the most prominent is that DHTs are deployed on a non-static network.
-DHTs need to be built to account for a high level what is called \textit{churn}.  Churn refers to the disruption of routing caused by the constant 
+One of the most important assumptions of DHTs is that they are deployed on a non-static network.
+DHTs need to be built to account for a high level what is called \textit{churn}.  
+Churn refers to the disruption of routing caused by the constant joining and leaving of nodes.
+
+This is mitigated by a few factors.  
+First, no single node is a single point of failure for the network;  this is accomplished by each node in the routing table having a small portion of the both the routing table and the information stored on the DHT (see the Load Balancing property below).  
+Second is DHTs have a cheap repair or maintenance process that takes care of damage and integrating nodes that affects a minimal number of nodes, minimizing overhead. 
+Third, DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighbors immediately take over its responsibility.
+The last property is that the Hashing Algorithm used to distribute content evenly across the network(again see load balancing) also distributes nodes evenly across the DHT.  
+This means that nodes in the same geographic region occupy vastly different positions in the keyspace.  
+If an entire geographic region is affected by a network outage, this damage is spread evenly across the DHT, which can be manageable
+This property is the most important, as it deals with failure of entire sections of the network, rather than a single node.
+
+
+So what are the consequences of these properties?
+\begin{itemize}
+	\item DHTs are highly resilient to damage and often at higher rates of disruption that is normally
+	\item 
+	\item 
+\end{itemize}
 
 Recent research in using DHTs for High End Computing \cite{zht} shows what can happen if we remove this assumption by placing the network that is almost completely static.
 
@@ -35,13 +54,15 @@ Recent research in using DHTs for High End Computing \cite{zht} shows what can h
 \subsubsection{Heterogeneity}
 \subsubsection{Ease of Adding, Removing, Maintaining, and money related factors}
 
-\subsection{Different or subproblem: Certain DHTs are better at one application than another due to differences}
-\subsubsection{Design Differences Impacts}
-\paragraph{Geometries}
-\subsubsection{Implementation Differences Impacts}
+\section{Different or subproblem: Certain DHTs are better at one application than another due to differences}
+\subsection{Design Differences Impacts}
+\subsection{Geometries}
+\subsection{Routing Table Construction}
+\subsection{Implementation Differences Impacts}
 \paragraph{Recursive or iterative seek}
 
 
+\subsection{MANETS}
 \chapter{Justification and Why I Think It's Cool}
 \subsection{DHTs well understood}
 \subsection{DHTs are Highly used for their intended purposed}
