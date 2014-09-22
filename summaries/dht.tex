@@ -281,6 +281,25 @@ One possible way:  Most DHTs store node information in a tuple: (ID, ip, port). 
 
 \chapter{The Essential DHTs}% Structured Overlays for Distributed Hash Tables
 
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|l|l|}
+  \hline
+  Size & Speed & DHTs & Comments \\ \hline
+  
+  $O(d)$ & $O(n^{\frac{1}{d}})$ & CAN \cite{can} & $d$ is the number of dimensions \\ \hline
+  
+  $O(\log n)$ & $O(\log n)$ & Chord \cite{chord}, Kademlia \cite{kademlia} & This is where most DHTs fall \\ \hline
+  
+  $O(n)$ &  & & \\ \hline
+  \end{tabular}
+  \caption{The different ratios and their associated DHTs}
+  \label{tab:tradeoffs}
+\end{table}
+
+
+
 \subsection*{Shared Attributes}
 % log routing log table
 
@@ -408,19 +427,36 @@ Independent sets of neighbors for each reality yield different the overall topol
 Multiple realities increase the cost of maintenance and routing table sizes, but provide greater fault tolerance and greater data availability.
  
 A final  modification is to allow multiple nodes shares the same zone (ie zones don't necessarily split as a result of a join operation).    
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Pastry}
 
 Addressing - 128 bit ID, 0 to $2^128 -1$, assigned randomly using hash.   but thought of as base $2^b$ numbers (typically b=4).  This creates a hypercube topology \cite{induced}.
 
 \subsection*{Peerlist}
-Pastry's peerlist consists of three components: the routing table, a neighborhood set and a leaf set.  The Routing table consists of $\log(n)$ rows and $b$ columns each. Each  
-The 0th row contains peers which don't share a common prefix.  The 1st row contains those that share a length 1 common prefix, the 2nd a length 2 common prefix, etc.  Since each ID is a base $2^b$ number, there is one column for each possible difference.   The i,j entry of the table contains an ID that shares the same first i digits, with digit i+1 having a value of j (yes, a slot is wasted in each row).
+Pastry's peerlist consists of three components: the routing table, a neighborhood set and a leaf set.  
+The Routing table consists of $\log(n)$ rows and $b$ columns each. 
+The 0th row contains peers which don't share a common prefix with the node.  
+The 1st row contains those that share a length 1 common prefix, the 2nd a length 2 common prefix, etc.  
+Since each ID is a base $2^b$ number, there is one column for each possible difference.   The i,j entry of the table contains an ID that shares the same first i digits, with digit i+1 having a value of j (yes, a slot is ``wasted'' in each row).
 
-The neighborhood set hold the ID and Ip address of the closest nodes, defined by a metric.  It is not used for routing.  The leaf set is used to hold the numerically closest nodes. Half of it for smaller and half for larger.
+The neighborhood set holds the ID and IP address of the closest nodes, as defined by some metric.  
+It is not used for routing.  
+The leaf set is used to hold the nodes with the numerically closest IDs;  half of it for smaller IDs and half for the larger.
 
 
 \subsection*{Lookup}
-Forwarded to (node/peer?) whose shared prefix is longer.  If no one  has a better shared prefix than the current node, the message is forwarded to the closest  node.
+Forwarded to (node/peer?) whose shared prefix is longer.  If no one has a better shared prefix than the current node, the message is forwarded to the closest  node.
 
 
 
@@ -494,7 +530,7 @@ Let the $i$th level of the routing table correspond to the peers with that match
 In addition to the routing table, each link to a node is bidirectional.
 
 
-\subsubsection*{Construction and Maintenence}
+\subsubsection*{Construction and Maintenance}
 Need to look at other paper.
 
 \subsection*{Lookup and Publishing}
