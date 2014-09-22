@@ -23,7 +23,7 @@ Distributed Hash Tables (DHTs) are traditionally used as the backbone of P2P fil
 However, they are seeing increasing use in other applications
 \begin{itemize}
 	\item Citation(Hybrid computation)
-	\item
+	\item Cloud Provisioning  (P2P cloud Provisioning)
 \end{itemize}
 
 
@@ -43,15 +43,7 @@ This means that nodes in the same geographic region occupy vastly different posi
 If an entire geographic region is affected by a network outage, this damage is spread evenly across the DHT, which can be manageable
 This property is the most important, as it deals with failure of entire sections of the network, rather than a single node.
 
-
-So what are the consequences of these properties?
-\begin{itemize}
-	\item DHTs are highly resilient to damage and often at higher rates of disruption that is normally.
-	\item 
-	\item 
-\end{itemize}
-
-Recent research in using DHTs for High End Computing \cite{zht} shows what can happen if we remove this assumption by placing the network that is almost completely static.
+Recent research in using DHTs for High End Computing \cite{li2013zht} shows what can happen if we remove this assumption by placing the network that is almost completely static.
 
 
 
@@ -63,30 +55,51 @@ The result of this is that as more nodes join the network, the distribution of n
 
 While most DHTs follow this scheme, there is some minor variation on how keys are generated.
 Some DHTs can or do use geographic information to generate keys.
-In another instance, keys are static \cite{vhash}.
+In VHash, keys are not static, but move according to a simplified spring model.
 
 \subsubsection{Scalability}
-How a DHT handles scalablity is what causes the greatest variation between DHTs(HELP).
-Each DHT strikes a balance between the overhead cost of maintaining the routing table and the routing speed. 
-The greatest architectural differences arise from the tradeoff of routing table size  to lookup time and how it is maintained.
+There have been multiple proposed strategies for tackling scalablity, and it is these strategies which play the greatest role in driving the variety of DHT architectures. 
+Each DHT must strikes a balance between memory cost of the peerlist and lookup time. 
+The vast majority of DHTs balance the size of the lookup table
+Table \ref{tab:tradeoffs} lists the 
 
-The vast majority of Distributed Hash Tables 
 
-
+% Perhaps geometries should be included?
 \begin{table}
   \centering
-  \begin{tabular}{|l|l|l|}
+  \begin{tabular}{|l|l|l|l|}
   \hline
-  Size & Speed & DHTs \\ \hline
-  $\log n$ & $\log n$ & Everybody \\ \hline
+  Size & Speed & DHTs & Comments \\ \hline
+  
+  $O(d)$ & $O(n^{\frac{1}{d}})$ & CAN \cite{can} & $d$ os the number of dimensions \\ \hline
+  
+  $O(\log n)$ & $O(\log n)$ & Chord \cite{chord}, Kademlia \cite{kademlia} & This is where most DHTs fall \\ \hline
+  
+  $O(n)$ &  & & \\ \hline
   \end{tabular}
   \caption{The different ratios and their associated DHTs}
   \label{tab:tradeoffs}
 \end{table}
-Other factors: Bases, maintenense process, maintanense intervals,
+
+Other factors: Bases, maintenance process, maintenance intervals,
 
 \subsubsection{Heterogeneity}
 \subsubsection{Ease of Adding, Removing, Maintaining, and money related factors}
+
+\subsection{The Takeaway}
+
+
+\subsubsection{The consequences of the Properties}
+So what are the consequences of these properties?
+\begin{itemize}
+	\item DHTs are highly resilient to damage and often at higher rates of disruption that is normally.
+	\item 
+	\item 
+\end{itemize}
+
+
+\subsubsection{The consequences of the Properties}
+
 
 \section{Different or subproblem: Certain DHTs are better at one application than another due to differences}
 \subsection{Design Differences Impacts}
@@ -98,34 +111,39 @@ Other factors: Bases, maintenense process, maintanense intervals,
 
 \subsection{MANETS}
 \chapter{Justification and Why I Think It's Cool}
+
+\section{Why DHTs for distributed computing?}
 \subsection{DHTs well understood}
 \subsection{DHTs are Highly used for their intended purposed}
 \subsubsection{Bittorrent, WoW}
-\subsection{DHTs are being effectively leveraged for other things besides file sharing already}
+\section{DHTs are being effectively leveraged for other things besides file sharing already}
+
 \subsubsection{PaaS}
 \subsubsection{Load Balancing in the cloud}
 \subsubsection{Computing is a natural extension}
 
 \chapter{Possible Experiments and Applications}
 
-\subsection{Map Reduce}
+
+\section{MapReduce}
+\subsection{Current MapReduce DHT/P2P combos}
 \subsubsection{ChordReduce}
-\subsubsection{Comparison of  MapReduce paradigm on different DHTs}
+\subsection{Experiment: Comparison of MapReduce paradigm on different DHTs}
 
 
-\subsection{High End Computing}
-\subsubsection{Metadata Management}
-\subsubsection{Robustness}
+\section{High End Computing}
+\subsection{Metadata Management}
+\subsection{Robustness}
 
-\subsection{Graph Processing on a DHT}
-\subsubsection{Embedding}
-\subsubsection{Distribute the work for solving a graph on a DHT}
-\subsubsection{Comparison to well established or state of the art methods}
+\section{Graph Processing on a DHT}
+\subsection{Embedding}
+\subsection{Distribute the work for solving a graph on a DHT}
+\subsection{Comparison to well established or state of the art methods}
 
-\subsection{Machine Learning Problems on A DHT}
+\section{Machine Learning Problems on A DHT}
 \subsubsection{Bayesian Learning}
 
-\subsection{DHTs as a volunteer Platform}
+\section{DHTs as a volunteer Platform}
 
 \chapter{DHT Background}
 
