@@ -33,10 +33,15 @@ One of the most important assumptions of DHTs is that they are deployed on a non
 DHTs need to be built to account for a high level what is called \textit{churn}.  
 Churn refers to the disruption of routing caused by the constant joining and leaving of nodes.
 
-This is mitigated by a few factors.  
-First, no single node is a single point of failure for the network;  this is accomplished by each node in the routing table having a small portion of the both the routing table and the information stored on the DHT (see the Load Balancing property below).  
-Second is DHTs have a cheap repair or maintenance process that takes care of damage and integrating nodes that affects a minimal number of nodes, minimizing overhead. 
-Third, DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighbors immediately take over its responsibility.
+This is mitigated by a few factors.
+First, the network is decentalized with no single node is a single point of failure for the network.
+This means  no member of the network is more essential to the network than any other arbitrary member. % citation from the email
+This is accomplished by each node in the routing table having a small portion of the both the routing table and the information stored on the DHT (see the Load Balancing property below).
+
+Second is DHTs have a cheap repair or maintenance process that mitiagtes the damage caused by a node dropping out of the network.
+DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighbors immediately take over its responsibility.
+The join process  nodes that affects a minimal number of nodes, minimizing overhead. 
+
 The last property is that the Hashing Algorithm used to distribute content evenly across the network(again see load balancing) also distributes nodes evenly across the DHT.  
 This means that nodes in the same geographic region occupy vastly different positions in the keyspace.  
 If an entire geographic region is affected by a network outage, this damage is spread evenly across the DHT, which can be manageable
@@ -74,8 +79,11 @@ Table \ref{tab:tradeoffs} lists various DHTs and methods of balanceing cost.
     \begin{tabular}{|l|l|l|l|}
     \hline
     Size & Speed & DHTs & Comments \\ \hline
+    
     $O(d)$ & $O(n^{\frac{1}{d}})$ & CAN \cite{can} & $d$ is the number of dimensions \\ \hline
+    
     $O(\log n)$ & $O(\log n)$ & Chord \cite{chord}, Kademlia \cite{kademlia} & This is where most DHTs fall \\ \hline
+    
     $O(n)$ &  & & \\ \hline
     \end{tabular}
     \caption{The different ratios and their associated DHTs}
