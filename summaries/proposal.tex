@@ -17,14 +17,27 @@
 \chapter{Hypotheses}
 
 \section{DHTs are better for distributed computing under many circumstances}
-Distributed Hash Tables (DHTs) are traditionally used as the backbone of P2P file-sharing applications.
+Distributed Hash Tables (DHTs) are traditionally used as the backbone of Peer-to-Peer (P2P) file-sharing applications.
 
 However, they are seeing increasing use in other applications
+
+
+
 \begin{itemize}
-    \item Citation(Hybrid computation)
+    \item Using a DHT as the name resolution layer of a large distributed database \cite{Mateescu2011440}. %more
+    \item Distributed Machine learning \cite{liparameter}.
     \item Cloud Provisioning  (P2P cloud Provisioning)
 \end{itemize}
 
+
+Many papers use different terms to describe congruent elements of DHTs, as some terms may make sense 
+I shall endeavor to add to confusion by using the following unified terminology:
+\begin{enumerate}
+    \item[Peerlist] -  The set of all peers that a node knows about.  This is sometimes referred to as the \textit{routing table}, but certain DHTs \cite{tapestry} \cite{pastry} overload the terminology.
+    \item[Neighbors] - The subset of peers that are ``closest/adjacent'' to the node in the keyspace, according to the DHT's metric.  In a 1-dimensional ring, such a Chord \cite{chord}, this is the node's \textit{predecessor} and \textit{successor}.
+    \item[Fingers] - The subset of the peerlist that  the node is not adjacent to.  These are sometimes referred to as long-hops or shortcuts. 
+    \item[Root Node] - The node responsible for a particular key. 
+\end{enumerate}
 
 \subsection{Really Cool Qualities}
 Many DHTs are built upon the assumption that they will be used in some kind of P2P application.
@@ -32,15 +45,15 @@ Many DHTs are built upon the assumption that they will be used in some kind of P
 One of the most important assumptions of DHTs is that they are deployed on a non-static network.
 DHTs need to be built to account for a high level what is called \textit{churn}.  
 Churn refers to the disruption of routing caused by the constant joining and leaving of nodes.
-
 This is mitigated by a few factors.
-First, the network is decentalized with no single node is a single point of failure for the network.
-This means  no member of the network is more essential to the network than any other arbitrary member. % citation from the email
+
+First, the network is decentralized, with no single node acting as a single point of failure.
+This means no member of the network is more essential to the network than any other arbitrary member. % citation from the email
 This is accomplished by each node in the routing table having a small portion of the both the routing table and the information stored on the DHT (see the Load Balancing property below).
 
-Second is DHTs have a cheap repair or maintenance process that mitiagtes the damage caused by a node dropping out of the network.
-DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighbors immediately take over its responsibility.
-The join process  nodes that affects a minimal number of nodes, minimizing overhead. 
+Second is that each DHT has an inexpensive maintenance processes that mitigates the damage caused by a node dropping out of the network.
+DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighbors can immediately assume responsibility.
+The join process  also causes disruption to the network, as nodes have adjust their peerlists to  . 
 
 The last property is that the Hashing Algorithm used to distribute content evenly across the network(again see load balancing) also distributes nodes evenly across the DHT.  
 This means that nodes in the same geographic region occupy vastly different positions in the keyspace.  
@@ -59,6 +72,8 @@ The result of this is that as more nodes join the network, the distribution of n
 
 However, because this is a random process, it is possible that loads can become imbalanced.
 Solutions exist \cite{}%http://web.engr.illinois.edu/~pbg/papers/y0.pdf
+
+
 
 
 While most DHTs follow this scheme, there is some minor variation on how keys are generated.
@@ -147,6 +162,7 @@ So what are the consequences of these properties?
 \subsection{Robustness}
 
 \section{Graph Processing on a DHT}
+Lookup Graphlab
 \subsection{Embedding}
 \subsection{Distribute the work for solving a graph on a DHT}
 \subsection{Comparison to well established or state of the art methods}
