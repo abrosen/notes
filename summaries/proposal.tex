@@ -1,9 +1,9 @@
 \documentclass[10pt,letterpaper]{report}
-\usepackage[latin1]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{tabularx}
 \usepackage{venturis2}
 \title{Proposal}
 \author{Andrew Rosen}
@@ -17,19 +17,18 @@
 \chapter{Hypotheses}
 
 \section{DHTs are better for distributed computing under many circumstances}
-Distributed Hash Tables (DHTs) are traditionally used as the backbone of Peer-to-Peer (P2P) file-sharing applications.
-
-However, they are seeing increasing use in other applications
-
-
+Distributed Hash Tables (DHTs) are traditionally used as the backbone of Peer-to-Peer (P2P) file-sharing applications and research has largely remained in this area.
+However, they are seeing increasing use in other applications:
 
 \begin{itemize}
     \item Using a DHT as the name resolution layer of a large distributed database \cite{Mateescu2011440}. %more
-    \item Distributed Machine learning \cite{liparameter}.
-    \item Cloud Provisioning  (P2P cloud Provisioning)
+    \item Distributed machine learning \cite{liparameter}.
+    \item Cloud Provisioning  (P2P cloud Provisioning).
 \end{itemize}
 
 
+
+\footnote{
 Many papers use different terms to describe congruent elements of DHTs, as some terms may make sense 
 I shall endeavor to add to confusion by using the following unified terminology:
 \begin{enumerate}
@@ -38,6 +37,8 @@ I shall endeavor to add to confusion by using the following unified terminology:
     \item[Fingers] - The subset of the peerlist that  the node is not adjacent to.  These are sometimes referred to as long-hops or shortcuts. 
     \item[Root Node] - The node responsible for a particular key. 
 \end{enumerate}
+}
+
 
 \subsection{Really Cool Qualities}
 Many DHTs are built upon the assumption that they will be used in some kind of P2P application.
@@ -48,16 +49,15 @@ Churn refers to the disruption of routing caused by the constant joining and lea
 This is mitigated by a few factors.
 
 First, the network is decentralized, with no single node acting as a single point of failure.
-This means no member of the network is more essential to the network than any other arbitrary member. % citation from the email
 This is accomplished by each node in the routing table having a small portion of the both the routing table and the information stored on the DHT (see the Load Balancing property below).
 
-Second is that each DHT has an inexpensive maintenance processes that mitigates the damage caused by a node dropping out of the network.
+Second is that each DHT has an inexpensive maintenance processes that mitigates the damage caused by churn.
 DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighbors can immediately assume responsibility.
-The join process  also causes disruption to the network, as nodes have adjust their peerlists to  . 
+The join process also causes disruption to the network, as affected nodes have adjust their peerlists to accommodating the joiner. 
 
-The last property is that the Hashing Algorithm used to distribute content evenly across the network(again see load balancing) also distributes nodes evenly across the DHT.  
+The last property is that the hash algorithm used to distribute content evenly across the network(again see load balancing) also distributes nodes evenly across the DHT.  
 This means that nodes in the same geographic region occupy vastly different positions in the keyspace.  
-If an entire geographic region is affected by a network outage, this damage is spread evenly across the DHT, which can be manageable
+If an entire geographic region is affected by a network outage, this damage is spread evenly across the DHT, which can be handled.
 
 This property is the most important, as it deals with failure of entire sections of the network, rather than a single node.
 Recent research in using DHTs for High End Computing \cite{li2013zht} shows what can happen if we remove this assumption by placing the network that is almost completely static.
@@ -71,50 +71,57 @@ The chosen hash function is typically large enough to avoid hash collisions and 
 The result of this is that as more nodes join the network, the distribution of nodes in the keyspace becomes more uniform, as does the distribution of files.
 
 However, because this is a random process, it is possible that loads can become imbalanced.
-Solutions exist \cite{}%http://web.engr.illinois.edu/~pbg/papers/y0.pdf
+Solutions exist \cite{godfrey2005heterogeneity} to mitigate this problem, the simplest being ``virtual nodes,'' but in general we can expect logarithmic imbalance% phrasing see chord paper sectio  on 
 
 
-
-
-While most DHTs follow this scheme, there is some minor variation on how keys are generated.
-Some DHTs can or do use geographic information to generate keys.
-In VHash, keys are not static, but move according to a simplified spring model.
+%While most DHTs follow this scheme, there is some minor variation on how keys are generated.
+%Some DHTs can or do use geographic information to generate keys.
+%In VHash, keys are not static, but move according to a simplified spring model.
 
 \subsubsection{Scalability}
 There have been multiple proposed strategies for tackling scalablity, and it is these strategies which play the greatest role in driving the variety of DHT architectures. 
 Each DHT must strikes a balance between memory cost of the peerlist and lookup time. 
-The vast majority of DHTs balance the size of the lookup table
-Table \ref{tab:tradeoffs} lists various DHTs and methods of balanceing cost.
+The vast majority of DHTs choose a logartihmic sized routing table
+Table \ref{tab:tradeoffs} lists various DHTs and methods of balancing cost.
 
 
 % Perhaps geometries should be included?
 % be sure to include join and leave costs.
-\begin{table}
+\begin{table}[h]
+	\small
     \centering
-    \begin{tabular}{|l|l|l|l|}
+    \begin{tabularx}{\textwidth}{ |X|X|X|X|X| }
     \hline
-    Size & Speed & DHTs & Comments \\ \hline
+    % Add join leave cost, avgerages and maxs
+    DHT & Routing Table Size & Lookup Time & Join/Leave & Comments \\ \hline  
+    Chord \cite{chord}, Kademlia \cite{kademlia} & $O(\log n)$ & $O(\log n)$ & & This is where most DHTs fall  \\ \hline
+    CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
     
-    $O(d)$ & $O(n^{\frac{1}{d}})$ & CAN \cite{can} & $d$ is the number of dimensions \\ \hline
-    
-    $O(\log n)$ & $O(\log n)$ & Chord \cite{chord}, Kademlia \cite{kademlia} & This is where most DHTs fall \\ \hline
-    
-    $O(n)$ &  & & \\ \hline
-    \end{tabular}
+    Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} &  & & & \\ \hline
+    & & & & \\ \hline  
+    ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  &Assumes an extremely low churn \\ \hline
+    \end{tabularx}
     \caption{The different ratios and their associated DHTs}
     \label{tab:tradeoffs}
 \end{table}
 
-Other factors: Bases, maintenance process, maintenance intervals,
-
 \subsubsection{Heterogeneity}
 
+The mechanics behind load balancing assumes nothing about the nature of the hardware it is running on.
+The applications that run DHTs, on the otherhand, implicitly assume that  that the machines composing the network (and running the application) are heterogenous.
 
-\subsubsection{Ease of Adding, Removing, Maintaining, and money related factors}
+
+The end result is 
+
 
 \subsection{The Takeaway}
 
 
+\begin{itemize}
+	\item DHTs are extremely good if your problem is embarrassingly parallel
+	\item DHTs are agnostic in terms of what hardware it's running on.
+	\item
+\end{itemize}
 \subsubsection{The consequences of the Properties}
 So what are the consequences of these properties?
 \begin{itemize}
@@ -139,6 +146,10 @@ So what are the consequences of these properties?
 \chapter{Justification and Why I Think It's Cool}
 
 \section{Why DHTs for distributed computing?}
+
+\cite{malkhi2001viceroy} -  Between congestion, cost of join/leaves, and lookup time there are tradeoffs.  
+Optimizing for two can be done but has bad cost.
+For example, a balanced binary tree has congestion at root.
 \subsection{DHTs well understood}
 \subsection{DHTs are Highly used for their intended purposed}
 \subsubsection{Bittorrent, WoW}
