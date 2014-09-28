@@ -277,6 +277,9 @@ The second type of attack exploits the routing table maintenance of DHTs that us
 One possible way:  Most DHTs store node information in a tuple: (ID, ip, port).  An attack simply feeds nodes fake IDs ( chosen either statistically or in response to a request) with a malicious node's ip:port.  If node ID is generated via hash(ip,port)  this can be mitigated someone by verification  
 
 
+\subsection{Trust}
+Almost every DHT leaves the problem of trust for later work and for good reason.
+Answering the question has large archetectural and protocol implications % cite dyamo had a section about this regarding antiquity.
 
 
 \chapter{The Essential DHTs}% Structured Overlays for Distributed Hash Tables
