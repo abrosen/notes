@@ -190,26 +190,69 @@ For example, a balanced binary tree has congestion at root.
 \chapter{Possible Experiments and Applications}
 
 
+
+
 \section{MapReduce}
+Both MapReduce \cite{mapreduce} and DHTs are based on operating over key/value pairs, albeit over different contexts.
+
+MapReduce can utilize a DHT to create a more abstract MapReduce frameworkk
+
 \subsection{Current MapReduce DHT/P2P combos}
+Example A: slightly decentralized with coordinating nodes.
+Also limap
+
+
 \subsubsection{ChordReduce}
-\subsection{Experiment: Comparison of MapReduce paradigm on different DHTs}
+The idea behind ChordReduce is 
+
+ChordReduce is completely decentralized, no node is more vulnerable than any other.
+
+
+\subsection{Experiment Description: Comparison of MapReduce paradigm on different DHTs}
+This may be enough on its own.
+\begin{itemize}
+	\item Implement CAN, Pastry, Chord, Kademlia, VHash and ZHT/similar
+	\begin{itemize}	
+		\item This covers different geometries with different base paremeters
+		\item This also necessitates the creation of an extensible DHT framework, something I haven't found yet and may not have been done before (most people implement their DHT or use someone else)
+	\end{itemize}
+	\item Compare results with each other and MapReduce
+	
+\end{itemize}
+
 
 
 \section{High End Computing}
 \subsection{Metadata Management}
 \subsection{Robustness}
 
+\subsection{Experiment Description:}
+
 \section{Graph Processing on a DHT}
 Lookup Graphlab
 \subsection{Embedding}
+
+\subsection{Experiment Description:}
 \subsection{Distribute the work for solving a graph on a DHT}
 \subsection{Comparison to well established or state of the art methods}
 
+
+
 \section{Machine Learning Problems on A DHT}
 \subsubsection{Bayesian Learning}
+\subsection{Experiment Description:}
+
+
 
 \section{DHTs as a volunteer Platform}
+\subsection{Experiment Description}
+Implement and compare to Boinc.
+
+
+
+\section{Resources}
+\subsection{Planetlab}
+\subsection{Local Cluster}
 
 \chapter{DHT Background}
 
