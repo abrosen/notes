@@ -223,8 +223,8 @@ The system would be highly resistant to failures at any point, scalable, and aut
 The administrator can add any number of heterogeneous nodes to the system to get it operate.
 
 \subsection{Current MapReduce DHT/P2P combos}
-
-There have been a few implementations 
+There have been a few implementations combining MapReduce with a P2P framework, in varying capacities.  
+I will present two here, as well as my own implementation, ChordReduce.
 
 \subsubsection{P2P-MapReduce}
 Marozzo et al. \cite{marozzo2012p2p} investigated the issue of fault tolerance in centralized MapReduce architectures such as Hadoop.  
@@ -264,15 +264,17 @@ ChordReduce  was designed to ensure that no single node is a point of failure an
 
 
 \subsection{Experiment Description: Comparison of MapReduce paradigm on different DHTs}
-This may be enough on its own.
+In order to test MapReduce over a DHT, I will do the following:
 \begin{itemize}
-	\item Implement CAN \cite{can}, Pastry \cite{pastry}, Chord \cite{chord}, Kademlia \cite{kademlia}, VHash and ZHT \cite{li2013zht} /similar
+	\item Implement CAN \cite{can}, Pastry \cite{pastry}, Chord \cite{chord}, Kademlia \cite{kademlia}, VHash, and ZHT \cite{li2013zht} /similar
 	\begin{itemize}	
-		\item This covers different geometries with different base parameters
-		\item C
-		\item This also necessitates the creation of an extensible DHT framework, something I haven't found yet and may not have been done before (most people implement their DHT or use someone else)
+		\item This covers different geometries with different base parameters.
+		\item This also necessitates the creation of an extensible DHT framework.
+		\item  The DHT should be extended with more powerful search functionality (see distributed database below), and built-in policies for virtual nodes.
+		
 	\end{itemize}
 	\item Compare results with each other and a traditional MapReduce platform, such as Hadoop.
+	\item Certain DHTs may be better suited to different problem formulation
 	
 \end{itemize}
 
@@ -301,8 +303,6 @@ Lookup Graphlab
 
 
 \section{Distributed Databases}
-
-
 
 
 
