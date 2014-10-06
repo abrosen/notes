@@ -32,12 +32,12 @@ However, they are seeing increasing use in other applications:
 
 
 \footnote{
-Many papers use different terms to describe congruent elements of DHTs, as some terms may make sense 
+Many papers use different terms to describe congruent elements of DHTs, as some terms may make sense only in one context.
 I shall endeavor to add to confusion by using the following unified terminology:
 \begin{enumerate}
     \item[Peerlist] -  The set of all peers that a node knows about.  This is sometimes referred to as the \textit{routing table}, but certain DHTs \cite{tapestry} \cite{pastry} overload the terminology.
     \item[Neighbors] - The subset of peers that are ``closest/adjacent'' to the node in the keyspace, according to the DHT's metric.  In a 1-dimensional ring, such a Chord \cite{chord}, this is the node's \textit{predecessor} and \textit{successor}.
-    \item[Fingers] - The subset of the peerlist that  the node is not adjacent to.  These are sometimes referred to as long-hops or shortcuts. 
+    \item[Fingers] - The subset of the peerlist that the node is not adjacent to.  These are sometimes referred to as long-hops or shortcuts. The other major distinction is that fingers aren't no
     \item[Root Node] - The node responsible for a particular key. 
 \end{enumerate}
 }
@@ -190,30 +190,70 @@ For example, a balanced binary tree has congestion at root.
 \subsubsection{Load Balancing in the cloud}
 \subsubsection{Computing is a natural extension}
 
+\subsection{DHTs as a volunteer Platform}
+Rather than rely on a centralized administrative source,
+
+The system is organized using a P2P system built on Brunet \cite{brunet}.
+
+PonD \cite{leepond}
+\subsubsection{Experiment Description}
+Implement and compare to Boinc.
+
+
+
 \chapter{Possible Experiments and Applications}
 
 
 
 
 \section{MapReduce}
-Both MapReduce \cite{mapreduce} and DHTs are based on operating over key/value pairs, albeit over different contexts.
+
+%copied from CHRONUS
+Google's MapReduce \cite{mapreduce} paradigm has rapidly become an integral part in the world of data processing and is capable of efficiently executing numerous Big Data programming and data-reduction tasks.  
+By using MapReduce, a user can take a large problem, split it into small, equivalent tasks and send those tasks to other processors for computation.  
+The results are sent back to the user and combined into one answer.  
+MapReduce has proven to be an extremely powerful and versatile tool, providing the framework for using distributed computing to solve a wide variety of problems, such as distributed sorting and creating an inverted index \cite{mapreduce}. 
+
+At it's core, MapReduce \cite{mapreduce} is a system for process key/value pair, as statment that equally describes DHTs.
+However, MapReduce operatesover a different set of assumptions \cite{hadoopAssumptions} than DHTs.
+MapReduce platforms are highly centralized and tend to have single points of failure\cite{shvachko2010hadoop} as a result.   A centralized design assumes that the network is relatively unchanging and does not usually have mechanisms to handle node failure during execution or, conversely, cannot speed up the execution of a job by adding additional workers on the fly.  Finally deploying these systems and developing programs for them has an extremely steep learning curve.
+
+
+
+If we make MapReduce operate under the same assumptions as a DHT, we have effectively further abstracted the MapReduce paradigm and created a system that can operate both in a traditional large datacenter or as part of a P2P network.
 
 MapReduce can utilize a DHT to create a more abstract MapReduce frameworkk
+
+
 
 \subsection{Current MapReduce DHT/P2P combos}
 Example A: slightly decentralized with coordinating nodes.
 
 \subsubsection{P2P-MapReduce}
-Marozzo et al. \cite{marozzo2012p2p} investigated the issue of fault tolerance in centralized MapReduce architectures such as Hadoop.  They focused on creating a new P2P based MapReduce architecture built on JXTA called P2P-MapReduce.  P2P-MapReduce is designed to be more robust at handling node and job failures during execution.
+Marozzo et al. \cite{marozzo2012p2p} investigated the issue of fault tolerance in centralized MapReduce architectures such as Hadoop.  
+They focused on creating a new P2P based MapReduce architecture built on JXTA called P2P-MapReduce.  
+P2P-MapReduce is designed to be more robust at handling node and job failures during execution.
 
-Rather than use a single master node, P2P-MapReduce employs multiple master nodes, each responsible for some job.  If one of those master nodes fails, another will be ready as a backup to take its place and manage the slave nodes assigned to that job.  This avoids the single point of failure that Hadoop is vulnerable to. Failures of the slave nodes are handled by the master node responsible for it.
+Rather than use a single master node, P2P-MapReduce employs multiple master nodes, each responsible for some job.  
+If one of those master nodes fails, another will be ready as a backup to take its place and manage the slave nodes assigned to that job.  
+This avoids the single point of failure that Hadoop is vulnerable to. Failures of the slave nodes are handled by the master node responsible for it.
 
-Experimental results were gathered via simulation and compared P2P-MapReduce to a centralized framework. Their results showed that while P2P-MapReduce generated an order of magnitude more messages than a centralized approach, the difference rapidly began to shrink at higher rates of churn.  When looking at actual amounts of data being passed around the network, the bandwidth required by the centralized approach greatly increased as a function of churn, while the distributed approach again remained relatively static in terms of increased bandwidth usage.  They concluded that P2P-MapReduce would, in general, use more network resources than a centralized approach. However, this was an acceptable cost as the P2P-MapReduce would lose less time from node and job failures \cite{marozzo2012p2p}.
+Experimental results were gathered via simulation and compared P2P-MapReduce to a centralized framework. 
+Their results showed that while P2P-MapReduce generated an order of magnitude more messages than a centralized approach, the difference rapidly began to shrink at higher rates of churn.  
+When looking at actual amounts of data being passed around the network, the bandwidth required by the centralized approach greatly increased as a function of churn, while the distributed approach again remained relatively static in terms of increased bandwidth usage. 
+They concluded that P2P-MapReduce would, in general, use more network resources than a centralized approach. 
+However, this was an acceptable cost as the P2P-MapReduce would lose less time from node and job failures \cite{marozzo2012p2p}.
 
 \subsubsection{Parralel Processing Framework on a P2P System}
-Lee et al.'s work \cite{leemap} draws attention to the fact that a P2P network can be much more than a way to distribute files and demonstrates how to accomplish different tasks using Map and Reduce functions over a P2P network.  Rather than using Chord, Lee et al. used Symphony \cite{symphony}, another DHT protocol with a ring topology.  To run a MapReduce job over the Symphony ring, a node is selected by the user to effectively act as the master.  This ad-hoc master then performs a bounded broadcast over a subsection the ring.  Each node repeats this broadcast over a subsection of that subsection, resulting in a tree with the first node at the top.  
+Lee et al.'s work \cite{leemap} draws attention to the fact that a P2P network can be much more than a way to distribute files and demonstrates how to accomplish different tasks using Map and Reduce functions over a P2P network.  
+Rather than using Chord, Lee et al. used Symphony \cite{symphony}, another DHT protocol with a ring topology.  
+To run a MapReduce job over the Symphony ring, a node is selected by the user to effectively act as the master.  
+This ad-hoc master then performs a bounded broadcast over a subsection the ring.  
+Each node repeats this broadcast over a subsection of that subsection, resulting in a tree with the first node at the top.  
 
-Map tasks are disseminated evenly throughout the tree and their results are reduced on the way back up to the ad-hoc master node.  This allows the ring to disseminate Map and Reduce tasks without the need for a coordinator responsible for distributing these tasks and keeping track of them, unlike Hadoop.  Their experimental results showed that the latency experienced by a centralized configuration is similar to the latency experienced in a completely distributed framework.
+Map tasks are disseminated evenly throughout the tree and their results are reduced on the way back up to the ad-hoc master node.  
+This allows the ring to disseminate Map and Reduce tasks without the need for a coordinator responsible for distributing these tasks and keeping track of them, unlike Hadoop.  
+Their experimental results showed that the latency experienced by a centralized configuration is similar to the latency experienced in a completely distributed framework.
 
 
 
@@ -264,10 +304,6 @@ Lookup Graphlab
 \section{Distributed Databases}
 
 
-
-\section{DHTs as a volunteer Platform}
-\subsection{Experiment Description}
-Implement and compare to Boinc.
 
 
 
