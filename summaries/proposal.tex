@@ -202,13 +202,28 @@ MapReduce can utilize a DHT to create a more abstract MapReduce frameworkk
 
 \subsection{Current MapReduce DHT/P2P combos}
 Example A: slightly decentralized with coordinating nodes.
-Also limap
+
+\subsubsection{P2P-MapReduce}
+Marozzo et al. \cite{marozzo2012p2p} investigated the issue of fault tolerance in centralized MapReduce architectures such as Hadoop.  They focused on creating a new P2P based MapReduce architecture built on JXTA called P2P-MapReduce.  P2P-MapReduce is designed to be more robust at handling node and job failures during execution.
+
+Rather than use a single master node, P2P-MapReduce employs multiple master nodes, each responsible for some job.  If one of those master nodes fails, another will be ready as a backup to take its place and manage the slave nodes assigned to that job.  This avoids the single point of failure that Hadoop is vulnerable to. Failures of the slave nodes are handled by the master node responsible for it.
+
+Experimental results were gathered via simulation and compared P2P-MapReduce to a centralized framework. Their results showed that while P2P-MapReduce generated an order of magnitude more messages than a centralized approach, the difference rapidly began to shrink at higher rates of churn.  When looking at actual amounts of data being passed around the network, the bandwidth required by the centralized approach greatly increased as a function of churn, while the distributed approach again remained relatively static in terms of increased bandwidth usage.  They concluded that P2P-MapReduce would, in general, use more network resources than a centralized approach. However, this was an acceptable cost as the P2P-MapReduce would lose less time from node and job failures \cite{marozzo2012p2p}.
+
+\subsubsection{Parralel Processing Framework on a P2P System}
+Lee et al.'s work \cite{leemap} draws attention to the fact that a P2P network can be much more than a way to distribute files and demonstrates how to accomplish different tasks using Map and Reduce functions over a P2P network.  Rather than using Chord, Lee et al. used Symphony \cite{symphony}, another DHT protocol with a ring topology.  To run a MapReduce job over the Symphony ring, a node is selected by the user to effectively act as the master.  This ad-hoc master then performs a bounded broadcast over a subsection the ring.  Each node repeats this broadcast over a subsection of that subsection, resulting in a tree with the first node at the top.  
+
+Map tasks are disseminated evenly throughout the tree and their results are reduced on the way back up to the ad-hoc master node.  This allows the ring to disseminate Map and Reduce tasks without the need for a coordinator responsible for distributing these tasks and keeping track of them, unlike Hadoop.  Their experimental results showed that the latency experienced by a centralized configuration is similar to the latency experienced in a completely distributed framework.
+
+
+
 
 
 \subsubsection{ChordReduce}
-The idea behind ChordReduce is 
+ChordReduce is designed as a more abstract framework for MapReduce, able to run on any arbitrary distributed configuration.
+ChordReduce leverages the features of distributed hash tables to handle distributed file storage, fault tolerance, and lookup.  
+ChordReduce  was designed to ensure that no single node is a point of failure and that there is no need for any node to coordinate the efforts of other nodes during processing.  
 
-ChordReduce is completely decentralized, no node is more vulnerable than any other.
 
 
 \subsection{Experiment Description: Comparison of MapReduce paradigm on different DHTs}
@@ -216,7 +231,7 @@ This may be enough on its own.
 \begin{itemize}
 	\item Implement CAN, Pastry, Chord, Kademlia, VHash and ZHT/similar
 	\begin{itemize}	
-		\item This covers different geometries with different base paremeters
+		\item This covers different geometries with different base parameters
 		\item This also necessitates the creation of an extensible DHT framework, something I haven't found yet and may not have been done before (most people implement their DHT or use someone else)
 	\end{itemize}
 	\item Compare results with each other and MapReduce
@@ -244,6 +259,9 @@ Lookup Graphlab
 \section{Machine Learning Problems on A DHT}
 \subsubsection{Bayesian Learning}
 \subsection{Experiment Description:}
+
+
+\section{Distributed Databases}
 
 
 
