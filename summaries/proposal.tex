@@ -105,7 +105,7 @@ Using consistent hashing allows the network to scale up incrementally, adding on
 In addition, each join operation has minimal impact on the network, since a node affects only its immediate neighbors on a join operation.
 
 Similarly, the only nodes that need to react to a node leaving are immediately.
-This is almost instantanius if the network is using backups.
+This is almost instantaneous if the network is using backups.
 Other nodes can be notified of the missing node passively through maintenance.
 
 There have been multiple proposed strategies for tackling scalability, and it is these strategies which play the greatest role in driving the variety of DHT architectures. 
@@ -204,8 +204,6 @@ Implement and compare to Boinc.
 \chapter{Possible Experiments and Applications}
 
 
-
-
 \section{MapReduce}
 
 %copied from CHRONUS
@@ -214,20 +212,19 @@ By using MapReduce, a user can take a large problem, split it into small, equiva
 The results are sent back to the user and combined into one answer.  
 MapReduce has proven to be an extremely powerful and versatile tool, providing the framework for using distributed computing to solve a wide variety of problems, such as distributed sorting and creating an inverted index \cite{mapreduce}. 
 
-At it's core, MapReduce \cite{mapreduce} is a system for process key/value pair, as statment that equally describes DHTs.
-However, MapReduce operatesover a different set of assumptions \cite{hadoopAssumptions} than DHTs.
-MapReduce platforms are highly centralized and tend to have single points of failure\cite{shvachko2010hadoop} as a result.   A centralized design assumes that the network is relatively unchanging and does not usually have mechanisms to handle node failure during execution or, conversely, cannot speed up the execution of a job by adding additional workers on the fly.  Finally deploying these systems and developing programs for them has an extremely steep learning curve.
-
-
+At it's core, MapReduce \cite{mapreduce} is a system for process key/value pairs, a that statement that equally describes DHTs.
+However, MapReduce operates over a different set of assumptions \cite{hadoopAssumptions} than DHTs.
+MapReduce platforms are highly centralized and tend to have single points of failure\cite{shvachko2010hadoop} as a result.   
+A centralized design assumes that the network is relatively unchanging and does not usually have mechanisms to handle node failure during execution or, conversely, cannot speed up the execution of a job by adding additional workers on the fly.
+Finally deploying these systems and developing programs for them has an extremely steep learning curve.
 
 If we make MapReduce operate under the same assumptions as a DHT, we have effectively further abstracted the MapReduce paradigm and created a system that can operate both in a traditional large datacenter or as part of a P2P network.
-
-MapReduce can utilize a DHT to create a more abstract MapReduce frameworkk
-
-
+The system would be highly resistant to failures at any point, scalable, and automatically load-balance. 
+The administrator can add any number of heterogeneous nodes to the system to get it operate.
 
 \subsection{Current MapReduce DHT/P2P combos}
-Example A: slightly decentralized with coordinating nodes.
+
+There have been a few implementations 
 
 \subsubsection{P2P-MapReduce}
 Marozzo et al. \cite{marozzo2012p2p} investigated the issue of fault tolerance in centralized MapReduce architectures such as Hadoop.  
@@ -269,18 +266,20 @@ ChordReduce  was designed to ensure that no single node is a point of failure an
 \subsection{Experiment Description: Comparison of MapReduce paradigm on different DHTs}
 This may be enough on its own.
 \begin{itemize}
-	\item Implement CAN, Pastry, Chord, Kademlia, VHash and ZHT/similar
+	\item Implement CAN \cite{can}, Pastry \cite{pastry}, Chord \cite{chord}, Kademlia \cite{kademlia}, VHash and ZHT \cite{li2013zht} /similar
 	\begin{itemize}	
 		\item This covers different geometries with different base parameters
+		\item C
 		\item This also necessitates the creation of an extensible DHT framework, something I haven't found yet and may not have been done before (most people implement their DHT or use someone else)
 	\end{itemize}
-	\item Compare results with each other and MapReduce
+	\item Compare results with each other and a traditional MapReduce platform, such as Hadoop.
 	
 \end{itemize}
 
 
 
 \section{High End Computing}
+PonD?
 \subsection{Metadata Management}
 \subsection{Robustness}
 
