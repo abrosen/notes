@@ -143,6 +143,11 @@ Can't automatically assign work natively (or can you: end project automatic load
 Can assign work manually with virtual nodes 
 
 
+DeCandia et al\. discuss various load balancing techinques that were tested on Dynamo \cite{dynamo}.  
+Each node was assigned a certain number of tokens and the node would create a virtual node for each token.
+The realization DeCandia et al\. had was that there was no reason to use the same scheme for data partitioning and data placement.
+DeCandia et al\. introdiced two new strategies which work off assigning nodes equally sized partitions.
+
 
 \subsection{The Takeaway}
 
