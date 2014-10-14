@@ -4,7 +4,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{tabularx}
-\usepackage{venturis2}
+%\usepackage{venturis2}
 \title{Proposal}
 \author{Andrew Rosen}
 \begin{document}
@@ -24,20 +24,26 @@
 
 Distributed Computing is well understood to be the approach to take to solve large problems.  
 Many problems can be broken up into multiple parts that can be solved simultaneously, yielding a much quicker result than a single working attacking the problem.
-However, TAANSTAFL.
-The first catch is figuring out how the mechanics of efficiently distributing a problem to multiple workers and asynchronously coordinating their efforts.
-The second is the platform itself.
+However, there are two broad obstacles in distributed computing.
+
+%Is this 1 problem or two
+The first is figuring out how the mechanics of efficiently distributing a problem to multiple workers and asynchronously coordinating their effort.  
+The problem can be 
+The second is creating and maintaining the computation platform itself.
 
 
-\begin{itemize}
-	\item Scalability - The frameworks for solving distributed systems are need to be able to adapt to the introduction of new resources in the system.
-	\item Heterogenity/Homogenity
-	\item Ad-hoc Load-balancing
+Some specific challenges are:
+\begin{description}
+	\item[Scalability] - Distributed computing platforms should not be completely static; if the platform would be improved by the addition of a new resource, it should be possible to add that resource.  
+	The addition of new workers in a distributed computing framework should be a minimally disruptive process.
+	
+	\item[Load-Balancing]  This is the most prominent issue 
     \item Fault Tolerance
-\end{itemize}
+\end{description}
 
 
-\section{DHTs are better for distributed computing under many circumstances}
+\section{Distributed Hash Tables}
+%\section{DHTs are better for distributed computing under many circumstances}
 Distributed Hash Tables (DHTs) are traditionally used as the backbone of Peer-to-Peer (P2P) file-sharing applications and research has largely remained in this area.
 However, they are seeing increasing use in other applications:
 
@@ -50,7 +56,7 @@ However, they are seeing increasing use in other applications:
 
 
 
-\subsection{Really Cool Qualities}
+\subsection{Notable Advantages Of Distributed Hash Tables}
 Many DHTs are built upon the assumption that they will be used in some kind of P2P application.
 This means a successful application must be deployable on very varied network sizes.
 The network must be able to handle members joining and leaving arbitrarily.
@@ -164,8 +170,7 @@ So what are the consequences of these properties?
 \paragraph{Recursive or iterative seek}
 
 
-\subsection{MANETS}
-
+\section{Hypothesis:  problems in distributed computing + solutions =  dissertation topic}
 
 \chapter{Background}
 
