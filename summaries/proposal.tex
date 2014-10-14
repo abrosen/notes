@@ -22,7 +22,13 @@
 % % % Hypothesis = These Problems + These qualiteies -> solution
 % % % Framework of what these solutions are and what they can do
 
-Problems in distributed computing
+Distributed Computing is well understood to be the approach to take to solve large problems.  
+Many problems can be broken up into multiple parts that can be solved simultaneously, yielding a much quicker result than a single working attacking the problem.
+However, TAANSTAFL.
+The first catch is figuring out how the mechanics of efficiently distributing a problem to multiple workers and asynchronously coordinating their efforts.
+The second is the platform itself.
+
+
 \begin{itemize}
 	\item Scalability - The frameworks for solving distributed systems are need to be able to adapt to the introduction of new resources in the system.
 	\item Heterogenity/Homogenity
@@ -43,16 +49,6 @@ However, they are seeing increasing use in other applications:
 
 
 
-\footnote{
-Many papers use different terms to describe congruent elements of DHTs, as some terms may make sense only in one context.
-I shall endeavor to add to confusion by using the following unified terminology:
-\begin{enumerate}
-    \item[Peerlist] -  The set of all peers that a node knows about.  This is sometimes referred to as the \textit{routing table}, but certain DHTs \cite{tapestry} \cite{pastry} overload the terminology.
-    \item[Neighbors] - The subset of peers that are ``closest/adjacent'' to the node in the keyspace, according to the DHT's metric.  In a 1-dimensional ring, such a Chord \cite{chord}, this is the node's \textit{predecessor} and \textit{successor}.
-    \item[Fingers] - The subset of the peerlist that the node is not adjacent to.  These are sometimes referred to as long-hops or shortcuts. The other major distinction is that fingers aren't no
-    \item[Root Node] - The node responsible for a particular key. 
-\end{enumerate}
-}
 
 \subsection{Really Cool Qualities}
 Many DHTs are built upon the assumption that they will be used in some kind of P2P application.
@@ -124,27 +120,6 @@ Each DHT must strikes a balance between memory cost of the peerlist and lookup t
 The vast majority of DHTs choose a logartihmic sized routing table
 Table \ref{tab:tradeoffs} lists various DHTs and methods of balancing cost.
 
-
-% Perhaps geometries should be included?
-% be sure to include join and leave costs.
-\begin{table}[h]
-	\small
-    \centering
-    \begin{tabularx}{\textwidth}{ |X|X|X|X|X| }
-    \hline
-    % Add join leave cost, avgerages and maxs
-    DHT & Routing Table Size & Lookup Time & Join/Leave & Comments \\ \hline  
-    Chord \cite{chord}, Kademlia \cite{kademlia} & $O(\log n)$ & $O(\log n)$ & & This is where most DHTs fall  \\ \hline
-    CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
-    
-    Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} &  & & & \\ \hline
-    & & & & \\ \hline  
-    ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  &Assumes an extremely low churn \\ \hline
-    \end{tabularx}
-    \caption{The different ratios and their associated DHTs}
-    \label{tab:tradeoffs}
-\end{table}
-
 \subsubsection{Heterogeneity}
 The mechanics behind load balancing assumes nothing about the nature of the hardware it is running on.
 The applications that run DHTs, on the other hand, implicitly assume that that the machines composing the network (and running the application) are heterogeneous.
@@ -195,7 +170,38 @@ So what are the consequences of these properties?
 \chapter{Background}
 
 % % %united terminology
+Many papers use different terms to describe congruent elements of DHTs, as some terms may make sense only in one context.
+I shall endeavor to add to confusion by using the following unified terminology:
+\begin{enumerate}
+	\item[Peerlist] -  The set of all peers that a node knows about.  This is sometimes referred to as the \textit{routing table}, but certain DHTs \cite{tapestry} \cite{pastry} overload the terminology.
+	\item[Neighbors] - The subset of peers that are ``closest/adjacent'' to the node in the keyspace, according to the DHT's metric.  In a 1-dimensional ring, such a Chord \cite{chord}, this is the node's \textit{predecessor} and \textit{successor}.
+	\item[Fingers] - The subset of the peerlist that the node is not adjacent to.  These are sometimes referred to as long-hops or shortcuts. The other major distinction is that fingers aren't no
+	\item[Root Node] - The node responsible for a particular key. 
+\end{enumerate}
+
+
 % % % table
+% Perhaps geometries should be included?
+% be sure to include join and leave costs.
+\begin{table}[h]
+	\small
+	\centering
+	\begin{tabularx}{\textwidth}{ |X|X|X|X|X| }
+		\hline
+		% Add join leave cost, avgerages and maxs
+		DHT & Routing Table Size & Lookup Time & Join/Leave & Comments \\ \hline  
+		Chord \cite{chord}, Kademlia \cite{kademlia} & $O(\log n)$ & $O(\log n)$ & & This is where most DHTs fall  \\ \hline
+		CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
+		
+		Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} &  & & & \\ \hline
+		& & & & \\ \hline  
+		ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  &Assumes an extremely low churn \\ \hline
+	\end{tabularx}
+	\caption{The different ratios and their associated DHTs}
+	\label{tab:tradeoffs}
+\end{table}
+
+
 % % % Specific DHTs
 
 \chapter{Justification and Why I Think It's Cool}
