@@ -5,6 +5,8 @@
 \usepackage{graphicx}
 \usepackage{tabularx}
 %\usepackage{venturis2}
+
+
 \title{Proposal}
 \author{Andrew Rosen}
 \begin{document}
@@ -28,7 +30,6 @@ However, there are two broad obstacles in distributed computing.
 
 %Is this 1 problem or two
 The first is figuring out how the mechanics of efficiently distributing a problem to multiple workers and asynchronously coordinating their effort.  
-The problem can be 
 The second is creating and maintaining the computation platform itself.
 
 
@@ -36,27 +37,32 @@ Some specific challenges are:
 \begin{description}
 	\item[Scalability] - Distributed computing platforms should not be completely static; if the platform would be improved by the addition of a new resource, it should be possible to add that resource.  
 	The addition of new workers in a distributed computing framework should be a minimally disruptive process.
-	
-	\item[Load-Balancing]  This is the most prominent issue 
-    \item Fault Tolerance
+    This ties into the network's fault tolerance
+	\item[Load-Balancing]  This is one of the most important issues to consider when creating a framework for distributed computing. 
+    How do you split up a problem then distribute it so that no single worker is under or over-utilized?
+    Failing that, how do you minimize the imbalance in work?
+    Is there a way to do so at run time?
+    \item[Fault Tolerance]  Even in a network that is expected to remain static for long periods of time, the platform still has to deal with failure.  
+    In a centralized environment, hardware failures are common given enough machines.
+    We want our platform to gracefully handle failures during runtime and be able to quickly reassign work to other workers.
+    In addition, the network should be equally graceful in handling the introduction of new nodes during runtime.
 \end{description}
 
-
+Fortunately, these challenges are not unique to distributed computing but are also obstacles in distributed file storage.  
+In particular, distributed file storage applications that utilize Distributed Hash Tables are designed to handle these particular challenges.
 \section{Distributed Hash Tables}
 %\section{DHTs are better for distributed computing under many circumstances}
-Distributed Hash Tables (DHTs) are traditionally used as the backbone of Peer-to-Peer (P2P) file-sharing applications and research has largely remained in this area.
-However, they are seeing increasing use in other applications:
+Distributed Hash Tables (DHTs) are traditionally used as the backbone of structured Peer-to-Peer (P2P) file-sharing applications.
+The largest such application by far is Bittorrent \cite{bittorrent}, which is built using Mainline DHT \cite{mainline},  a  derivative of Kademlia \cite{kademlia}.
+The number of users on Bittorrent ranges from 15 million to 27 million users daily, with a turnover of 10 million users a day \cite{mainline}.
 
-\begin{itemize}
-    \item Using a DHT as the name resolution layer of a large distributed database \cite{Mateescu2011440}. %more
-    \item Distributed machine learning \cite{liparameter}.
-    \item Cloud Provisioning  (P2P cloud Provisioning).
-\end{itemize}
+Research has largely remained in the file-sharing, and when DHTs are designed, they are geared towards that use case.
+However, they are seeing increasing use in other applications, such as using a  DHT as the name resolution layer of a large distributed database.
+Research has also been done in using DHTs as an organizing mechanism in distributed machine learning \cite{liparameter}. 
+%Cloud Provisioning  (P2P cloud Provisioning).
+%\subsection{Notable Advantages Of Distributed Hash Tables}
 
 
-
-
-\subsection{Notable Advantages Of Distributed Hash Tables}
 Many DHTs are built upon the assumption that they will be used in some kind of P2P application.
 This means a successful application must be deployable on very varied network sizes.
 The network must be able to handle members joining and leaving arbitrarily.
@@ -64,8 +70,9 @@ The application must be agnostic towards hardware.
 The application must be decentralized and split the burden relatively equally among its members.
 
 This leads to DHTs have very specific properties.
-While these properties may be individually enumerated, they are greatly intertwined. 
-\subsubsection{Robustness and Fault-Tolerance}
+While these properties can be individually enumerated, they are greatly intertwined and the division between their impacts can be somewhat arbitrary.
+
+\subsection{Robustness and Fault-Tolerance}
 One of the most important assumptions of DHTs is that they are deployed on a non-static network.
 DHTs need to be built to account for a high level what is called \textit{churn}.  
 Churn refers to the disruption of routing caused by the constant joining and leaving of nodes.
@@ -87,7 +94,7 @@ Recent research in using DHTs for High End Computing \cite{li2013zht} shows what
 
 
 
-\subsubsection{Load Balancing}
+\subsection{Load Balancing}
 All Distributed Hash Tables use some kind of consistent hashing algorithm to associate nodes and file identifiers with keys.  
 These keys are generated by passing the identifiers into a hash function, typically SHA-160.
 The chosen hash function is typically large enough to avoid hash collisions and generates keys in a uniform manner. 
@@ -107,7 +114,7 @@ Strategies are discussed further in the Heterogeneity subsection.
 %Some DHTs can or do use geographic information to generate keys.
 %In VHash, keys are not static, but move according to a simplified spring model.
 
-\subsubsection{Scalability}
+\subsection{Scalability}
 In order to maintain scalability, a DHT has to ensure that as the network grows larger:
 \begin{itemize}
     \item Churn does not have a disproportionate overhead.
@@ -126,7 +133,7 @@ Each DHT must strikes a balance between memory cost of the peerlist and lookup t
 The vast majority of DHTs choose a logartihmic sized routing table
 Table \ref{tab:tradeoffs} lists various DHTs and methods of balancing cost.
 
-\subsubsection{Heterogeneity}
+\subsection{Heterogeneity}
 The mechanics behind load balancing assumes nothing about the nature of the hardware it is running on.
 The applications that run DHTs, on the other hand, implicitly assume that that the machines composing the network (and running the application) are heterogeneous.
 
@@ -141,15 +148,8 @@ The realization DeCandia et al\. had was that there was no reason to use the sam
 DeCandia et al\. introdiced two new strategies which work off assigning nodes equally sized partitions.
 
 
-\subsection{The Takeaway}
 
-
-\begin{itemize}
-	\item DHTs are extremely good if your problem is embarrassingly parallel
-	\item DHTs are agnostic in terms of what hardware it's running on.
-	\item
-\end{itemize}
-\subsubsection{The consequences of the Properties}
+\subsection{The consequences of the Properties}
 So what are the consequences of these properties?
 \begin{itemize}
     \item DHTs can use constistant hashing supplemented by virtual nodes to efficiently load-balance.
@@ -159,18 +159,30 @@ So what are the consequences of these properties?
 \end{itemize}
 
 
-\subsubsection{The consequences of the Properties}
 
-
-\section{Different or subproblem: Certain DHTs are better at one application than another due to differences}
-\subsection{Design Differences Impacts}
-\subsection{Geometries}
-\subsection{Routing Table Construction}
-\subsection{Implementation Differences Impacts}
-\paragraph{Recursive or iterative seek}
+%\section{Different or subproblem: Certain DHTs are better at one application than another due to differences}
+%\subsection{Design Differences Impacts}
+%\subsection{Geometries}
+%\subsection{Routing Table Construction}
+%\subsection{Implementation Differences Impacts}
+%\paragraph{Recursive or iterative seek}
 
 
 \section{Hypothesis:  problems in distributed computing + solutions =  dissertation topic}
+
+% Distibuted computing platforms need to be able to handle these challenges
+% it turns out they are the same challenges as 
+
+\subsection{The Takeaway}
+
+
+\begin{itemize}
+    \item DHTs are extremely good if your problem is embarrassingly parallel
+    \item DHTs are agnostic in terms of what hardware it's running on.
+    \item
+\end{itemize}
+
+
 
 \chapter{Background}
 
