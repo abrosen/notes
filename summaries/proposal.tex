@@ -149,35 +149,26 @@ In our ChordReduce experiments, we observed that just approximating dynamic load
 \subsection{Scalability}
 \label{subsec:scalability}
 In order to maintain scalability, a DHT has to ensure that as the network grows larger:
+
 \begin{itemize}
-    \item Churn does not have a disproportionate overhead.
+    \item Churn does not have a disproportionate overhead.  
+    For example, in a 1000 node network, a joining or leaving node will affect only an extremely small subset of these nodes.
+    \footnote{We will see that this requirement can  be  relaxed in  very specific cases \cite{li2013zht}.}
     \item Lookup request speeds (usually measured in hops) grow by a much smaller amount, possibly not at all.
 \end{itemize}
 
 Using consistent hashing allows the network to scale up incrementally, adding one node at a time \cite{dynamo}.
 In addition, each join operation has minimal impact on the network, since a node affects only its immediate neighbors on a join operation.
-
-Similarly, the only nodes that need to react to a node leaving are immediately.
+Similarly, the only nodes that need to react to a node leaving are its neighbors.
 This is almost instantaneous if the network is using backups.
-Other nodes can be notified of the missing node passively through maintenance.
+Other nodes can be notified of the missing node passively through maintenance or in response to a lookup.
 
 There have been multiple proposed strategies for tackling scalability, and it is these strategies which play the greatest role in driving the variety of DHT architectures. 
 Each DHT must strikes a balance between memory cost of the peerlist and lookup time. 
-The vast majority of DHTs choose a logarithmic sized routing table to provide a simple routing scheme that keeps the number of hops logarithmically bound to the network size.
+The vast majority of DHTs choose to use $\lg(N)$ sized routing tables and  $\lg(n)$ hops \footnote{log n or log N, matters}. 
 Chapter \ref{chapter:background} discusses these tradeoffs in greater detail and how they affect the each DHT.
 
 
-
-
-\subsection{The consequences of the Properties}
-So what are the consequences of these properties?
-\begin{itemize}
-    \item DHTs can use constistant hashing supplemented by virtual nodes to efficiently load-balance.
-	\item DHTs are highly resilient to damage and can handle abnormally high rates of disruption.  
-    This is extremely desirable in any kind of distributed application
-	\item X is a desirable property in a network for distributed computing by
-	\item 
-\end{itemize}
 
 
 
@@ -190,23 +181,33 @@ So what are the consequences of these properties?
 
 
 \section{Hypothesis:  problems in distributed computing + solutions =  dissertation topic}
-
-
 Distributed computing platforms need to be scalable, fault-tolerant, and load balancing.
 In addition, the ability to incorporate heterogeneous hardware is a definite benefit.
-Distributed Hash Tables can provide all of these qualities to an application.
+Distributed Hash Tables can provide an application with all of these qualities.
+P2P applications have been using DHTs for large-scale distributed file sharing applications for years now and are particularly effective.
+
+I propose that DHTs can be used to create P2P distributed computing platforms that are completely decentralized.
+Rather than keys being assigned to some data, we can assign keys to tasks and automatically distribute those tasks to the responsible nodes
+There would be no need for some central coordinator or scheduler.
+
+A successful DHT based computing platform would need to address the problem of dynamic load-balancing.
+This is currently an unsolved problem and if an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management
+If a computation  is running too slow, new nodes can be added to the network  during runtime or idle nodes can boot up more virtual nodes(now that I think of it this is two different but highly related problems: internal and external).
+
 
 
 % Distibuted computing platforms need to be able to handle these challenges
 % it turns out they are the same challenges as 
 
-\subsection{The Takeaway}
-
-
+Add these bulets to the above paragraph
 \begin{itemize}
-    \item DHTs are extremely good if your problem is embarrassingly parallel
-    \item DHTs are agnostic in terms of what hardware it's running on.
-    \item
+	\item DHTs can use consistent hashing supplemented by virtual nodes to efficiently load-balance.
+	The larger the network grows, the more evenly distributed the load becomes.
+	\item DHTs are highly resilient to damage and can handle abnormally high rates of disruption.  
+	This is extremely desirable in any kind of distributed application
+	\item Large-scale P2P file sharing applications have been using DHTs for a long time and
+    \item DHTs are extremely good if your problem is embarrassingly par
+    \item Heterogeneity
 \end{itemize}
 
 
@@ -223,6 +224,8 @@ I shall endeavor to add to confusion by using the following unified terminology:
 	\item[Neighbors] - The subset of peers that are ``closest/adjacent'' to the node in the keyspace, according to the DHT's metric.  In a 1-dimensional ring, such a Chord \cite{chord}, this is the node's \textit{predecessor} and \textit{successor}.
 	\item[Fingers] - The subset of the peerlist that the node is not adjacent to.  These are sometimes referred to as long-hops or shortcuts. The other major distinction is that fingers aren't no
 	\item[Root Node] - The node responsible for a particular key. 
+	\item[Successor] -  Alternate name for the root node. 
+	In the context of nodes, if a node leaves or fails, his successor is the neighbor that will assume his responsibilities. 
 \end{enumerate}
 
 
