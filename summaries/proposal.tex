@@ -107,13 +107,39 @@ The result of this is that as more nodes join the network, the distribution of n
 However, because this is a random process, it is highly unlikely that each node will be spread evenly throughout the network.
 This appears to be a weakness, but can be turned into an advantage in heterogeneous systems by using \textit{virtual nodes} \cite{godfrey2005heterogeneity} \cite{dynamo}.
 When a node joins the network, it joins not at one position, but multiple virtual positions in the network \cite{dynamo}.
-Using virtual nodes allows load-balance optimization in a heterogeneous network; more powerful machines can create more virtual nodes and handle more of  the overall responsibility in the network.
+Using virtual nodes allows load-balance optimization in a heterogeneous network; more powerful machines can create more virtual nodes and handle more of the overall responsibility in the network.
 
-%DeCandia et al\. discussed various load balancing techniques that were tested on Dynamo \cite{dynamo}.  
-%Each node was assigned a certain number of tokens and the node would create a virtual node for each token.
-%The realization DeCandia et al\. had was that there was no reason to use the same scheme for data partitioning and data placement.
-%DeCandia et al\. introduced two new strategies which work off assigning nodes equally sized partitions.
-%In one strategy nodes were given toke
+DeCandia et al\. discussed various load balancing techniques that were tested on Dynamo \cite{dynamo}.  
+Each node was assigned a certain number of tokens and the node would create a virtual node for each token.
+The realization DeCandia et al\. had was that there was no reason to use the same scheme for data partitioning and data placement.
+DeCandia et al\. introduced two new strategies which work off assigning nodes equally sized partitions.
+
+
+% HELP
+Under these schemes, each virtual node maps to an ID as before, but the patitions each node is responsible for are equally sized\footnote{Need help here}.
+
+\subsubsection{Heterogeneity}
+\label{subsec:hetero}
+Heterogenity presents a challenge for load balancing DHTs due to conflicting assumptions and goals. 
+DHTs assume that members are usually going to be varied in hardware, while the load-balancing process defined in DHTs treats each node equally.
+It is much simpler to treat each node as equal unit.
+In other words, DHTs support heterogeneity, but do not attempt to exploit it.
+
+This doesn't mean that heterogeneity cannot be exploited
+Nodes can be given addition responsibilities manually, by running multiple instances of the P2P application on the same machine or creating more virtual nodes.
+However, this is not a feasible option for any kind of truly decentralized system and would need to be done automatically.
+There is no well-known mechanism to that exists to automatically  allocate virtual nodes on the fly \footnote{citation needed, although this can be similar to IRM}. 
+A few options present themselves.  % and are discuessed in \ref{}
+%add the above if the below is moved
+
+%This might be the wrong place for this
+One is to use adapt a request tracking mechanism, such as what is used in IRM, except instead of tracking file requests, it tracks requests that are directed to a particular (real) node. 
+If a particular (real) node receives an inordinate amount of requests, the node doing the detecting suggests that the node obtain another token/create another virtual node.
+Another strategy is to use the preference lists/successor predecessor lists, and observe the distribution of the workload, adjusting the virtual nodes based on that. 
+
+Dynamic load balancing may not be essential to P2P file-sharing applications, but is absolutely essential to any kind of P2P distributed computation.
+In our ChordReduce experiments, we observed that just approximating dynamic load-balancing by simulating high levels of churn noticeably improved results\footnote{We found this by accident, just by testing the network's fault tolerance in regards to a high level of churn}.
+
 
 
 %While most DHTs follow this scheme, there is some minor variation on how keys are generated.
@@ -139,19 +165,6 @@ There have been multiple proposed strategies for tackling scalability, and it is
 Each DHT must strikes a balance between memory cost of the peerlist and lookup time. 
 The vast majority of DHTs choose a logarithmic sized routing table to provide a simple routing scheme that keeps the number of hops logarithmically bound to the network size.
 Chapter \ref{chapter:background} discusses these tradeoffs in greater detail and how they affect the each DHT.
-
-
-\subsection{Heterogeneity}
-\label{subsec:hetero}
-The mechanics behind load balancing assume nothing about the nature of the hardware it is running on.
-From a theoretical perspective one node is the same as the other.
-
-The applications that run DHTs, on the other hand, implicitly assume that that the machines composing the network (and running the application) are heterogeneous.
-File sharing applications like Bittorrent are composed of many different computers, each running the same application
-
-
-Can't automatically assign work natively (or can you: end project automatic load balancing DHT?)
-Can assign work manually with virtual nodes 
 
 
 
@@ -202,6 +215,7 @@ Distributed Hash Tables can provide all of these qualities to an application.
 \label{chapter:background}
 
 % % %united terminology
+\section{Unified Terminology}
 Many papers use different terms to describe congruent elements of DHTs, as some terms may make sense only in one context.
 I shall endeavor to add to confusion by using the following unified terminology:
 \begin{enumerate}
@@ -211,6 +225,8 @@ I shall endeavor to add to confusion by using the following unified terminology:
 	\item[Root Node] - The node responsible for a particular key. 
 \end{enumerate}
 
+
+\section{Summary}
 
 % % % table
 % Perhaps geometries should be included?
