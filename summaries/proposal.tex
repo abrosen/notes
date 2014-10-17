@@ -186,29 +186,30 @@ In addition, the ability to incorporate heterogeneous hardware is a definite ben
 Distributed Hash Tables can provide an application with all of these qualities.
 P2P applications have been using DHTs for large-scale distributed file sharing applications for years now and are particularly effective.
 
+
 I propose that DHTs can be used to create P2P distributed computing platforms that are completely decentralized.
 Rather than keys being assigned to some data, we can assign keys to tasks and automatically distribute those tasks to the responsible nodes
 There would be no need for some central coordinator or scheduler.
 
 A successful DHT based computing platform would need to address the problem of dynamic load-balancing.
-This is currently an unsolved problem and if an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management
-If a computation  is running too slow, new nodes can be added to the network  during runtime or idle nodes can boot up more virtual nodes(now that I think of it this is two different but highly related problems: internal and external).
+This is currently an unsolved problem and if an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management.
+If a computation  is running too slow, new nodes can be added to the network  during runtime or idle nodes can boot up more virtual nodes (now that I think of it this is two different but highly related problems: internal and external).
 
 
+The next chapter will delve into how DHTs work and examine specific DHTs.
+The remainder of the paper will then discuss the work I plan on doing to demonstrate the viability of using DHTs for distributed computing.
 
-% Distibuted computing platforms need to be able to handle these challenges
-% it turns out they are the same challenges as 
 
-Add these bulets to the above paragraph
-\begin{itemize}
-	\item DHTs can use consistent hashing supplemented by virtual nodes to efficiently load-balance.
-	The larger the network grows, the more evenly distributed the load becomes.
-	\item DHTs are highly resilient to damage and can handle abnormally high rates of disruption.  
-	This is extremely desirable in any kind of distributed application
-	\item Large-scale P2P file sharing applications have been using DHTs for a long time and
-    \item DHTs are extremely good if your problem is embarrassingly par
-    \item Heterogeneity
-\end{itemize}
+%Add these bullets to the above paragraph
+%\begin{itemize} 
+%	\item DHTs can use consistent hashing supplemented by virtual nodes to efficiently load-balance.
+%	The larger the network grows, the more evenly distributed the load becomes. 
+%	\item DHTs are highly resilient to damage and can handle abnormally high rates of disruption.  
+%	This is extremely desirable in any kind of distributed application %
+%	\item Large-scale P2P file sharing applications have been using DHTs for a long time and
+%    \item DHTs are extremely good if your problem is embarrassingly par
+%    \item Heterogeneity
+%\end{itemize}
 
 
 
