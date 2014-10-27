@@ -244,10 +244,10 @@ Since this paper will cover multiple DHTs that would use different terms,  I've 
 \end{enumerate}
 
 
-lookup/route
+When analyzing the DHTs in this chapter, we look at the overlay's geometry, the peerlist, the \texttt{lookup} function, and how fault-tolerance is performed in the DHTs.
+We assume that nodes never politely leave the network but always abruptly fail, since a \texttt{leave()} operation is fairly trivial and has minimal impact.
 
 
-Assume no graceful exit
 \section{Chord}
 %Chord \cite{chord} is a P2P protocol for file sharing and distributed storage that guarantees a high probability $\log_{2} n$ lookup time for a particular node or file in the network. 
 %It is highly fault-tolerant to node failures and churn, the constant joining and leaving of nodes.  It scales extremely well and the network requires little maintenance to handle individual nodes.  
@@ -270,19 +270,63 @@ Each hop essentially cuts the search space for a key in half.
 This provides Chord with a highly scalable $\log_2(n)$ lookup time for any key \cite{chord}, with an average $\frac{1}{2}O(\log_{2}(n))$ number of hops.
 
 Besides the finger tables, the peerlist includes a list of $s$ neighbors in each direction for fault tolerance.
+This brings the total size of the peerlist to $log_{2}(2^{m})  + 2 \cdot s =  m  + 2 \cdot s$, assuming the entries are distinct.
 
-\subsection{Joining}
+\subsection*{Joining}
 To join the network, node $n$ first asks $n'$ to find \texttt{successor($ n $)}. 
 Node $n$ uses the information to set his successor, and maintenance will inform the other nodes of $n$'s existence.
 Meanwhile, $n$ will takeover some of the keys that his successor was responsible for.
 
-\subsection{Fault Tolerance}
+\subsection*{Fault Tolerance}
 Robustness in the network is accomplished by having nodes backup their contents to their $s$ immediate successors, the closest nodes upstream.  
 This is done because when a node leaves the or fail, the most immediate successor would be responsible for the keys.
 
 As nodes enter and leave the ring, the nodes use their maintenance procedures to guide them into the right place and repair any links with failed nodes.  
 The process takes $O(\lg^{2}(n))$ messages.
 Full details on Chord's maintenance cycle can be found here \cite{chord}.
+
+%\subsection*{Security}
+%An Eclipse attack compromises a DHT by poisoning the routing tables of nodes, such that friendly nodes can only communicate with malicious nodes \cite{dhtsec}.
+%Because 
+
+
+
+
+
+\section{Kademlia}
+\cite{kademlia}
+Motivation of Kademlia was to learn better routing information with each query made (the security ramifications of gossip based routing tables being ignored, I suppose).
+
+\subsection*{Peerlist and Geometry}
+Like Chord, Kademlia uses $m$-bit keys for nodes and files.
+However, Kademlia utilizes a binary tree-based structure, with the nodes acting as the leaves of the tree.
+Distance between any two nodes in the tree  is calculated by XORing their IDs.
+The XOR distance metric means that distances are symmetric, which is not the case in Chord.
+
+A node's location in the tree given by the shortest unique prefix of its ID.   For each bit in the prefix, there would be a subtree which does not contain that node.  Kademlia guarantees that the node will know at least one node in each of these subtrees.
+
+
+Peerlist  (using 160-bit keys)-  The routing table contains $m$ list, called k-buckets.  Each k-bucket corresponds to a subtree not containing the node. In other words, the k-bucket is a list of nodes distance $2^i$ to $2^{i+1}$ away $(0 \leq i < 160)$.  The list is of maximum size k and is sorted by least recently seen  (note that live nodes are never evicted).  Whenever the node receives a message, it puts the sender's info in the $k$-bucket.  
+(If I'm an eclipse attacker, I just keep spamming messages of different IDs, but with my own ip address and port info, or with sybils)
+
+\subsection*{Routing}
+A unique feature of Kademlia is that it performs $\alpha$ parallel lookups.    
+Kademlia recursively finds the k closest nodes to the target ID, starting with $\alpha$ nodes from it's own routing table.  
+Those nodes send back the k closest nodes it knows about, and the seeking node sends a new message to the closest node it now knows.
+
+Maintenance costs-  Interestingly enough, so long as $\alpha >1$, Kademlia receives little benefit from increased maintenance of it's peers, since multiple lookups avert the penalty that would normally occur from trying to talk to a dead node.
+
+
+Implementations
+
+
+
+
+
+
+
+
+
 
 \section{CAN}
 Unlike the other DHT presented in this chapter, the Content Addressable Network (CAN) \cite{can} works in a $d$-dimensional torus, with the entire coordinate space divided among members.
@@ -501,31 +545,11 @@ The joining node uses the notified nodes as the basis to start building its rout
 Most of the fault tolerant features are provided by multiple entries per level  in the routing table and a heartbeat function to periodically check if the root is still live.
 
 
-\subsection*{Attacking}
-Need to know more about table construction first.
-
-
-\section{Kademlia}
-
-\cite{kademlia}
-Motivation of Kademlia was to learn better routing information with each query made (the security ramifications of gossip based routing tables being ignored, I suppose).
-
-Addressing  -  Nodes and files are given n-bit identifiers, typically 160 (exactly like chord Chord).  Nodes are arranged in a tree and distance between any two nodes is calculated by XORing the addressed.  The XOR distance metric means that distances are symmetric, which is not the case in Chord.
-
-A node's location in the tree given by the shortest unique prefix of its ID.   For each bit in the prefix, there would be a subtree which does not contain that node.  Kademlia guarantees that the node will know at least one node in each of these subtrees.
-
-
-Peerlist  (using 160-bit keys)-  The routing table contains 160 list, called k-buckets.  Each k-bucket corresponds to a subtree not containing the node. In other words, the k-bucket is a list of nodes distance $2^i$ to $2^{i+1}$ away $(0 \leq i < 160)$.  The list is of maximum size k and is sorted by least recently seen  (note that live nodes are never evicted).  Whenever the node receives a message, it puts the sender's info in the $k$-bucket.  
-(If I'm an eclipse attacker, I just keep spamming messages of different IDs, but with my own ip address and port info, or with sybils)
+%\subsection*{Attacking}
+%Need to know more about table construction first.
 
 
 
-Routing  -  A unique feature of Kademlia is that it performs $\alpha$ parallel lookups.    Kademlia recursively finds the k closest nodes to the target ID, starting with $\alpha$ nodes from it's own routing table.  Those nodes send back the k closest nodes it knows about, and the seeking node sends a new message to the closest node it now knows.
-
-Maintenance costs-  Interestingly enough, so long as $\alpha >1$, Kademlia receives little benefit from increased maintenance of it's peers, since multiple lookups avert the penalty that would normally occur from trying to talk to a dead node.
-
-
-Implementations
 
 
 
@@ -544,7 +568,7 @@ Implementations
 		% Add join leave cost, avgerages and maxs
 		DHT & Routing Table Size & Lookup Time & Join/Leave & Comments \\ \hline  
 		
-		Chord \cite{chord}, & $O(\log n)$, max $\log N + $ neighbors & $O(\log n)$, avg $\frac{1}{2} \log n)$  &  $<O(\log n^{2})$ with high probability   & This is where most DHTs fall  \\ \hline
+		Chord \cite{chord} & $O(\log n)$, maximum $m +2s$ & $O(\log n)$, avg $\frac{1}{2} \log n)$  &  $<O(\log n^{2})$ total messages& $m$  = keysize in bits, $s$ is neighbors in 1 direction  \\ \hline
 		
 		Kademlia \cite{kademlia} & $O(\log n)$ & $O(\log n)$ & & This is where most DHTs fall  \\ \hline
 		CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
@@ -585,7 +609,7 @@ The system is organized using a P2P system built on Brunet \cite{brunet}.
 
 
 
-PonD \cite{leepond}
+PonD \cite{lee2012pond}
 \subsubsection{Experiment Description}
 Implement and compare to Boinc.
 
