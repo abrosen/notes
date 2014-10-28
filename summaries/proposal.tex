@@ -306,7 +306,9 @@ The XOR distance metric means that distances are symmetric, which is not the cas
 A node's location in the tree given by the shortest unique prefix of its ID.   For each bit in the prefix, there would be a subtree which does not contain that node.  Kademlia guarantees that the node will know at least one node in each of these subtrees.
 
 
-Peerlist  (using 160-bit keys)-  The routing table contains $m$ list, called k-buckets.  Each k-bucket corresponds to a subtree not containing the node. In other words, the k-bucket is a list of nodes distance $2^i$ to $2^{i+1}$ away $(0 \leq i < 160)$.  The list is of maximum size k and is sorted by least recently seen  (note that live nodes are never evicted).  Whenever the node receives a message, it puts the sender's info in the $k$-bucket.  
+The primary routing table is maid contains $m$ lists, called $k$-buckets.  
+Each $k$-bucket corresponds to a subtree of the network not containing the node. 
+In other words, the k-bucket is a list of nodes distance $2^i$ to $2^{i+1}$ away $(0 \leq i < 160)$.  The list is of maximum size $k$ and is sorted by least recently seen  (note that live nodes are never evicted).  Whenever the node receives a message, it puts the sender's info in the $k$-bucket.  
 (If I'm an eclipse attacker, I just keep spamming messages of different IDs, but with my own ip address and port info, or with sybils)
 
 \subsection*{Routing}
