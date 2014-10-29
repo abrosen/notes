@@ -292,8 +292,9 @@ Node $n$ uses the information to set his successor, and maintenance will inform 
 Meanwhile, $n$ will takeover some of the keys that his successor was responsible for.
 
 \subsection*{Fault Tolerance}
-Robustness in the network is accomplished by having nodes backup their contents to their $s$ immediate successors, the closest nodes upstream.  
+Robustness in the network is accomplished by having nodes backup their contents to their $s$ immediate successors, the closest nodes upstream. 
 This is done because when a node leaves the or fail, the most immediate successor would be responsible for the keys.
+In the case of multiple nodes failing all at once, having a successor list makes it extremely unlikely that any given stored value will be lost.
 
 As nodes enter and leave the ring, the nodes use their maintenance procedures to guide them into the right place and repair any links with failed nodes.  
 The process takes $O(\lg^{2}(n))$ messages.
@@ -321,40 +322,58 @@ The XOR distance metric means that distances are symmetric, which is not the cas
 %For each bit in the prefix, there would be a subtree which does not contain that node.  
 %Kademlia guarantees that the node will know at least one node in each of these subtrees.
 
-Nodes in Kademlia maintain information about the network using a routing table that contains $m$ lists, called $k$-buckets.
+Nodes in Kademlia maintain information about the network using a routing table that contains  $m$ lists, called $k$-buckets.
 For each $k$-bucket contains up to $k$ nodes that are distance $2^i$ to $2^{i+1}$, where $0 \leq i < m$.
 In other words, each $k$-bucket corresponds to a subtree of the network not containing the node.
 
 Each $k$-bucket is maintained by a least recently seen eviction algorithm that skips live nodes.
 Whenever the node receives a message, it adds the sender's info to the tail of the corresponding $k$-bucket.
-If the $k$-bucket is full, the node starts at the 
+If that info already exists, the info is moved to the tail.
+
+If the $k$-bucket is full, the node starts pinging nodes in the list, starting at the head.
 As soon as a node fails to respond, that node is evicted from the list to make way for the new node at the tail.
 
-
+If there are no modifications to a particular $k$-bucket after a long period of time, the node does a \texttt{refresh} on the $k$-bucket.
+A refresh is a \texttt{lookup} of a random key in that $k$-bucket.
 
 
 %(If I'm an eclipse attacker, I just keep spamming messages of different IDs, but with my own ip address and port info, or with sybils)
 
 \subsection*{Lookup}
 In most DHTs, \texttt{lookup(key)} sends a single message and returns the information  of a single node.
-The \texttt{lookup} operation in Kademlia differs in both respects:  \texttt{lookup} is done in parrallel and each node receiving  a \texttt{lookup(key)} returns the $k$ closest nodes to \texttt{key} it knows about.
+The \texttt{lookup} operation in Kademlia differs in both respects:  \texttt{lookup} is done in parallel and each node receiving  a \texttt{lookup(key)} returns the $k$ closest nodes to \texttt{key} it knows about.
 
 
 A \texttt{lookup(key)} operation begins with the seeking node sending lookups in parallel to the $\alpha$ nodes from the appropriate $k$-bucket.
 Each of theses $\alpha$ nodes will asynchronously return the $k$ closest nodes it knows closest to \texttt{key}.
-As lookups return their results, the node continue to send lookups until no new nodes are found. \footnote{If a file being stored on the network is the objective, the \texttt{lookup} will also terminate if a node reports having that file}.  
+As lookups return their results, the node continue to send lookups until no new nodes\footnote{If a file being stored on the network is the objective, the \texttt{lookup} will also terminate if a node reports having that file.} are found.  
+
+\footnote{I would argue that this lookup operation is not recursive as claimed by the paper, but iterative, since the initiator sends all the messages.}
+
+\subsection*{Joining}
+A joining node starts with a single contact and then performs a \textit{lookup} operation on it's own ID.
+Each step of the \textit{lookup} operation yields new nodes for the joining node's peerlist and informs other nodes of its existence.
+Finally, the joining node performs a \texttt{refresh} on each $k$-bucket farther away than the closest node it knows of.
+
+
 
 
 \subsection*{Fault-Tolerance}
-Maintenance costs-  Interestingly enough, so long as $\alpha >1$, Kademlia receives little benefit from increased maintenance of it's peers, since multiple lookups avert the penalty that would normally occur from trying to talk to a dead node.
+Nodes actively republish each file stored on the network each hour by rerunning the \textit{store} command.  
+To avoid flooding the network, two optimizations are used.
+
+First if a node receives a \textit{store} on a file it is holding, it assumes $k-1$ other nodes got that same command and resets the timer for that file.
+This means only one node republishes a file each hour.
+Secondly, \texttt{lookup} is not performed during a republish.
 
 
-Additional fault tolerance is provided by the nature of the \texttt{store(data)} operation, which \texttt{puts }the file in the $k$ closest nodes to
-Storing in $k$ nodes
+Additional fault tolerance is provided by the nature of the \texttt{store(data)} operation, which \texttt{puts }the file in the $k$ closest nodes to the key.
+However, there's very little in the way of frequent and active maintenance other than what occurs during \texttt{lookup} and the other operations.
 
 
-
-\subsection*{Bittorrent}
+%\subsubsection*{Caching}
+%Files are cached during a \texttt{get} operation and stored at the closest node that the seeker found that did not return a result.
+%The cache has an expiration 
 
 
 
