@@ -385,9 +385,9 @@ However, there's very little in the way of frequent and active maintenance other
 
 
 \section{CAN}
-Unlike the other DHT presented in this chapter, the Content Addressable Network (CAN) \cite{can} works in a $d$-dimensional torus, with the entire coordinate space divided among members.
+Unlike the previous DHTs presented in this chapter, the Content Addressable Network (CAN) \cite{can} works in a $d$-dimensional torus, with the entire coordinate space divided among members.
 A node is responsible for the key-value pairs that fall within the ``zone'' it owns.
-Each key is hashed into some point in the coordinate system.
+Each key is hashed into some point within the geometric space.
 
 \subsection*{Peerlist and Geometry}
 CAN uses an exceptionally simple peerlist consisting only of neighbors.  
@@ -629,7 +629,7 @@ Most of the fault tolerant features are provided by multiple entries per level  
 		
 		Chord \cite{chord} & $O(\log n)$, maximum $m +2s$ & $O(\log n)$, avg $\frac{1}{2} \log n)$  &  $<O(\log n^{2})$ total messages& $m$  = keysize in bits, $s$ is neighbors in 1 direction  \\ \hline
 		
-		Kademlia \cite{kademlia} & $O(\log n)$, maximum $m\ \cdot k$ & $O(\log n)$ & & This is where most DHTs fall  \\ \hline
+		Kademlia \cite{kademlia} & $O(\log n)$, maximum $m\ \cdot k$ & $\lceil \log n\rceil) + c$ & $O(\log(n))$& This is without considering optimization   \\ \hline
 		CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
 		
 		Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} & $O(\log_{B} n)$ & & & \\ \hline
