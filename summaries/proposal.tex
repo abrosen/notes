@@ -21,7 +21,20 @@
 
 \begin{abstract}
 Distributed Hash Tables (DHTs) are protocols and frameworks used by peer-to-peer (P2P) systems.
-They are used as the organizational backbone for many P2P file-sharing systems 
+They are used as the organizational backbone for many P2P file-sharing systems due to their scalability, fault-tolerance, and load-balancing properties.
+These same properties are highly desirable in a distributed computing environment, especially one that wants to use heterogeneous components.
+DHTs can be used not only as the framework to build a P2P file-sharing service, but a P2P distributed computing platform.
+
+%Framework
+My framework is a completely decentralized framework for organizing heterogeneous units for distributed computation.
+My framework incorporates a load-balancing algorithm that is capable of injecting additional nodes during runtime to speed up existing jobs.
+This algorithm also provides a means of redistributed the load among existing workers during runtime.
+
+%applications
+Unlike Hadoop and similar MapReduce frameworks, my framework can be used both in both the context of a datacenter or as part of a P2P computing platform.  
+This opens up new possibilities for building platforms to distributed computing problems.
+By utilizing the load-balancing algorithm, a datacenter could  easily leverage additional P2P resources at runtime on an as-needed basis.
+
 \end{abstract}
 
 \chapter{Introduction}
