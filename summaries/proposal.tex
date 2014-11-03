@@ -638,9 +638,39 @@ Most of the fault tolerant features are provided by multiple entries per level  
 
 % ``Small'' routing tables
 \section{Symphony and Small World Routing}
+Symphony  \cite{symphony} is a 1$d$ ring-based DHT similar to Chord \cite{chord}, but is constructed using the properties of small world networks \cite{kleinberg2000small}.
+Small world networks owe their name to a phenomena observed by psychologists in the late 1960's. 
+Subjects in experiments were to route a postal message to a target person; for example the wife of a Cambridge divinity student in one experiment and a Boston stockbroker in another \cite{milgram1967small}.
+The messages were only to be routed by forwarding them to a friend they thought most likely to know the target.
+Of the messages that successfully made their way to the destination, the average path length from a subject to a participant was only 5 hops.  
+
+This lead to research investigating creating a network with randomly distributed links, but maintaining a polylogarithmic lookup.
+Kleinberg \cite{kleinberg2000navigation} showed that in a 2-dimensional lattice network, nodes could route messages in $O(\log^{2}n)$ hops using only their neighbors and a single randomly chosen\footnote{Randomly chosen from a specified distribution.} finger.
+In other words,$O(\log^{2}n)$ lookup is achievable with a $O(1)$ sized routing table.
+
+\subsection*{Peerlist}
+Rather than a 2-dimensional lattice, Symphony uses a 1-dimensional ring.
+Symphony assigns $m$-bit keys to the modular unit interval $ [0,1)$, instead of using a keyspace ranging from 0 to $2^{n} - 1$.
+This location is found  with $\frac{hashkey}{2^{m}}$.
+This is arbitrary from a design standpoint, but makes choosing from a random distribution simpler. 
+
+Nodes know both their immediate predecessor and successo, much like in Chord.
+Nodes also keep track of some  $k \geq 1$ fingers, but, unlike in Chord, these fingers are chosen at random.
+
+%(although it gets me thinking, is there any advantage/statistical properties   that could be exploited by making the space monic)
+
+
+\subsection*{Joining}
+
+
 
 % Large Routing Tables
 \section{ZHT}
+One of the major assumptions of DHT is churn.
+Let's remove that assumption.
+
+\subsection*{Peerlist}
+
 
 
 %Approximated routing tables
@@ -667,8 +697,9 @@ Most of the fault tolerant features are provided by multiple entries per level  
 		CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
 		
 		Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} & $O(\log_{B} n)$ & & & \\ \hline
-		Symphony \cite{symphony}& & & & \\ \hline  
-		ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  &Assumes an extremely low churn \\ \hline
+		Symphony \cite{symphony}& $2k + 2$&   average $O(\frac{1}{k} \log^{2} n )$ & $O(\log^{2} n)$ messages,  constant $<1$ &  $k \geq 1$, fingers are chosen at random\\ \hline  
+		ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  $O(n)$ & Assumes an extremely low churn \\ \hline
+        VHash & $\Omega(3d+1) + O((3d+1)^{2})$ & $O(\log^{2}n)$ hops & $3d + 1$ & approximates regions, hops are based least latency\\ \hline
 	\end{tabularx}
 	\caption{The different ratios and their associated DHTs}
 	\label{tab:tradeoffs}
@@ -821,6 +852,7 @@ Requires Where, when, and how/which
     \item Where: Can be answered with Sybil selection.
     \item When:  Can be answered with IRM for hot spots.  Can be answered with neighbor monitoring
     \item How:  The remaining peace
+    \item Symphony demonstrates how to estimate $n$
 \end{itemize}
 \section{Resources}
 \subsection{Planetlab}
