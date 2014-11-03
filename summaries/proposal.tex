@@ -512,7 +512,7 @@ The Routing table consists of $\log(n)$ rows and $b$ columns each.
 The 0th row contains peers which don't share a common prefix with the node.  
 The 1st row contains those that share a length 1 common prefix, the 2nd a length 2 common prefix, etc.  
 Since each ID is a base $2^b$ number, there is one column for each possible difference.   
-The $i$,$j$ entry of the table contains an ID that shares the same first i digits, with digit i+1 having a value of j (yes, a slot is ``wasted'' in each row).
+The $i$,$j$ entry of the table contains an ID that shares the same first i digits, with digit i+1 having a value of j \footnote{a slot is ``empty'' in each row}.
 
 The neighborhood set holds the ID and IP address of the closest nodes, as defined by some metric.  
 It is not used for routing.  
@@ -636,6 +636,16 @@ Most of the fault tolerant features are provided by multiple entries per level  
 
 
 
+% ``Small'' routing tables
+\section{Symphony and Small World Routing}
+
+% Large Routing Tables
+\section{ZHT}
+
+
+%Approximated routing tables
+\section{VHash}
+
 
 \section{Summary}
 
@@ -657,7 +667,7 @@ Most of the fault tolerant features are provided by multiple entries per level  
 		CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
 		
 		Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} & $O(\log_{B} n)$ & & & \\ \hline
-		& & & & \\ \hline  
+		Symphony \cite{symphony}& & & & \\ \hline  
 		ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  &Assumes an extremely low churn \\ \hline
 	\end{tabularx}
 	\caption{The different ratios and their associated DHTs}
