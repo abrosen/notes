@@ -285,6 +285,10 @@ We assume that nodes never politely leave the network but always abruptly fail, 
 %Chord \cite{chord} is a P2P protocol for file sharing and distributed storage that guarantees a high probability $\log_{2} n$ lookup time for a particular node or file in the network. 
 %It is highly fault-tolerant to node failures and churn, the constant joining and leaving of nodes.  It scales extremely well and the network requires little maintenance to handle individual nodes.  
 
+Chord \cite{chord} is the archetypal ring-based DHT and it is impossible to create a new ring-based DHT without making some comparison to Chord.
+It is notable due its straightforward routing, its rules which make ownership of keys very easy to sort out, and the large number of derivatives.
+
+
 \subsection*{Peerlist and Geometry}
 Chord is a 1-dimensional modular ring in which all messages travel in one direction - upstream, hopping from one node to another with a greater ID until it wraps around.
 Each member of the network and the data stored is hashed to a unique $m$-bit key or ID, corresponding to one of the $2^m$ locations on a ring. 
@@ -296,7 +300,7 @@ Lookup and routing is performed by recursively querying nodes upstream.
 However, querying only neighbors would take $O(n)$ time to lookup a key.
 
 
-Each node maintains a table of $m$ shortcuts to other peers, called the \textit{finger table}, to speedup lookups.
+To speedup lookups, each node maintains a table of $m$ shortcuts to other peers, called the \textit{finger table}.
 The $i$th entry of a node $n$'s finger table corresponds to the node that is the successor of the key $n+2^{i-1} \mod 2^m $.  
 During a lookup,  nodes query the finger that is closest to the sought key without going past it, until it is received by the root node.
 Each hop essentially cuts the search space for a key in half.
@@ -328,8 +332,10 @@ Full details on Chord's maintenance cycle can be found here \cite{chord}.
 
 
 \section{Kademlia}
-\cite{kademlia}
-Motivation of Kademlia was to learn better routing information with each query made (the security ramifications of gossip based routing tables being ignored, I suppose).
+Kademlia \cite{kademlia}  is perhaps the most well known and definately the most widely DHT, as a modified version of Kademlia (Mainline DHT) is useds as the backbone of the Bittorrent protocol.
+The motivation of Kademlia was to create a way for nodes to incorporate peerlist updates with each query made.
+
+%(the security ramifications of gossip based routing tables being ignored, I suppose).
 
 \subsection*{Peerlist and Geometry}
 Like Chord, Kademlia uses $m$-bit keys for nodes and files.
@@ -405,7 +411,7 @@ However, there's very little in the way of frequent and active maintenance other
 
 \section{CAN}
 Unlike the previous DHTs presented in this chapter, the Content Addressable Network (CAN) \cite{can} works in a $d$-dimensional torus, with the entire coordinate space divided among members.
-A node is responsible for the key-value pairs that fall within the ``zone'' it owns.
+A node is responsible for the keys  that fall within the ``zone'' that it owns.
 Each key is hashed into some point within the geometric space.
 
 \subsection*{Peerlist and Geometry}
@@ -418,11 +424,10 @@ This is obtained by looking at each axis, where there is at least one node borde
 The size of the routing table can grow as more nodes join and the space gets further divided; however, maintenance algorithms prevent the regions from becoming too fragmented.
 
 
-
 \subsection*{Lookup}
 As previously mentioned, each node maintains a routing table corresponding to their neighbors, those nodes it shares a face with.
 Each hop forwards the lookup to the neighbor closest to the destination, until it comes to the responsible node.
-In a space that is evenly divided among $n$ nodes, this simple routing scheme uses only $2 \cdot d$ space while giving average path length of $\frac{d}{4}\cdot n^{\frac{1}{d}}$
+In a space that is evenly divided among $n$ nodes, this simple routing scheme uses only $2 \cdot d$ space while giving average path length of $\frac{d}{4}\cdot n^{\frac{1}{d}}$.
 The overall lookup time of in CAN is bounded by $O(n^{\frac{1}{d}})$ hops\footnote{Around the same time CAN was being developed, Kleinberg was doing research into small world networks \cite{kleinberg2000small}.  
 He proved similar properties for lattice networks with a single shortcut.  What makes this network remarkable is lack of shortcuts.}.
 
@@ -432,25 +437,24 @@ However, if lookups occur before a node can recover from damage inflicted by chu
 The fallback method is to use an expanding ring search until a candidate is found, which recommences greedy forwarding.
 
 \subsection*{Joining}
-Joining works by splitting the coordinate space.  
+Joining works by splitting the geometric space between nodes.  
 If node $n$ with location $P$ wishes to join the network, it contacts a member of the node to find the node $m$ currently responsible for location $P$.
 Node $n$ informs $m$ that it is joining and they divide $m$'s region such that each becomes responsible for half.
-
 
 Once the new zones have been defined, $n$ and $m$ create its routing table from $m$ and its former neighbors.
 These nodes are then informed of the changes that just occurred and update their tables.
 As a result, the join operation affects only $O(d)$ nodes.  
-
-
+More details on this splitting process can be found in CAN's original paper \cite{can}.
 
 \subsection*{Repairing}
-
-Churn that occurs with warning has almost no effect on the network.
+A node in a DHT that notifies its neighbors that its leaves usually has minimal impact to the  network and in this is true for most cases in CAN.
 A leaving node, $f$, simply hands over its zone to one of its neighbors of the same size, which merges the two zones together.
-The complications occur if this is not possible, in which case  $f$ hands the zone to its smallest neighbor, who must wait for this fragmentation to be fixed.
+Minor complications occur if this is not possible, when there is no equally-sized neighbor. 
+In this case, $f$ hands its zone to its smallest neighbor, who must wait for this fragmentation to be fixed.
+
+
 
 Unplanned failures are also relatively simple to deal with.
-%failure detection is heartbeat based
 Each node broadcasts a heartbeat to its neighbors, containing its and its neighbors' coordinates.
 If a node fails to hear a heartbeat from $f$ after a number of cycles, it assumes $f$ must have failed and begins a \texttt{takeover} countdown.
 When this countdown ends, the node broadcasts\footnote{This message is sent to all of $f$'s neighbors;  I assume that nodes must keep track of their neighbors' neighbors.} a \texttt{takeover} message in an attempt to claim $f$'s space.
@@ -458,36 +462,37 @@ This message contains the node's volume.
 When a node receives a \texttt{takeover} message, it either cancels the countdown or, if the node's zone is smaller than the broadcaster's, responds with its own \texttt{takeover}.
 
 The general rule of thumb for node failures in CAN is that the neighbor with the smallest zone takes over the zone of the failed node.
-This rule leads to quick recoveries that affect only $O(d)$ nodes, but requires  a zone reassignment algorithm to remove the fragmentation that occurs from \texttt{takeovers}.
+This rule leads to quick recoveries that affect only $O(d)$ nodes, but requires a zone reassignment algorithm to remove the fragmentation that occurs from \texttt{takeovers}.
 
-As mentioned earlier in the text, Ratnasamy et al. \cite{can}  also present the concept own using landmarks to choose coordinates, rather than a has function.
-Each node measures the round-trip time (RTT) to each to of the $m$ landmarks, which yields one of $m!$ permutations.
-The keyspace is partitioned into $m!$ regions, each corresponding to one of the orderings.  
-A joining node now chooses a random location from the region corresponding to its landmark ordering.
-
-\subsection*{Attacks}
+To summarize, a failed node is detected almost immediately, and recovery occurs extremely quickly, but fragmentation must be fixed by a maintenance algorithm.
 
 
 
 
+%As mentioned earlier in the text, Ratnasamy et al. \cite{can}  also present the concept own using landmarks to choose coordinates, rather than a has function.
+%Each node measures the round-trip time (RTT) to each to of the $m$ landmarks, which yields one of $m!$ permutations.
+%The keyspace is partitioned into $m!$ regions, each corresponding to one of the orderings.  
+%A joining node now chooses a random location from the region corresponding to its landmark ordering.
 
 
 
 
-\subsection*{Design Improvements}
-Ratnasamy et al.\ identified a number of improvements that could be made to CAN \cite{can}.
-Some of these improvements have already be explored in Chapter 1.
 
-One modification to the system is increasing the number of dimensions in the coordinate space.
-Increasing $d$ improves fault tolerance and reduces path length.
 
-One concept Ratnasamy et al.\  introduces is the idea of multiple coordinate spaces existing simultaneously, called \textit{realities}. 
-Each object in the DHT exists at a different set of coordinates for each reality simultaneously.
-So a node might have coordinates $(x_0,y_0,z_0)$ in one reality, while having coordinates $(x_1,y_1,z_1)$ in another.
-Independent sets of neighbors for each reality yield different the overall topologies and mappings of keys to nodes.
-Multiple realities increase the cost of maintenance and routing table sizes, but provide greater fault tolerance and greater data availability.
+%\subsection*{Design Improvements}
+%Ratnasamy et al.\ identified a number of improvements that could be made to CAN \cite{can}.
+%Some of these improvements have already be explored in Chapter 1.
 
-A final modification is to allow multiple nodes shares the same zone (ie zones don't necessarily split as a result of a join operation).    
+%One modification to the system is increasing the number of dimensions in the coordinate space.
+%Increasing $d$ improves fault tolerance and reduces path length.
+
+%One concept Ratnasamy et al.\  introduces is the idea of multiple coordinate spaces existing simultaneously, called \textit{realities}. 
+%Each object in the DHT exists at a different set of coordinates for each reality simultaneously.
+%So a node might have coordinates $(x_0,y_0,z_0)$ in one reality, while having coordinates $(x_1,y_1,z_1)$ in another.
+%Independent sets of neighbors for each reality yield different the overall topologies and mappings of keys to nodes.
+%Multiple realities increase the cost of maintenance and routing table sizes, but provide greater fault tolerance and greater data availability.
+
+%A final modification is to allow multiple nodes shares the same zone (ie zones don't necessarily split as a result of a join operation).    
 
 
 
