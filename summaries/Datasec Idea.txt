@@ -1,0 +1,10 @@
+
+1. Idea
+Most network security models assume an nigh-omnipotent/omnicient 
+
+2.  Why is this a big deal?
+Interestingly enough this strategy involves the steps we'd want to do to perform automagic load balancing.
+This paper would present a new tool that helps in general, not just attackers:  Given region (x,y), inject node into this region.
+We already have another tool, IRM, which lets us find hotspots!  
+
+The question I hope to answer with future work is given these two things... can I do automatic load balancing 
