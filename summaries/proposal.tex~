@@ -503,8 +503,7 @@ To summarize, a failed node is detected almost immediately, and recovery occurs 
 
 \section{Pastry}
 
-%Addressing - 128 bit ID, 0 to $2^{128} -1$, assigned randomly using hash.   but thought of as base $2^{b}$ numbers (typically b=4).  
-Pastry \cite{pastry} and Tapestry \cite{tapestry} are based off of prefix matching.
+Addressing - 128 bit ID, 0 to $2^{128} -1$, assigned randomly using hash.   but thought of as base $2^{b}$ numbers (typically b=4).  
 This creates a hypercube topology \cite{induced}.
 
 \subsection*{Peerlist}
@@ -572,7 +571,7 @@ Tapestry views itself more as a DOLR \cite{dolr}.
 This essentially means that it is a distributed key-based lookup system like a DHT \cite{hildrum2004distributed}, but with some subtle differences at the abstract level which manifest as large implementation changes.
 The essential difference here is that Tapestry has servers \textit{publish} records/objects on the network, which direct lookups to the server.  
 The assumption here seems to be that the servers, not the responsible node, serve the actual data.  
-DHTs care or don't care on an application to application basis whether keys are associated with records or content. 
+DHTs care or don't care on an application to application basis whether keys are records or content. 
 
 
 
@@ -663,16 +662,12 @@ Nodes also keep track of some  $k \geq 1$ fingers, but, unlike in Chord, these f
 
 \subsection*{Joining}
 
-
-
 \subsection*{Fault Tolerance}
-Failures for fingers are handled lazily and are replaced by another randomly generated link when a failure is detected.
 
 % Large Routing Tables
 \section{ZHT}
-One of the major assumptions of DHT design is that churn is a signifcant factor that requires constant maintenense to handle.
-
-
+One of the major assumptions of DHT is churn.
+Let's remove that assumption.
 
 \subsection*{Peerlist}
 
