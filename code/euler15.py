@@ -26,3 +26,4 @@ if __name__ == '__main__':
     for line in grid:
         print line
     print "There are ", grid[0][0], "right down paths"
+
