@@ -1,4 +1,5 @@
 def lcm_brute(nums):
+    """finds the smallest positive int evenly divisible by each of nums"""
     solution = max(nums)
     found = False
     while not found:

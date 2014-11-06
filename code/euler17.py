@@ -41,7 +41,6 @@ def numToWords(num,join=True):
     if join: return ''.join(words)
     return words
 
-#example usages
 total = 0
 for i in xrange(1,1000+1):
 	print numToWords(i)

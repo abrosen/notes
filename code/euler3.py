@@ -1,5 +1,6 @@
 import math
 def largestPrimeFactor(num):
+    """returns the largest prime factor"""
     i =  2
     largest = i
     while i < math.sqrt(num):

@@ -8,6 +8,8 @@ def loadGrid(filename):
     return nums
 
 def searchHorizontal(grid, size = 4):
+    """ searchs for best  product of size numbers horizontally 
+    """
     numCols = len(grid[0])
     numRows =  len(grid)
     best = -50

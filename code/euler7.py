@@ -1,8 +1,10 @@
 import math
-# the nth prime number is approximately n * ln(n)
 
-# generates all prime numbers less than limit
 def seiveEratosthenes(limit):
+    """
+    generates all prime numbers less than limit
+    http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+    """
     nums = dict.fromkeys(range(2,limit), True)     
     for i in range(2,int(math.sqrt(limit))):
         if nums[i]  == False:
