@@ -1,11 +1,12 @@
 import math
 #generates n triangle numbers
 def triangleNumbers(n):
-    #for i in range(2,n):
-    #    nums.append(i + nums[-1])
+    """returns a list of n triangleNumbers"""
+
     return map(lambda x: x*(x+1)/2, range(1, n))
 
 def trinagleNumberGen(n):
+    """ Generator for triangular numbers"""
     i = 0
     while i <= n:
         yield i*(i+1)/2
