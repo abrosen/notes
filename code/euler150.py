@@ -1,3 +1,12 @@
+import copy
+test = [
+[15],
+[-14,-7],
+[20,-13,-5],
+[-3,8,23,-26],
+[1,-4,-5,-18,5],
+[-16,31,2,9,28,3]
+]
 def randomGenerator():
     """generates psuedorandom numbers using Linear Congruential Generator"""
     t = 0
@@ -21,32 +30,33 @@ def createTriangle(n):
     return triangle 
 
 def generateCheatSheet(triangle):
-    cheatSheet =  triangle[:]
+    cheatSheet =  copy.deepcopy(triangle[:])
     for ithRow in xrange(len(triangle)):
         #print ithRow
         for jthNum in xrange(1,len(triangle[ithRow])):
-            triangle[ithRow][jthNum] += triangle[ithRow][jthNum-1]
+            cheatSheet[ithRow][jthNum] += cheatSheet[ithRow][jthNum-1]
     return cheatSheet
 
 
 
 def findSmallestSubtriangle(triangle):
-    best = 0
+    best = 20
     lookupTable = generateCheatSheet(triangle)
     for ithRow in xrange(len(triangle)):
         print ithRow
         for jthNum in xrange(len(triangle[ithRow])):
-            for depth in xrange(len(triangle) - ithRow):
+            for depth in xrange(1,len(triangle) - ithRow):
                 if jthNum == 0:
-                    triangle[ithRow][jthNum] += lookupTable[ithRow+depth][jthNum+depth]
+                    triangle[ithRow][jthNum] += lookupTable[ithRow+depth][jthNum+depth] 
                 else:
-                    triangle[ithRow][jthNum] += lookupTable[ithRow+depth][jthNum+depth] - lookupTable[ithRow+depth][jthNum-1]
+                    triangle[ithRow][jthNum] += lookupTable[ithRow+depth][jthNum+depth] - lookupTable[ithRow+depth][jthNum-1] 
                 if triangle[ithRow][jthNum] < best:
                     best = triangle[ithRow][jthNum]
-    print triangle[0][0]
+                    print best
     return best
 
 
 if __name__ == '__main__':
     triangle = createTriangle(500500)
-    print findSmallestSubtriangle(triangle)
+    print findSmallestSubtriangle(test)
+    
