@@ -30,6 +30,7 @@ def createTriangle(n):
     return triangle 
 
 def generateCheatSheet(triangle):
+    """Returns a lookupTable based on triange with the cumulative sum for each row/position"""
     cheatSheet =  copy.deepcopy(triangle[:])
     for ithRow in xrange(len(triangle)):
         #print ithRow
@@ -40,7 +41,8 @@ def generateCheatSheet(triangle):
 
 
 def findSmallestSubtriangle(triangle):
-    best = 20
+    """returns the value of the smalled subtriangle"""
+    best = 0
     lookupTable = generateCheatSheet(triangle)
     for ithRow in xrange(len(triangle)):
         print ithRow
