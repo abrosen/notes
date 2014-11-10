@@ -275,7 +275,8 @@ Similarly, All DHTs perform the same operations with minor variation.
 	This is a subtle difference, since one could \texttt{lookup(key)} and ask it directly.
 	However, many implementations use backup operations and caching which will store multiple copies of the value along the network
 	If we don't care which node returns the value mapped with key, or if it is a backup,  we can express it with \texttt{get}.
-	\item[\texttt{delete(key,value)}] - This is self-explanatory.  
+	\item[\texttt{delete(key, value)}] - This is self-explanatory.  Typically, DHTs do not worry about key deletion and leave that option to the specific application.
+    When DHTs do address the issue, they often assume that stored key-value pairs have a specified time-to-live, after which they are automatically removed.
 \end{enumerate}
 When analyzing the DHTs in this chapter, we look at the overlay's geometry, the peerlist, the \texttt{lookup} function, and how fault-tolerance is performed in the DHTs.
 We assume that nodes never politely leave the network but always abruptly fail, since a \texttt{leave()} operation is fairly trivial and has minimal impact.
@@ -384,10 +385,10 @@ Finally, the joining node performs a \texttt{refresh} on each $k$-bucket farther
 
 
 \subsection*{Fault-Tolerance}
-Nodes actively republish each file stored on the network each hour by rerunning the \textit{store} command.  
+Nodes actively republish each file stored on the network each hour by rerunning the \texttt{store} command.  
 To avoid flooding the network, two optimizations are used.
 
-First if a node receives a \textit{store} on a file it is holding, it assumes $k-1$ other nodes got that same command and resets the timer for that file.
+First if a node receives a \texttt{store} on a file it is holding, it assumes $k-1$ other nodes got that same command and resets the timer for that file.
 This means only one node republishes a file each hour.
 Secondly, \texttt{lookup} is not performed during a republish.
 
@@ -505,6 +506,7 @@ To summarize, a failed node is detected almost immediately, and recovery occurs 
 
 %Addressing - 128 bit ID, 0 to $2^{128} -1$, assigned randomly using hash.   but thought of as base $2^{b}$ numbers (typically b=4).  
 Pastry \cite{pastry} and Tapestry \cite{tapestry} are based off of prefix matching.
+\cite{plaxton1999accessing}
 This creates a hypercube topology \cite{induced}.
 
 \subsection*{Peerlist}
@@ -523,6 +525,7 @@ The leaf set is used to hold the nodes with the numerically closest IDs;  half o
 \subsection*{Lookup}
 Forwarded to (node/peer?) whose shared prefix is longer.  If no one has a better shared prefix than the current node, the message is forwarded to the closest  node.
 
+Lookup takes less that $  \lceil \log_{2^{b}} \rceil $
 
 
 
