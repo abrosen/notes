@@ -544,7 +544,7 @@ The leaf set is used to hold the $L$ nodes with the numerically closest IDs;  ha
 A typical value for $L$ is $2^b$ or $2^{b+1}$.
 The leaf set is used for routing when the destination key is close to the current node's ID.
 The neighborhood set contains the $L$ closest nodes, as defined by some proximity metric.  
-It, however, is generally not  used for routing.  
+It, however, is generally not used for routing.  
 
 
 
@@ -587,7 +587,11 @@ Lookup is expected  to take $\lceil \log_{2^{b}} \rceil $, as each hop along the
 To join the network, node $J$ sends a \texttt{join} message to $A$, some node that is close according to the proximity metric.
 The \texttt{join} message is forwarded along like a \texttt{lookup} to the root of $X$, which we'll call $root$.
 Each node that received the \texttt{join} sends a copy of the their peerlist to $J$.
- 
+
+The leaf set is constructed from copying $root$'s leaf set, while $i$th row in the routing table routing table is copied from the $i$th node contacted along the \texttt{join}.
+The neighborhood set is copied from $A$'s neighborhood set, as \texttt{join} predicates that $A$ be close to $J$.
+This means $A$'s neighborhood set would be close to $A$. 
+
 After the joining node creates its peerlist, it sends a copy to each node in the table, who then can update their routing tables.  
 The cost of a \texttt{join} is $O(log_{2}^{b} n)$ messages,  with  a constant  coefficient  of $3*2^{b}$
 
@@ -595,31 +599,23 @@ The cost of a \texttt{join} is $O(log_{2}^{b} n)$ messages,  with  a constant  c
 
 
 \subsection*{Fault Tolerance}
+Pastry lazily repairs its leaf set and routing table.
+When node from the leaf set fails, the node contacts the node with largest or smallest ID (depending if the failed node ID was smaller or larger respectively) in the leaf set.
+That node returns a copy of its leaf set, and the node replaces the failed entry.
+If the failed node is in the routing table, the node contacts a node with an entry in the same row as the failed node for a replacement.
 
-When a node leaves the network, its neighbor contacts its leaf closest to the failed node  for its leaf table.  That information is used to repair the leaf set.  A failed routing node is replaced with another appropriate node for that slot.  
-
-Who do we actively back up to? 
-Pastry is only about routing.
-PAST stores a file to the $k$ closest nodes with IDs closest to the file.  
-This allows messages to make it to any one of the $k$ nodes that can respond to that file lookup (most likely the closest one to the originator)
-%Fault Tolernence
-A failed node doesn't delay  routing, because Pastry's routing table allows it to just send to the next closest node.  
-Damage to the routing table is replaced by contacting other nodes and requesting a suitable replacement
+Members of the neighborhood set are actively checked.
+If a member of the neighborhood set is unresponsive, the node obtains a copy of another entry's neighborhood set and repairs from a selection.
 
 
 
+%\subsection*{Proximity Metric}
+%Pastry's goal is to minimize the ``distance'' messages travel, where distance can be defined by some metric, typically the number of hops.
+%The leaf set is the  of nodes closest to the node in the keyspace.  
+%The neighborhood set is the of nodes closest to the node according to the distance metric. 
+%Guarantees routing time is  $<\log n$ in typical operation.  
+%Guarantees eventual delivery except when half of the leaf nodes fail simultaneously.
 
-\subsection*{Proximity Metric}
-Pastry's goal is to minimize the ``distance'' messages travel, but distance can be defined by some metric, typically the number of hops.
-The leaf set is the  of nodes closest to the node in the keyspace.  
-The neighborhood set is the of nodes closest to the node according to the distance metric. 
-Guarantees routing time is  $<\log n$ in typical operation.  
-Guarantees eventual delivery except when half of the leaf nodes fail simultaneously.
-
-
-
-\subsection*{Attacks and Vulnerabilities}
-Eclipse attack would basically work like this -  when a node asks the malicious one for peer info, the malicious node replies with IDs it makes up on the spot, each bound to it's IP. These IPs would be spread throughout the keyspace so that any malicious value has a good chance of being chosen.
 
 
 
@@ -657,7 +653,7 @@ Symphony assigns $m$-bit keys to the modular unit interval $ [0,1)$, instead of 
 This location is found  with $\frac{hashkey}{2^{m}}$.
 This is arbitrary from a design standpoint, but makes choosing from a random distribution simpler. 
 
-Nodes know both their immediate predecessor and successo, much like in Chord.
+Nodes know both their immediate predecessor and successor, much like in Chord.
 Nodes also keep track of some  $k \geq 1$ fingers, but, unlike in Chord, these fingers are chosen at random.
 
 %(although it gets me thinking, is there any advantage/statistical properties   that could be exploited by making the space monic)
