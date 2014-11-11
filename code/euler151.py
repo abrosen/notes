@@ -16,7 +16,7 @@ def main():
     for i in xrange(NUM_TRIALS):
         envelope = [2,3,4,5]
         singles = 0  
-        for j in xrange(15):
+        for j in xrange(14):
             if len(envelope) == 1:
                 singles += 1 
             getA5(envelope)
