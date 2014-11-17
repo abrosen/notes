@@ -4,15 +4,18 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algpseudocode} 
 \usepackage[english]{babel}
 
-
 %\usepackage{venturis2}
+
 
 \title{Proposal}
 \author{Andrew Rosen}
 \begin{document}
 
+ 
 
 \maketitle
 \setcounter{tocdepth}{4}
@@ -89,7 +92,7 @@ For example, one paper \cite{Mateescu2011440} used a DHT as the name resolution 
 Research has also been done in using DHTs as an organizing mechanism in distributed machine learning \cite{liparameter}. 
 
 
-I decribe each of the aformentioned qualities and their ramifications below in sections \ref{subsec:ft}, \ref{subsec:lb}, \ref{subsec:scalability}, and \ref{subsec:hetero} .
+I describe each of the aformentioned qualities and their ramifications below in sections \ref{subsec:ft}, \ref{subsec:lb}, \ref{subsec:scalability}, and \ref{subsec:hetero} .
 While these properties are  be individually enumerated, they are greatly intertwined and the division between their impacts can be somewhat arbitrary.
 
 \subsection{Robustness and Fault-Tolerance}
@@ -275,8 +278,23 @@ Similarly, All DHTs perform the same operations with minor variation.
 	This is a subtle difference, since one could \texttt{lookup(key)} and ask it directly.
 	However, many implementations use backup operations and caching which will store multiple copies of the value along the network
 	If we don't care which node returns the value mapped with key, or if it is a backup,  we can express it with \texttt{get}.
-	\item[\texttt{delete(key,value)}] - This is self-explanatory.  
+	\item[\texttt{delete(key, value)}] - This is self-explanatory.  Typically, DHTs do not worry about key deletion and leave that option to the specific application.
+    When DHTs do address the issue, they often assume that stored key-value pairs have a specified time-to-live, after which they are automatically removed.
 \end{enumerate}
+
+On the local level, each node has to be able to \textit{join }and perform maintenance on itself.
+\begin{enumerate}
+	\item[\texttt{join()}]  The join process encompasses two steps.
+    First, the joining node needs to initialize its peerlist. 
+    It doesn't necessarily need a complete peerlist the moment it joins, but it must initialize one. 
+    Second, the joining node needs to inform other nodes of its existence.
+    \item[Maintenance]  Maintenance procedures generally are either \textit{active} or \textit{lazy}.
+    In active maintenance, peers are periodically pinged and are replaced when they are no longer detected.
+    Lazy maintenance assumes that peers in the peerlist are healthy until they prove otherwise, in which case they are either replaced immediately.
+    In general, lazy maintenance is used on everything, while active maintenance is only used on neighbors\footnote{check this statement for consistency}.
+    
+\end{enumerate}
+
 When analyzing the DHTs in this chapter, we look at the overlay's geometry, the peerlist, the \texttt{lookup} function, and how fault-tolerance is performed in the DHTs.
 We assume that nodes never politely leave the network but always abruptly fail, since a \texttt{leave()} operation is fairly trivial and has minimal impact.
 
@@ -384,10 +402,10 @@ Finally, the joining node performs a \texttt{refresh} on each $k$-bucket farther
 
 
 \subsection*{Fault-Tolerance}
-Nodes actively republish each file stored on the network each hour by rerunning the \textit{store} command.  
+Nodes actively republish each file stored on the network each hour by rerunning the \texttt{store} command.  
 To avoid flooding the network, two optimizations are used.
 
-First if a node receives a \textit{store} on a file it is holding, it assumes $k-1$ other nodes got that same command and resets the timer for that file.
+First if a node receives a \texttt{store} on a file it is holding, it assumes $k-1$ other nodes got that same command and resets the timer for that file.
 This means only one node republishes a file each hour.
 Secondly, \texttt{lookup} is not performed during a republish.
 
@@ -495,142 +513,121 @@ To summarize, a failed node is detected almost immediately, and recovery occurs 
 %A final modification is to allow multiple nodes shares the same zone (ie zones don't necessarily split as a result of a join operation).    
 
 
-
-
-
-
-
-
 \section{Pastry}
 
 %Addressing - 128 bit ID, 0 to $2^{128} -1$, assigned randomly using hash.   but thought of as base $2^{b}$ numbers (typically b=4).  
-Pastry \cite{pastry} and Tapestry \cite{tapestry} are based off of prefix matching.
-This creates a hypercube topology \cite{induced}.
+Pastry \cite{pastry} and Tapestry \cite{tapestry} are extremely similar use a prefix-based routing mechnism introduced by Plaxton et al.\ \cite{plaxton1999accessing}.
+In Pastry and Tapestry, each key is encoded as a base $ 2^{b} $ number (typically $b=4$ in Pastry, which yields easily readable hexadecimal).
+The resulting peerlist best resembles a hypercube topology \cite{induced}, with each node being a vertice of the hypercube.
+
+One notable feature of Pastry is the incorperation of a proximity metric.
+The peerlist uses IDs that are close to the node according to this metric.
 
 \subsection*{Peerlist}
-Pastry's peerlist consists of three components: the routing table, a neighborhood set and a leaf set.  
-The Routing table consists of $\log(n)$ rows and $b$ columns each. 
-The 0th row contains peers which don't share a common prefix with the node.  
-The 1st row contains those that share a length 1 common prefix, the 2nd a length 2 common prefix, etc.  
-Since each ID is a base $2^b$ number, there is one column for each possible difference.   
-The $i$,$j$ entry of the table contains an ID that shares the same first i digits, with digit i+1 having a value of j \footnote{a slot is ``empty'' in each row}.
+Pastry's peerlist consists of three components: the routing table, a leaf set, and a neighborhood set.  
+The routing table consists of $\log_{2^{b}}(n)$ rows with $2^{b} -1 $ entries per row. 
+The $i$th level of the routing table correspond to the peers with that match first $i$ digits of the example nodes ID.
 
-The neighborhood set holds the ID and IP address of the closest nodes, as defined by some metric.  
-It is not used for routing.  
-The leaf set is used to hold the nodes with the numerically closest IDs;  half of it for smaller IDs and half for the larger.
+Thus, the 0th row contains peers which don't share a common prefix with the node, the 1st row contains those that share a length 1 common prefix, the 2nd a length 2 common prefix, etc.  
+Since each ID is a base $2^b$ number, there is one entry for each of the $2^{b} -1 $ possible differences.   
+
+For example, let is consider a node 05AF in system where $b = 4$ and the hexadecimal keyspace ranges from $0000$ to FFFF.
+\begin{itemize}
+    \item 1322 would be an appropriate peer for the 1st entry of level 0.
+    \item 0AF2 would be an appropriate peer for the 10th\footnote{0 is the 0th level.  It's easier that way.} entry of level 1.
+    \item 09AA would be an appropriate peer for the 9th entry of level 1.	
+    \item 05F2 would be an appropriate peer for the 2nd entry of level 3.
+\end{itemize}
+
+
+The leaf set is used to hold the $L$ nodes with the numerically closest IDs;  half of it for smaller IDs and half for the larger.
+A typical value for $L$ is $2^b$ or $2^{b+1}$.
+The leaf set is used for routing when the destination key is close to the current node's ID.
+The neighborhood set contains the $L$ closest nodes, as defined by some proximity metric.  
+It, however, is generally not used for routing.  
+
 
 
 \subsection*{Lookup}
-Forwarded to (node/peer?) whose shared prefix is longer.  If no one has a better shared prefix than the current node, the message is forwarded to the closest  node.
+The \texttt{lookup} operation is a fairly straightforward recursive operation.
+The \texttt{lookup(key)} terminates when the \texttt{key} is falls within the range of the leaf set, which are the nodes \emph{numerically} closest to the current node.
+In this case, the destination will be one of the leaf set, or the current node.
+
+If the destination node is not immediately apparent, the node uses its routing table to select the next node.
+The node looks at the length $l$ shared prefix,  at examines the $l$th row of its routing table.
+From this row, the \texttt{lookup} continues with the entry that matches at least another digit of the prefix.
+In the case that this entry does not exist or has failed, the \texttt{lookup} continues from the closest ID chosen from the entire peerlist.
+This process is described by Algorithm \ref{PastryLookup}
 
 
-
+Lookup is expected  to take $\lceil \log_{2^{b}} \rceil $, as each hop along the routing table reduces the search space by $\frac{1}{2^{b}}$.
+ 
+\begin{algorithm}
+    \caption{Pastry lookup algorithm}
+    \label{PastryLookup}
+    \begin{algorithmic}
+        \State Let $L$ be the routing  
+        \Function{Lookup}{$key$}
+            \If {$key$ is in the range of the leaf set }
+            	\State destination is closest ID in the leaf set or self
+            \Else
+            	\State $next\gets$ entry from routing table that matches $\geq 1$ more digit
+            	\If {$next \neq null$}
+                	\State forward to $next$
+            	\Else
+                	\State forward to the closest ID from the entire peerlist
+                \EndIf
+                
+            \EndIf
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 \subsection*{Joining}
-The table is populated at first by a join message to the node responsible for the joining node ID.  
-As part of the join message, nodes  along the path send their routing tables.  
-After the joining node creates it's routing table, it sends a copy to each node in the table, who then can update their routing tables.   
-Node join cost is $O(log_{2}^{b} n)$ messages  with  a constant  coefficient  of $3*2^{b}$
+To join the network, node $J$ sends a \texttt{join} message to $A$, some node that is close according to the proximity metric.
+The \texttt{join} message is forwarded along like a \texttt{lookup} to the root of $X$, which we'll call $root$.
+Each node that received the \texttt{join} sends a copy of the their peerlist to $J$.
+
+The leaf set is constructed from copying $root$'s leaf set, while $i$th row in the routing table routing table is copied from the $i$th node contacted along the \texttt{join}.
+The neighborhood set is copied from $A$'s neighborhood set, as \texttt{join} predicates that $A$ be close to $J$.
+This means $A$'s neighborhood set would be close to $A$. 
+
+After the joining node creates its peerlist, it sends a copy to each node in the table, who then can update their routing tables.  
+The cost of a \texttt{join} is $O(log_{2}^{b} n)$ messages,  with  a constant  coefficient  of $3*2^{b}$
 
 
 
 
 \subsection*{Fault Tolerance}
+Pastry lazily repairs its leaf set and routing table.
+When node from the leaf set fails, the node contacts the node with largest or smallest ID (depending if the failed node ID was smaller or larger respectively) in the leaf set.
+That node returns a copy of its leaf set, and the node replaces the failed entry.
+If the failed node is in the routing table, the node contacts a node with an entry in the same row as the failed node for a replacement.
 
-When a node leaves the network, its neighbor contacts its leaf closest to the failed node  for its leaf table.  That information is used to repair the leaf set.  A failed routing node is replaced with another appropriate node for that slot.  
-
-Who do we actively back up to? 
-Pastry is only about routing.
-PAST stores a file to the $k$ closest nodes with IDs closest to the file.  
-This allows messages to make it to any one of the $k$ nodes that can respond to that file lookup (most likely the closest one to the originator)
-%Fault Tolernence
-A failed node doesn't delay  routing, because Pastry's routing table allows it to just send to the next closest node.  
-Damage to the routing table is replaced by contacting other nodes and requesting a suitable replacement
+Members of the neighborhood set are actively checked.
+If a member of the neighborhood set is unresponsive, the node obtains a copy of another entry's neighborhood set and repairs from a selection.
 
 
 
-
-\subsection*{Metric}
-Pastry's goal is to minimize the ``distance'' messages travel, but distance can be defined by some metric, typically the number of hops.
-The leaf set is the  of nodes closest to the node in the keyspace.  
-The neighborhood set is the of nodes closest to the node according to the distance metric. 
-Guarantees routing time is  $<\log n$ in typical operation.  
-Guarantees eventual delivery except when half of the leaf nodes fail simultaneously.
-
-
-
-\subsection*{Attacks and Vulnerabilities}
-Eclipse attack would basically work like this -  when a node asks the malicious one for peer info, the malicious node replies with IDs it makes up on the spot, each bound to it's IP. These IPs would be spread throughout the keyspace so that any malicious value has a good chance of being chosen.
+%\subsection*{Proximity Metric}
+%Pastry's goal is to minimize the ``distance'' messages travel, where distance can be defined by some metric, typically the number of hops.
+%The leaf set is the  of nodes closest to the node in the keyspace.  
+%The neighborhood set is the of nodes closest to the node according to the distance metric. 
+%Guarantees routing time is  $<\log n$ in typical operation.  
+%Guarantees eventual delivery except when half of the leaf nodes fail simultaneously.
 
 
 
 
 
-\section{Tapestry}
-Tapestry \cite{tapestry} is based off the same prefix-based lookup \cite{prr} as Pastry \cite{pastry} and the peerlist and lookup operation share many similarities.
-Tapestry views itself more as a DOLR \cite{dolr}.
-This essentially means that it is a distributed key-based lookup system like a DHT \cite{hildrum2004distributed}, but with some subtle differences at the abstract level which manifest as large implementation changes.
-The essential difference here is that Tapestry has servers \textit{publish} records/objects on the network, which direct lookups to the server.  
-The assumption here seems to be that the servers, not the responsible node, serve the actual data.  
-DHTs care or don't care on an application to application basis whether keys are associated with records or content. 
 
-
-
-
-\subsection*{Peerlist}
-Node IDs are stored in base-$\beta$, which influences the size of the peerlist and the lookup time.
-Nodes maintain a routing table with $\log_{\beta}N$ levels and $\beta$ entries each level.
-Each level corresponds to peers with IDs that match the node's ID up to a certain length, with each entry corresponding to a different digit following that prefix.
-
-For example, let is consider a node in system where $\beta = 16 $ and the keyspace ranges from $0000$ to FFFF.
-Our example node has the ID 05AF.
-Let the $i$th level of the routing table correspond to the peers with that match first $i$ digits of the example nodes ID.
-\begin{itemize}
-	\item 0AF2 would be an appropriate peer for the 10th\footnote{0 is the 0th level.  It's easier that way.} entry of level 1.
-	\item 09AA would be an appropriate peer for the 9th entry of level 1.	
-	\item 05F2 would be an appropriate peer for the 2nd entry of level 3.
-	\item 1322 would be an appropriate peer for the 1st entry of level 0.
-\end{itemize}
-
-In addition to the routing table, each link to a node is bidirectional.
-
-
-\subsubsection*{Construction and Maintenance}
-Need to look at other paper.
-
-\subsection*{Lookup and Publishing}
-Tapestry \cite{tapestry} implements a version of the prefix-based lookup introduces by Plaxton et al.\ \cite{prr}. 
-However, as a DOLR, lookups in Tapestry differ subtly.
-Objects with some $k$ advertised or \textit{published} at the node with the ID closest\footnote{Not explicitly defined, but assumed to be in distance.} to the key.
-This node is referred to as the \textit{root node}.
-
-To find the root node for some key $k$, nodes forward lookup requests to the entry in the routing table with the closest ID to $k$. 
-This is an extremely simple operation because of the prefix-based organization.
-
-When a node receives a lookup request for key $k$, it looks at the $i$th level of the routing table, where $i$ is the length of the shared prefix between the node's ID and $k$.
-If the ID and $k$ match, or the lookup request cannot be forwarded any further, then the node is the root for $k$.
-
-During the publish operation, each node along the lookup to the root node stores a copy of the ?advertisement?. 
-These copies can be used as a short-circuit to the advertiser.
-It is assumed these copies expire as the publisher is required to periodically republish each key.
-
-
-
-\subsection*{Joining}
-
-A joining node $j$ finds the root node for $j_{ID}$, which we will refer to as the parent.
-The parent node will share prefix of length $p$ with the joining node.
-The parent sends a message  that notifies each node in the network with the same prefix of joining node.
-These nodes adjust their routing tables and contact the joining node.
-The joining node uses the notified nodes as the basis to start building its routing table and accepts responsibility for root from notified nodes, if necessary.
-
-
-\subsection*{Repairing}
-Most of the fault tolerant features are provided by multiple entries per level  in the routing table and a heartbeat function to periodically check if the root is still live.
-
-
-%\subsection*{Attacking}
-%Need to know more about table construction first.
+%\section{Tapestry}
+%Tapestry \cite{tapestry} is based off the same prefix-based lookup \cite{prr} as Pastry \cite{pastry} and the peerlist and lookup operation share many similarities.
+%Tapestry views itself more as a DOLR \cite{dolr}.
+%This essentially means that it is a distributed key-based lookup system like a DHT \cite{hildrum2004distributed}, but with some subtle differences at the abstract level which manifest as large %implementation changes.
+%The essential difference here is that Tapestry has servers \textit{publish} records/objects on the network, which direct lookups to the server.  
+%The assumption here seems to be that the servers, not the responsible node, serve the actual data.  
+%DHTs care or don't care on an application to application basis whether keys are associated with records or content. 
 
 
 
@@ -641,21 +638,22 @@ Most of the fault tolerant features are provided by multiple entries per level  
 \section{Symphony and Small World Routing}
 Symphony  \cite{symphony} is a 1$d$ ring-based DHT similar to Chord \cite{chord}, but is constructed using the properties of small world networks \cite{kleinberg2000small}.
 Small world networks owe their name to a phenomena observed by psychologists in the late 1960's. 
+
 Subjects in experiments were to route a postal message to a target person; for example the wife of a Cambridge divinity student in one experiment and a Boston stockbroker in another \cite{milgram1967small}.
 The messages were only to be routed by forwarding them to a friend they thought most likely to know the target.
 Of the messages that successfully made their way to the destination, the average path length from a subject to a participant was only 5 hops.  
 
-This lead to research investigating creating a network with randomly distributed links, but maintaining a polylogarithmic lookup.
+This lead to research investigating creating a network with randomly distributed links, but with a efficient lookup time.
 Kleinberg \cite{kleinberg2000navigation} showed that in a 2-dimensional lattice network, nodes could route messages in $O(\log^{2}n)$ hops using only their neighbors and a single randomly chosen\footnote{Randomly chosen from a specified distribution.} finger.
 In other words,$O(\log^{2}n)$ lookup is achievable with a $O(1)$ sized routing table.
 
 \subsection*{Peerlist}
-Rather than a 2-dimensional lattice, Symphony uses a 1-dimensional ring.
+Rather than the 2-dimensional lattice used by Kleinberg, Symphony uses a 1-dimensional ring\footnote{This is technically a 1-dimensional lattice.} like Chord.
 Symphony assigns $m$-bit keys to the modular unit interval $ [0,1)$, instead of using a keyspace ranging from 0 to $2^{n} - 1$.
 This location is found  with $\frac{hashkey}{2^{m}}$.
 This is arbitrary from a design standpoint, but makes choosing from a random distribution simpler. 
 
-Nodes know both their immediate predecessor and successo, much like in Chord.
+Nodes know both their immediate predecessor and successor, much like in Chord.
 Nodes also keep track of some  $k \geq 1$ fingers, but, unlike in Chord, these fingers are chosen at random.
 
 %(although it gets me thinking, is there any advantage/statistical properties   that could be exploited by making the space monic)
@@ -701,9 +699,12 @@ One of the major assumptions of DHT design is that churn is a signifcant factor 
 		Kademlia \cite{kademlia} & $O(\log n)$, maximum $m\ \cdot k$ & $\lceil \log n\rceil) + c$ & $O(\log(n))$& This is without considering optimization   \\ \hline
 		CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
 		
-		Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} & $O(\log_{B} n)$ & & & \\ \hline
-		Symphony \cite{symphony}& $2k + 2$&   average $O(\frac{1}{k} \log^{2} n )$ & $O(\log^{2} n)$ messages,  constant $<1$ &  $k \geq 1$, fingers are chosen at random\\ \hline  
-		ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  $O(n)$ & Assumes an extremely low churn \\ \hline
+		Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} & $O(\log_{\beta} n)$ & & &  NodeIDs are base $\beta$ numbers \\ \hline
+		
+        Symphony \cite{symphony}& $2k + 2$&   average $O(\frac{1}{k} \log^{2} n )$ & $O(\log^{2} n)$ messages,  constant $<1$ &  $k \geq 1$, fingers are chosen at random\\ \hline  
+		
+        ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  $O(n)$ & Assumes an extremely low churn \\ \hline
+        
         VHash & $\Omega(3d+1) + O((3d+1)^{2})$ & $O(\log^{2}n)$ hops & $3d + 1$ & approximates regions, hops are based least latency\\ \hline
 	\end{tabularx}
 	\caption{The different ratios and their associated DHTs}

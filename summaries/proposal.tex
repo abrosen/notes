@@ -655,6 +655,7 @@ This is arbitrary from a design standpoint, but makes choosing from a random dis
 
 Nodes know both their immediate predecessor and successor, much like in Chord.
 Nodes also keep track of some  $k \geq 1$ fingers, but, unlike in Chord, these fingers are chosen at random.
+These fingers are chosen from a probability distribution corresponing to the expression $e^{ln(n) + (rand48() - 1.0)}$, where $n$ is the number of nodes in the network.
 
 %(although it gets me thinking, is there any advantage/statistical properties   that could be exploited by making the space monic)
 
