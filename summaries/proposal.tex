@@ -78,7 +78,7 @@ In particular, distributed file storage applications that utilize Distributed Ha
 %\section{DHTs are better for distributed computing under many circumstances}
 Distributed Hash Tables (DHTs) are traditionally used as the backbone of structured Peer-to-Peer (P2P) file-sharing applications.
 The largest such application by far is Bittorrent \cite{bittorrent}, which is built using Mainline DHT \cite{mainline},  a  derivative of Kademlia \cite{kademlia}.
-The number of users on Bittorrent ranges from 15 million to 27 million users daily, with a turnover of 10 million users a day \cite{mainline}.
+The number of users on Bittorrent ranges from 15 million to 27 million users daily, with a turnover of 10 million users a day \cite{mainlineMeasure}.
 
 Most research on DHTs assumes that they will be used in the context of a large P2P file-sharing application  (or at least, an application \textit{potentially} incorporating millions of nodes).
 This lends the DHT to having particular qualities.
@@ -428,6 +428,9 @@ However, there's very little in the way of frequent and active maintenance other
 
 
 \section{CAN}
+REREAD, APPARENTLY A COUPLE OF WAYS TO define NEIGHBORHOOD
+
+
 Unlike the previous DHTs presented in this chapter, the Content Addressable Network (CAN) \cite{can} works in a $d$-dimensional torus, with the entire coordinate space divided among members.
 A node is responsible for the keys  that fall within the ``zone'' that it owns.
 Each key is hashed into some point within the geometric space.
