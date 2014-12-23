@@ -671,7 +671,13 @@ Failures for fingers are handled lazily and are replaced by another randomly gen
 
 % Large Routing Tables
 \section{ZHT}
-One of the major assumptions of DHT design is that churn is a significant factor that requires constant maintenense to handle.
+One of the major assumptions of DHT design is that churn is a significant factor, which requires constant maintenance to handle.
+A consequence of this assumption is that nodes only store a small subset of the entire network to route to.
+Storing the entire network is not scalable for the vast majority of distributed systems due to bandwidth constraints and communication overhead incurred by the constant joining and leaving of nodes.
+
+In a system that does not expect churn, the memory and bandwidth costs for each node to keep a full copy of the routing table are minimal.
+An example of this would be a data center or a cluster built for higher-performance computing, where churn would overwhelmingly be the result of hardware failure, rather than users quitting.
+
 
 
 
