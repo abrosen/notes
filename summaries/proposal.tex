@@ -11,17 +11,18 @@
 
 %\usepackage{venturis2}
 
-
+\linespread{1.3}
 \title{Proposal}
 \author{Andrew Rosen}
 \begin{document}
 
- 
+
 
 \maketitle
 \setcounter{tocdepth}{4}
 \tableofcontents
 \newpage
+
 
 \begin{abstract}
 Distributed Hash Tables (DHTs) are protocols and frameworks used by peer-to-peer (P2P) systems.
@@ -40,6 +41,7 @@ By utilizing the load-balancing algorithm, a datacenter could easily leverage ad
 Our framework also allows MapReduce-like or distributed machine learning platforms to be easily deployed in a greater variety of contexts.
 
 \end{abstract}
+
 
 \chapter{Introduction}
 
@@ -687,15 +689,68 @@ ZHT is a ``zero-hop hash table,'' which takes advantage of the fact that  nodes 
 Nodes are created when a job begins and are removed when a job ends.
 This property allows ZHT to \texttt{lookup} in $ O(1) $ time.
 
-\subsection*{Peerlist}1MB 
+\subsection*{Peerlist}
+
+ZHT operates in a 64-bit ring, for a total of $N = 2^{64}$ addresses.
+ZHT places a  hard limit of $ n $ on the maximum number of physical nodes in the network, which means the network has $n$ partitions of $\frac{N}{n} =  \frac{2^{64}}{n}$ keys.
+The partitions are evenly divided along the network.
+
+The network consists of $k$ physical nodes which each are running at least one instance (virtual nodes) of ZHT, with a combined total of $i$ .
+Each instance is responsible for some span of partitions in the ring.
 
 
+Each node maintains a complete list of all nodes in the network, which do not have to be updated very often due to the lack of or very low levels of churn.
+The memory cost is extremely low.
+Each instance has a 10MB footprint, and each entry for the membership table takes only 32 bytes per node.
+This means routing takes anywhere between 0 to 2 hops (explained below).
 
+\subsection*{Joining}
 ZHT operates under a static or dynamic membership.
+In a static membership, no nodes will be joining the network once the network has been bootstrapped.
+Nodes can join at any time when ZHT is using dynamic membership.
+
+To join, the joiner asks a random member for a copy of the peerlist 
+The joiner can then determine which node is the most heavily overloaded.
+The joiner chooses an address in the network to take over partitions from that node.
 
 
-%Approximated routing tables
+No idea how membership table is updated
+
+\subsection*{Fault Tolerance}
+Fault tolerance exists to handle only hardware failure or planned departures from the network.
+Nodes backup their data to their neighbors.
+
+
 \section{VHash}
+DHTs all seek to minimize lookup time for their respective topologies.
+This is done by minimizing the number of overlay hops needed for a lookup operation.
+This is a good approximation for minimizing the latency of lookups, but does not actually do so.
+Furthermore, a network might need to minimize some arbitrary metric, such as energy consumption.
+
+VHash is a multi-dimensional DHT that minimizes routing over some given metric.
+It uses a fast approximation of a Delaunay Triangulation to compute the Voronoi tessilation of a multi-dimensional space.
+%Approximated routing tables
+
+
+\subsection*{Distributed Greedy Voronoi Heuristic}
+Let's set aside the discussion of VHash for a moment and take for granted that it requires a fast and efficient way to compute Voronoi tessilations in an arbitrary number of dimensions.
+In addition, nodes should only have to compute their own Voronoi region, possibly those of it's neighbors. 
+Anything else is a waste of processing power.
+
+This is a nontrivial problem.
+There are fast and efficient algorithms to compute the Voronoi tessellation for an entire network, but they only exist for 2 dimensions.
+Computing the Voronoi tessellation or Delaunay Triangulation for 3 or more dimensions is extremely expensive
+
+Instead of trying to exactly compute the Voronoi regions, we approximate them.
+
+
+\subsection*{Topology}
+
+\subsection*{Peerlist}
+\subsection*{Joining}
+
+
+\subsection*{Fault Tolerance}
 
 
 \section{Summary}
@@ -733,6 +788,11 @@ ZHT operates under a static or dynamic membership.
 
 
 
+
+
+\chapter{Possible Experiments and Applications}
+
+
 \subsection{DHTs as a volunteer Platform}
 Rather than rely on a centralized administrative source,
 
@@ -746,9 +806,6 @@ The system is organized using a P2P system built on Brunet \cite{brunet}.
 
 PonD \cite{lee2012pond}
 
-
-
-\chapter{Possible Experiments and Applications}
 
 \section{Why DHTs for distributed computing?}
 
@@ -878,6 +935,8 @@ Requires Where, when, and how/which
     \item How:  The remaining peace
     \item Symphony demonstrates how to estimate $n$
 \end{itemize}
+
+2/28: joiner asks parent holds the most, who asks his log n nodes who holds the most
 \section{Resources}
 \subsection{Planetlab}
 \subsection{Local Cluster}
