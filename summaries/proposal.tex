@@ -6,6 +6,7 @@
 \usepackage{tabularx}
 \usepackage{algorithm}
 \usepackage{algpseudocode} 
+\usepackage{url}
 \usepackage[english]{babel}
 
 %\usepackage{venturis2}
@@ -681,11 +682,16 @@ Storing the entire network is not scalable for the vast majority of distributed 
 In a system that does not expect churn, the memory and bandwidth costs for each node to keep a full copy of the routing table are minimal.
 An example of this would be a data center or a cluster built for higher-performance computing, where churn would overwhelmingly be the result of hardware failure, rather than users quitting.
 
+ZHT \cite{li2013zht} is an example of such a system, as is Amazon's Dynamo \cite{dynamo}.
+ZHT is a ``zero-hop hash table,'' which takes advantage of the fact that  nodes in  High-End Computing environments have a predictable lifetime.
+Nodes are created when a job begins and are removed when a job ends.
+This property allows ZHT to \texttt{lookup} in $ O(1) $ time.
+
+\subsection*{Peerlist}1MB 
 
 
 
-\subsection*{Peerlist}
-
+ZHT operates under a static or dynamic membership.
 
 
 %Approximated routing tables
