@@ -13,9 +13,9 @@ Evaluate the sum of all the amicable numbers under 10000.
 
 
 // sum of proper divisors of n, excluding n.
-unsigned int aliquot_sum(unsigned int n) {
-	unsigned int sum = 1, i = 2;
-	for(i =2;  i <n/2 +1; i++) {
+int aliquot_sum( int n) {
+	int sum = 1, i = 2;
+	for(i = 2 ;  i < n/2 +1; i++) {
 		if(n % i == 0) {
 			sum += i;
 		}
@@ -29,6 +29,7 @@ int main() {
 	int aliquot[TARGET+1] = {0}; //init all to 0 
 	int amicable_sum  = 0;
 	
+	
 	for(i = 1; i< TARGET;i++){
 		aliquot[i] = aliquot_sum(i);
 	}
@@ -36,7 +37,7 @@ int main() {
 	for(i = 1; i<TARGET;i++){
 		if(aliquot[i] < TARGET  && aliquot[aliquot[i]] == i  && aliquot[i] != i) {
 			amicable_sum += i;
-			printf("%d\t%d\n", i, aliquot_sum(i));
+			printf("%d\t%d\n", i, aliquot[i]);
 		}
 	}
 	printf("%d\n", amicable_sum);
