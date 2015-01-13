@@ -8,3 +8,4 @@ def sumOfMultiples(x,y,limit):
 
 if __name__ == '__main__':
     print sumOfMultiples(3,5,1000)
+    print sumOfMultiples(3,5,2000)
