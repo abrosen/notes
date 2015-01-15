@@ -190,7 +190,7 @@ Other nodes can be notified of the missing node passively through maintenance or
 
 There have been multiple proposed strategies for tackling scalability, and it is these strategies which play the greatest role in driving the variety of DHT architectures. 
 Each DHT must strikes a balance between memory cost of the peerlist and lookup time. 
-The vast majority of DHTs choose to use $\lg(N)$ sized routing tables and  $\lg(n)$ hops \footnote{log n or log N, matters}. 
+The vast majority of DHTs choose to use $\lg(N)$ sized routing tables and  $\lg(n)$ hops\footnote{log n or log N, matters}. 
 Chapter \ref{chapter:background} discusses these tradeoffs in greater detail and how they affect the each DHT.
 
 
@@ -805,6 +805,22 @@ The system is organized using a P2P system built on Brunet \cite{brunet}.
 
 
 PonD \cite{lee2012pond}
+
+
+Middleware platforms like BOINC \cite{anderson2004boinc} HTCondor\footnote{Formerly Condor; the name was changed after a copyright dispute.} \cite{thain2005distributed} provide a way to push distributed computing tasks to idle CPUs.
+These platforms effectively let users donate their unused processing power to some scientific collaberative effort.
+
+While the work is distributed, the organizational backbone  is centralized.
+Scalability is the primary issue here.
+
+
+On-demand computing-as-a-resource is a thing and it needs to be scalable and fault tolerant.
+P2P paradigms do that.
+
+PonD \cite{lee2012pond} does decentralized resource discovery and centralized job management/centralized scheduler.
+
+\subsubsection{Improvements}
+Why not decentralized or partially decentralized job management?
 
 
 \section{Why DHTs for distributed computing?}
