@@ -802,6 +802,10 @@ Instead of trying to exactly compute the Voronoi regions, we approximate them.
 		\item Replica creation (not me: IRM)
 	\end{itemize}
 	\item Embedding metrics into the DHT (VHash)
+    \begin{itemize}
+        \item Geographic location (CAN)
+        \item latency 
+    \end{itemize}
 \end{itemize}
 
 
@@ -816,21 +820,82 @@ Instead of trying to exactly compute the Voronoi regions, we approximate them.
 
 \section{things I have discovered and want to further explore}
 
+
+\subsection{ChordReduce}
 I found that churn can help out a network in ChordReduce.
-It works like this?
-Can I stocastically model it?
+It works like this-
+In ChordReduce, we hypothesize this was due to the number of data pieces (larger) vs the number of workers (smaller).
+There were more workers than there were pieces of data, so some workers ended up with more data than others in the initial configuration.
+This means that there was some imbalance in the way data was distributed among nodes.
+This was \textit{further} exacerbated by small number of workers being assigned locations with a hash function.
+This leads to some nodes having larger swaths of responsibility than others.
+
+Given this setup, without any churn, the operation would be:
+Workers get triggered, they start working, and the ones with little work finish their work quickly, and the network waits for the node with a bunch of work.
+
+It's important to note here that the work in ChordReduce was performed atomically, a piece at a time.
+When a node was working on a piece, it informed it's successor, then informed them when it finished.
+These pieces of work were also small, possibly too small.
+
+Under our induced churn, we had the nodes randomly fail and  immediately join under a new ip.
+The failure rates were orders of magnitude higher than what would be expected in a ``real'' (nonexperimental) environment.
+The following possibilities could occur:
+\begin{itemize}
+	\item An node without any active jobs leaves.
+	It dies and and comes back with a new port chosen.
+	This new ID has a higher chance of landing in a larger region of responsibility.
+	In other words, it has a (relatively) higher chance of moving into an space where it becomes acquires responsibilty for enqueued jobs.
+	The outcomes of this are:
+	\begin{itemize}
+		\item The node rejoins in a region are doesn't acquire any new jobs.
+		This has no impact on the network (Case I).
+		\item The node rejoins in a region that has a jobs waiting to be done.
+		It acquires some of these jobs.
+		This speeds up performance (Case II).
+	\end{itemize}
+	\item A node with active jobs dies.
+	It rejoins in a new space.
+	The jobs were small, so not too much time is lost on the active job, and the enqueued jobs are backed up and the successor knows to complete them.
+	However, the node can rejoin in a more job-heavy region and acquire new jobs.
+	The outcomes of this are:
+	\begin{itemize}
+		\item A minor negative impact on runtime and load balancing (since the successor has more jobs to deal with) (Case III).
+		\item A possible counterbalance in load balancing by acquiring new jobs off a busy node (Case Doesn't matter).
+	\end{itemize}
+\end{itemize}
+
+Now here's the trick.
+The longer the nodes work on the jobs, the more nodes finish and have no jobs.
+This means as time increases, so do the occurrences that Case I and II occur, with a bit more weight on Case II.
+
+
+What have we learned:
+\begin{itemize}
+	\item Shooting nodes as a example to motivate other nodes works or
+	\item Even the smallest effort of trying to dynamically load  balance, such as rebooting random nodes to new locations, has benefits for runtime.
+	Our method is a horrible approximation of dynamic load-balancing, and it still shows improvement.
+\end{itemize}
+
+
+
+We still have to verify the existence of this phenomena in an independent experiment.
+Besides that, we still have the following questions:
+Can I stochastically model it?
 Does it work for other problems?
 
+
+This ties into the next bit.
+\subsection{Sybil}
 We discovered injection is easy and simple in P2P networks.
-I hypothisize we can Sybil attacks for improving load balancing on demand.
+I hypothesize we can Sybil attacks for improving load balancing on demand.
 Perhaps we need an entirely new node type.
 
-
+\subsection{VHash}
 Hops is an estimate for time, not nessicarily a good one!
 We can embed latency in the DHT.
+We can try embedding geographic location in as well using
 
-
-
+\subsection{Pond}
 P2P can be used for decentralized volenteer computing.
 
 
