@@ -732,6 +732,17 @@ It uses a fast approximation of a Delaunay Triangulation to compute the Voronoi 
 %Approximated routing tables
 
 
+
+Arguably all DHTs are built on the concept of Voronoi regions.
+In all DHTs a node is responsible for all points in its hash space to which it is the ``closest'' node.
+These DHTs have carefully chosen metric spaces such that these regions are very simple to calculate.
+For example, Chord and similar ring-based DHTs utilize a unidirectional, one-dimensional ring as their metric space, such that the region for which a node is responsible is the region between itself and its predecessor.
+VHash generalizes these same behaviors: by choosing a particular metric space, VHash can approximate other DHTs.
+The toroidal metric space utilized in this paper is an extension of the ring topology used by Chord \cite{chord}, Symphony \cite{symphony}, and others into additional dimensions. 
+
+
+
+
 \subsection*{Distributed Greedy Voronoi Heuristic}
 Let's set aside the discussion of VHash for a moment and take for granted that it requires a fast and efficient way to compute Voronoi tessilations in an arbitrary number of dimensions.
 In addition, nodes should only have to compute their own Voronoi region, possibly those of it's neighbors. 
@@ -742,6 +753,11 @@ There are fast and efficient algorithms to compute the Voronoi tessellation for 
 Computing the Voronoi tessellation or Delaunay Triangulation for 3 or more dimensions is extremely expensive
 
 Instead of trying to exactly compute the Voronoi regions, we approximate them.
+
+
+
+
+
 
 
 \subsection*{Topology}
@@ -891,9 +907,15 @@ I hypothesize we can Sybil attacks for improving load balancing on demand.
 Perhaps we need an entirely new node type.
 
 \subsection{VHash}
+Arguablely all DHT's are Voronoi tessilations or can be mapped to.
+
+
 Hops is an estimate for time, not nessicarily a good one!
 We can embed latency in the DHT.
 We can try embedding geographic location in as well using
+
+
+
 
 \subsection{Pond}
 P2P can be used for decentralized volenteer computing.
