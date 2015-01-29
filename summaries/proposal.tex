@@ -939,8 +939,7 @@ The system is organized using a P2P system built on Brunet \cite{brunet}.
 
 
 
-PonD \cite{lee2012pond}
-
+\subsection{PonD}
 
 Middleware platforms like BOINC \cite{anderson2004boinc} HTCondor\footnote{Formerly Condor; the name was changed after a copyright dispute.} \cite{thain2005distributed} provide a way to push distributed computing tasks to idle CPUs.
 These platforms effectively let users donate their unused processing power to some scientific collaberative effort.
@@ -953,6 +952,8 @@ On-demand computing-as-a-resource is a thing and it needs to be scalable and fau
 P2P paradigms do that.
 
 PonD \cite{lee2012pond} does decentralized resource discovery and centralized job management/centralized scheduler.
+``Decouples resource discovery from job execution/monitoring.''
+Scheduling time is $ O(\log N) $, for $N$ resouces in the pool.
 
 \subsubsection{Improvements}
 Why not decentralized or partially decentralized job management?
@@ -1068,12 +1069,23 @@ Take MapReduce machine learning algorithm
 \section{Distributed Databases}
 
 
+DHTs run off the assumption that you know what you want to find.
+I'm looking for node responsible for this key, becuase I need the associated value.
+
+Complex queries and databases are used to find stuff based on attributes, and since you're asking, you don't know what (primary) keys you need.
+
+
 Want to find all files that match the criteria?
+
+
+
+
 
 Simple: Find all files with ``author = John Smith''.  Idiot solution, assign ``author = John Smith'' a hash key,  it's value is a file with all the files with the (that doesn't scale) 
 
 
 Complex: Processing database queries.   Find all files with age < 20 and niceness >12
+Could embed as dimension with VHash!
 
 
 \section{Semiautomagic Load Balancing}
