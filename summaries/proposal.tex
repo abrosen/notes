@@ -1066,7 +1066,7 @@ Lookup Graphlab
 \subsection{Experiment Description:}
 Take MapReduce machine learning algorithm
 
-\section{Distributed Databases}
+\section{Distributed ``Databases'' and Complex Queries}
 
 
 DHTs run off the assumption that you know what you want to find.
@@ -1087,6 +1087,8 @@ Simple: Find all files with ``author = John Smith''.  Idiot solution, assign ``a
 Complex: Processing database queries.   Find all files with age < 20 and niceness >12
 Could embed as dimension with VHash!
 
+
+See lee pond for their multi-tree broadcast which they got from other papers \cite{lee2012pond}
 
 \section{Semiautomagic Load Balancing}
 What: Automagic load balancing.  One of two possiblilities:  inject new node into region or create new virtual node in region. 
