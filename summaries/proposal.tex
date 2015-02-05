@@ -1085,6 +1085,10 @@ Simple: Find all files with ``author = John Smith''.  Idiot solution, assign ``a
 
 
 Complex: Processing database queries.   Find all files with age < 20 and niceness >12
+
+One proposed soultion is to use montonic (order-preserving) hash functions \cite{triantafillou2004towards}, but monotonic functions don't have randomness and uniformity.
+
+
 Could embed as dimension with VHash!
 
 
@@ -1092,10 +1096,30 @@ See lee pond for their multi-tree broadcast which they got from other papers \ci
 
 \subsection{Paper summaries}
 
-P2P systems have two limitations: scaling and complex queries \cite{harren2002complex}.  I would also say robustness.
-DHTs have solved the issue of sclaing for the most part but have a significant 
+P2P systems have two limitations: scaling and complex queries \cite{harren2002complex}.  
+I would also say robustness.
+DHTs have solved the issue of sclaing for the most part but have a significantly limitted querying capability:  only native-exact matches are supported.  
+
+A database is to be avoided since most users will not want to manage a database.  
+The authors wish to focus purely on the abstract relational algebra operations, since the objective is only query processing.
+
+The authors proposed extending the DHT API.
+The data storage layer needs a way to iterate thru the data objects it has stored.
+Each object needs a unique local identifier and the data itself, as well as a way of accessing stored metadata for each object. 
 
 
+A big issue is supporting the range queries, since exact matches can be solved in many different ways.
+One proposed soultion is to use montonic (order-preserving) hash functions \cite{triantafillou2004towards}, but monotonic functions don't have randomness and uniformity.
+
+Triantafillou et al.\ propose keying the ID of file off the primary key of a relation and using an order-preserving hash function for each of the other attributes.\footnote{This technique was designed only for \texttt{ints}}
+For each attribute $DA_i$, the entire keyspace is partitioned into $s_i = \frac{2^{m}}{|DA_{i}|}$ and the monotonic hash function $h_i$ for $DA_i$ is defined as  $h_{i}(a_{i})=\lceil (a_{i} - \min(DA_i)) \times s_i \rceil$ for each individual attribute $a_i$  (may have botched terminology).
+
+
+When a tuple with key $t$ is \texttt{put} on the network, it's stored at \texttt{successor(t)}.  It is then replicated at each peer responsible for each attribute, which is found using the order-preserving hash functions.
+
+
+\subsubsection*{PHT}
+%Abstract level summary.  What can it do, what can't it do.
 
 
 \section{Semiautomagic Load Balancing}
