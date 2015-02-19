@@ -18,22 +18,37 @@ Where 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be see
 Find the value of d < 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.
 
 
+The multiplicative order of 10 mod an integer n relatively prime to 10 gives the period of the decimal expansion of the reciprocal of n (Glaisher 1878, Lehmer 1941).
 
-
-The insight here is that each digit will repeat only once!  THis is because of how remainders work
 """
 
 
 
-LIMIT =  15
+LIMIT =  1001
 
+
+# Period of decimal representation of 1/n.  
+# Solving for k in  10^k cong 1 (mod n)
+def A007732(n):
+    if 10 % n  == 0 or  n % 10  ==0 or n % 5 ==0  or n % 2 ==0: 
+        return 1
+    length = 0
+    while True:  #failsafe, replace with true
+        length+=1
+        if 10**length % n ==1:
+            return length
+    return length
 
 
 
 
 def main():
+    lens = []
     for n in xrange(1,LIMIT):
-        print n, 1.0/n
+        lens.append(A007732(n))
+    longest=max(lens)
+    print lens.index(longest) +1 , longest
+
 
 
 if __name__ == '__main__':
