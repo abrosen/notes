@@ -1,19 +1,25 @@
 #include <stdio.h>
 
 
-int LIMIT  = 100000;
+int LIMIT  = 1000000;
 int factorial(int);
 int digit_factorial(int);
-int digit_sum(int);
 
 int main() {
     
     int i;
+    int total = 0;
     for (i=3; i<LIMIT; i++) {
+        if (i == digit_factorial(i)) {
+            total += i;
+        }
+
     }
-    
+    printf("%d\n",total);
     return 0;
 }
+
+
 
 
 int digit_factorial(int n) {
