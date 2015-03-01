@@ -9,6 +9,8 @@
 \usepackage{url}
 \usepackage[english]{babel}
 
+
+
 %\usepackage{venturis2}
 
 %\linespread{1.3}
@@ -22,7 +24,6 @@
 \setcounter{tocdepth}{4}
 \tableofcontents
 \newpage
-
 
 \begin{abstract}
 Distributed Hash Tables (DHTs) are protocols and frameworks used by peer-to-peer (P2P) systems.
@@ -821,10 +822,35 @@ There are two recent and fairly open questions that I want to examine.
 \section{DHT Distributed Computing}
 Distributed computing is the current trend and is the future trend.
 
+Large frameworks are the norm, these frame works require a noisy amount of overhead to setup to obtain O(1) routing
 
+MapReduce 
+uses centralized framework
+Very popular
+
+These frameworks generally operate under datacenter assumptions and non-fault tolerant environments
+homogenous
+
+What about a framework that is heterogenous, self orgnaizing, and fault-tolerant nto in a data center assumptions
+remove data center assumptions
+
+
+
+
+There are a few significant reasons to use a dht
 Elimination of metadata concerning a files location (but not nessicarily other metadata)
-
 Everybody knows who is responsible for what file and who needs to be a backup or help backup
+heterogenous
+Alternatively, can be used to find and link  on demand resources.
+
+
+Could use a processor scoring mechanism
+
+Exapansion on each of these in sections
+
+
+
+Goal DHT reduce 1.0
 
 \section{Autonomous Load Balancing}
 
@@ -910,46 +936,80 @@ The first hypothesis is mentally pleasing to anyone who has tried to create a di
 We still have to verify the existence of this phenomena in an independent experiment.
 
 
-The questions and goalss here are straight forward:
+The questions and goals here are straight forward:
 \begin{itemize}
 	\item Further establish the phenomena exists.
-	\item We stumbled across this phenomena with a brute force method and still got promising results.  Can we create a more balanced 
+	\item We stumbled across this phenomena with a brute force method and still got promising results.  
+	Can we create a more accurate and mean
 	\item Can this phenomena be stochastically modeled or otherwise predicted via theoretical analysis?
+	\item In what contexts can this be used for DHTs?  Distributed computing?  Replication for file sharing?
 \end{itemize}
 
 
 
-Besides that, we still have the following questions:
-Can I stochastically model it?
-Does it work for other problems?
+My proposed scheme works like this: a node that determines that it can carry more of the network's weight.
+How it does this is a problem that needs to be solved.
+Regardless, once it has made this determination, the node choose an area in the keyspace for it to inject a replica into.
 
-
-This ties into the next bit.
+This ties into the security research on DHTs I have done.
 
 
 
 \subsection{Sybil}
-We discovered injection is easy and simple in P2P networks.
+We discovered injecting replicas is easy and simple in P2P networks, we use a Sybil attack.
+This was the focus of my Data Security project
 I hypothesize we can Sybil attacks for improving load balancing on demand.
-Perhaps we need an entirely new node type.
 
 
+One of the key properties of structured peer-to-peer (P2P) systems is the lack of a centralized coordinator or authority.
+P2P systems remove the vulnerability of a single point of failure and the susceptibility to a denial of service attack \cite{sybil}, but in doing so, open themselves up to new attacks.
+
+Completely decentralized P2P systems are vulnerable to \textit{Eclipse attacks}, whereby an attacker completely occludes healthy nodes from one another.
+This prevents them from communicating without being intercepted by the adversary.
+Once an Eclipse attack has taken place, the adversary can launch a variety of crippling attacks, such as incorrectly routing messages or returning malicious data \cite{srivatsa2004vulnerabilities}.
+
+
+
+One way to accomplish this attack is to perform a \emph{Sybil attack} \cite{sybil}.
+In a Sybil attack, the attacker masquerades as multiple nodes, effectively over-representing the attacker's presence in the network to maximize the number of links that can be established with healthy nodes.
+If enough malicious nodes are injected into the system, the majority of the nodes will be occluded from one another, successfully performing an Eclipse attack.
+
+This vulnerability is well known \cite{dhtsec}. 
+Extensive research has been done assessing the damage an attacker can do after establishing themselves \cite{srivatsa2004vulnerabilities}.
+%Especially when a hash value to assign neighbors
+Little focus has been done on examining how the attacker can establish himself in the first place and precisely how easily the Sybil attack can be accomplished.
+
+
+%TODO: add security citation for self
+I focused on looking at the computational and memory costs of creating as many replicas as possible.
+The computation costs turn out to be fairly trivial and can be precomputed based on how IDs are assigned, a process I call \textit{mashing}.
+If a node obtains their ID via an IP/Port combination, and we limit an attacker to using only ephemeral IP addresses (16383 total), the per node cost of mashing is quite low.
+Per node, it takes 48 milliseconds to mash 16383 IP/Port combinations and only 352 kilobytes to store this information after precomputing it.
+
+
+An attacker would do this for each of his nodes, then join the network and insert as many Sybils as possible.
+I calculated that it would take only 1221 IP addresses to compromise 50\% of the links in a 20,000,000 node network.
+
+An altruistic member of the network could only inject replicas where they are needed.
+
+
+
+
+
+So given that we want nodes to insert nodes Why not let nodes choose keys manually or at random?
+First, this is bad practice which makes a Sybil attacks trivially easy to perform.
+Second, one of the primary benefits of using consistent hashing is that it allows a selection of conitguious keys to map to a uniform distribution.
+Most importantly for us, this distribution can be precomputed and reproduced as needed. 
+%Finally, putting constraints on what is used to generate IDs makes it more
+
+
+Perhaps we need an entirely new node type, a sentinel that exists merely for checking traffic conditions and load.
+This also breaks how we think of normal nodes.
 
 
 \chapter{Proposed Experiments}
 
-\chapter{Possible Experiments and Applications}
-
-
-
-
-
-
-
-
-
-
-
+\chapter{Previous Writing to incorporate above}
 
 
 
