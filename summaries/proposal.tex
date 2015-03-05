@@ -432,7 +432,7 @@ However, there's very little in the way of frequent and active maintenance other
 
 
 \section{CAN}
-REREAD, APPARENTLY A COUPLE OF WAYS TO define NEIGHBORHOOD
+%TODO: REREAD, APPARENTLY A COUPLE OF WAYS TO define NEIGHBORHOOD
 
 
 Unlike the previous DHTs presented in this chapter, the Content Addressable Network (CAN) \cite{can} works in a $d$-dimensional torus, with the entire coordinate space divided among members.
@@ -822,7 +822,8 @@ There are two recent and fairly open questions that I want to examine.
 \section{DHT Distributed Computing}
 Distributed computing is the current trend and is the future trend.
 
-Large frameworks are the norm, these frame works require a noisy amount of overhead to setup to obtain O(1) routing
+Large, centralized frameworks are the norm
+these frame works require a noisy amount of overhead to setup to obtain $ O(1) $ lookup table.
 
 MapReduce 
 uses centralized framework
@@ -832,7 +833,7 @@ These frameworks generally operate under datacenter assumptions and non-fault to
 homogenous
 
 What about a framework that is heterogenous, self orgnaizing, and fault-tolerant nto in a data center assumptions
-remove data center assumptions
+remove data center assumptions set of assumptions \cite{hadoopAssumptions}
 
 
 
@@ -852,6 +853,11 @@ Exapansion on each of these in sections
 
 Goal DHT reduce 1.0
 
+
+
+
+\subsection{ChordReduce}
+
 \section{Autonomous Load Balancing}
 
 
@@ -868,7 +874,7 @@ A similar process happens for nodes wanting to join the network.
 
 We wanted the rubustness of our system to be beyond reproach, so we tested at rates from 0.0025\% to 0.8\% \textbf{\textit{per second}}, 120 times the fastest rate used to test P2P-MapReduce.
 This is an absurdly fast and unrealistic speed, the only purpose of which was to cement the robustness of the system.
-Since we were ChordReduce on Amazon's EC2 and paying per instance per hour, we didn't use any more nodes than necessary.
+Since we were testing ChordReduce on Amazon's EC2 and paying per instance per hour, we didn't use any more nodes than necessary.
 Rather than having a pool of nodes waiting to join the network, we conserved our funds by having leaving nodes immediately rejoin the network under a new IP/port combo.
 The meant our churn operation was essentially a simultaneous leave and join.
 
