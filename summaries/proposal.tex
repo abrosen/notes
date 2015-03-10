@@ -795,7 +795,7 @@ Instead of trying to exactly compute the Voronoi regions, we approximate them.
 		
         ZHT \cite{li2013zht}&   $O(n)$& $O(1)$ &  $O(n)$ & Assumes an extremely low churn \\ \hline
         
-        VHash & $\Omega(3d+1) + O((3d+1)^{2})$ & $O(\log^{2}n)$ hops & $3d + 1$ & approximates regions, hops are based least latency\\ \hline
+        VHash & $\Omega(3d+1) + O((3d+1)^{2})$ & $O(\sqrt[d]{n})$ hops & $3d + 1$ & approximates regions, hops are based least latency\\ \hline
 	\end{tabularx}
 	\caption{The different ratios and their associated DHTs}
 	\label{tab:tradeoffs}
@@ -820,22 +820,26 @@ There are two recent and fairly open questions that I want to examine.
 
 
 \section{DHT Distributed Computing}
+%TODO: Intro
 Distributed computing is the current trend and is the future trend.
 
-Large, centralized frameworks are the norm
-these frame works require a noisy amount of overhead to setup to obtain $ O(1) $ lookup table.
+Large, centralized environments are the norm for distributed computing.
+These  large environments focus on using large amounts of homogeneous hardware.
 
-MapReduce 
-uses centralized framework
-Very popular
-
-These frameworks generally operate under datacenter assumptions and non-fault tolerant environments
-homogeneous
-
-What about a framework that is heterogeneous, self organizing, and fault-tolerant nto in a data center assumptions
-remove data center assumptions set of assumptions \cite{hadoopAssumptions}
+One of the most popular distributed computing frameworks is MapReduce  \cite{mapreduce}.
+Google's MapReduce paradigm has rapidly become an integral part in the world of data processing.  
+A user can use MapReduce to take a large problem, split it into small, equivalent tasks and send those tasks to other processors for computation.  
+The results are sent back to the user and combined into one answer. 
 
 
+Popular platforms for MapReduce, such as Hadoop \cite{Hadoop}, are explicitly designed to be used in large datacenters \cite{hadoopAssumptions} and the majority of research has been focused there.  
+These MapReduce platforms are highly centralized and tend to have single points of failure\cite{shvachko2010hadoop} as a result.   
+A centralized design assumes that the network is relatively unchanging and does not usually have mechanisms to handle node failure during execution or, conversely, cannot speed up the execution of a job by adding additional workers on the fly.  
+Many environments also anticipate a certain degree in homogenity in the system.
+Finally deploying these systems and developing programs for them has an extremely steep learning curve.
+
+There is no reason that these assumptions need to be the case for MapReduce, or distributed computing in general.
+Moving away from the data center context allows us to 
 
 
 There are a few significant reasons to use a dht
@@ -853,10 +857,22 @@ Expansion on each of these in sections
 
 Goal DHT reduce 1.0
 
+\begin{itemize}
+	\item Build a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
+	\item Use this framework to implement a few of the more popular DHTs.
+	\item Do computing tasks over these implemented DHTs.
+\end{itemize}
+
 
 
 
 \subsection{ChordReduce}
+
+
+\subsection{Heterogeneity Calculation}
+
+Calculate some base score to yield a starting number of instances and a maximum.
+Get to the maximum by automatic load balancing
 
 \section{Autonomous Load Balancing}
 
@@ -1012,6 +1028,8 @@ Most importantly for us, this distribution can be precomputed and reproduced as 
 Perhaps we need an entirely new node type, a sentinel that exists merely for checking traffic conditions and load.
 This also breaks how we think of normal nodes.
 
+One assertion is why not use some kind of mechanism for ensuring even distribution of nodes?
+The issue there is that our solutions for doing this are centralized distribution or a spring-model mechanism (or the binning mechanism of Dynamo, but the paper is a bit roundabout on how to do that).
 
 \chapter{Proposed Experiments}
 
