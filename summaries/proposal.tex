@@ -821,7 +821,8 @@ There are two recent and fairly open questions that I want to examine.
 
 \section{DHT Distributed Computing}
 %TODO: Intro
-Distributed computing is the current trend and is the future trend.
+Distributed computing is the current trend and is the future trend.  
+Here's some stats \cite{p2p-cloud}
 
 Large, centralized environments are the norm for distributed computing.
 These  large environments focus on using large amounts of homogeneous hardware.
@@ -832,14 +833,22 @@ A user can use MapReduce to take a large problem, split it into small, equivalen
 The results are sent back to the user and combined into one answer. 
 
 
+
 Popular platforms for MapReduce, such as Hadoop \cite{Hadoop}, are explicitly designed to be used in large datacenters \cite{hadoopAssumptions} and the majority of research has been focused there.  
-These MapReduce platforms are highly centralized and tend to have single points of failure\cite{shvachko2010hadoop} as a result.   
+These MapReduce platforms are highly centralized and tend to have single points of failure\cite{shvachko2010hadoop} as a result.
+However, as we've previously noted, there are notable issues with a centralized design.
+
+First and foremost is the issue of fault-tolerance \cite{p2p-cloud}
+
+Government intervention
+
 A centralized design assumes that the network is relatively unchanging and does not usually have mechanisms to handle node failure during execution or, conversely, cannot speed up the execution of a job by adding additional workers on the fly.  
 Many environments also anticipate a certain degree in homogenity in the system.
 Finally deploying these systems and developing programs for them has an extremely steep learning curve.
 
 There is no reason that these assumptions need to be the case for MapReduce, or distributed computing in general.
 Moving away from the data center context allows us to 
+
 
 
 There are a few significant reasons to use a dht
@@ -864,9 +873,11 @@ Goal DHT reduce 1.0
 \end{itemize}
 
 
-
+\subsubsection{P2P cloud}
+http://www.cs.unibo.it:443/pub/TR/UBLCS/2011/2011-10.pdf
 
 \subsection{ChordReduce}
+
 
 
 \subsection{Heterogeneity Calculation}
