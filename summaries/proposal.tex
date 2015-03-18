@@ -827,45 +827,38 @@ Google's MapReduce  in particular has rapidly become an integral part in the wor
 A user can use MapReduce to take a large problem, split it into small, equivalent tasks and send those tasks to other processors for computation.  
 The results are sent back to the user and combined into one answer. 
 
-
-
-Popular platforms for MapReduce, such as Hadoop \cite{Hadoop}, are explicitly designed to be used in large datacenters \cite{hadoopAssumptions} and the majority of research has been focused there.  
-These MapReduce platforms are highly centralized and tend to have single points of failure\cite{shvachko2010hadoop} as a result.
+Popular platforms for MapReduce, such as Hadoop \cite{hadoop}  \cite{shvachko2010hadoop}, are explicitly designed to be used in large datacenters \cite{hadoopAssumptions} and the majority of research has been focused there.  
 However, as we've previously noted, there are notable issues with a centralized design.
 
-First and foremost is the issue of fault-tolerance \cite{p2p-cloud}
+First and foremost is the issue of fault-tolerance.
+Centralized designs have a single point of failure \cite{shvachko2010hadoop}.
+So long as all computing resources located in one geographical area or rely on a particular node, a power outage or catastrophic event could interrupt computations or otherwise disrupt the platform \cite{babaoglu2014people}.
 
-Government intervention
-
-A centralized design assumes that the network is relatively unchanging and does not usually have mechanisms to handle node failure during execution or, conversely, cannot speed up the execution of a job by adding additional workers on the fly.  
-Many environments also anticipate a certain degree in homogenity in the system.
+A centralized design assumes that the network is relatively unchanging and may not have mechanisms to handle node failure during execution or, conversely, cannot speed up the execution of a job by adding additional workers on the fly.  
+Many environments also anticipate a certain degree in homogeneity in the system.
 Finally deploying these systems and developing programs for them has an extremely steep learning curve.
 
-There is no reason that these assumptions need to be the case for MapReduce, or distributed computing in general.
-Moving away from the data center context allows us to 
+There is no reason that these assumptions need to be the case for MapReduce, or for many distributed computing frameworks in general.
 
+Moving away from the data center context opens up more possibilities for distributed computing, such as P2P clouds \cite{p2p-cloud}.
+However, without a centralized framework, the network needs some kind of protocol to organize the various components in the network.
+As part of our research, we developed a highly robust and distributed MapReduce framework based on Chord, called ChordReduce.
 
+There a number of reasons to used a DHT as the protocol for a distributed computing platform.
+First, nodes ID and their location in the network are strongly bound to what data they are responsible for, such that any node can lookup which node is responsible a particular piece of data.
+This obviates the need for a centralized organizer to maintain this bit of metadata or assign backups for data, as nodes can do this autonomously.
+DHTs assume that network is heterogeneous, rather than homogeneous.
 
-There are a few significant reasons to use a dht
-Elimination of metadata concerning a files location (but not necessarily other metadata)
-Everybody knows who is responsible for what file and who needs to be a backup or help backup
-heterogeneous
-Alternatively, can be used to find and link  on demand resources.
-
-
-Could use a processor scoring mechanism
-
-Expansion on each of these in sections
-
-
-
-Goal DHT reduce 1.0
+They have been used for over a decade for P2P file-sharing applications for these reasons.
+My goal is to further develop ChordReduce and create a DHT based platform for solving embarrassingly parallel problems using DHTs.
 
 \begin{itemize}
 	\item Build a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
 	\item Use this framework to implement a few of the more popular DHTs.
+	\item Create a  processor scoring mechanism for creating virtual nodes.
 	\item Do computing tasks over these implemented DHTs.
 	\begin{itemize}
+		\item The emphasis is our framework is optimized for robustness over everything.
 		\item Do we want to build a IaaS or PaaS
 	\end{itemize}
 \end{itemize}
