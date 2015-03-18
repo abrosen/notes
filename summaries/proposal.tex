@@ -821,14 +821,9 @@ There are two recent and fairly open questions that I want to examine.
 
 \section{DHT Distributed Computing}
 %TODO: Intro
-Distributed computing is the current trend and is the future trend.  
-Here's some stats \cite{p2p-cloud}
-
-Large, centralized environments are the norm for distributed computing.
-These  large environments focus on using large amounts of homogeneous hardware.
-
-One of the most popular distributed computing frameworks is MapReduce  \cite{mapreduce}.
-Google's MapReduce paradigm has rapidly become an integral part in the world of data processing.  
+Distributed computing is a current trend and is the future trend.
+We see this in the development of cloud computing \cite{p2p-cloud}, volunteer computing frameworks like BOINC \cite{anderson2004boinc} and Folding@Home \cite{larson2002folding},and MapReduce  \cite{mapreduce}.
+Google's MapReduce  in particular has rapidly become an integral part in the world of data processing.  
 A user can use MapReduce to take a large problem, split it into small, equivalent tasks and send those tasks to other processors for computation.  
 The results are sent back to the user and combined into one answer. 
 
@@ -870,11 +865,18 @@ Goal DHT reduce 1.0
 	\item Build a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
 	\item Use this framework to implement a few of the more popular DHTs.
 	\item Do computing tasks over these implemented DHTs.
+	\begin{itemize}
+		\item Do we want to build a IaaS or PaaS
+	\end{itemize}
 \end{itemize}
 
 
-\subsubsection{P2P cloud}
-http://www.cs.unibo.it:443/pub/TR/UBLCS/2011/2011-10.pdf
+%\subsubsection{P2P cloud}
+%http://www.cs.unibo.it:443/pub/TR/UBLCS/2011/2011-10.pdf
+
+%Clouds and Volunteer Computing platforms are different.
+%Clouds@home
+%Nanodatacenter
 
 \subsection{ChordReduce}
 
@@ -976,6 +978,7 @@ The questions and goals here are straight forward:
 	Can we create a more accurate and mean
 	\item Can this phenomena be stochastically modeled or otherwise predicted via theoretical analysis?
 	\item In what contexts can this be used for DHTs?  Distributed computing?  Replication for file sharing?
+
 \end{itemize}
 
 
@@ -1151,7 +1154,7 @@ Perhaps we need an entirely new node type.
 Arguablely all DHT's are Voronoi tessilations or can be mapped to.
 
 
-Hops is an estimate for time, not nessicarily a good one!
+Hops is an estimate for time, not necessarily a good one!
 We can embed latency in the DHT.
 We can try embedding geographic location in as well using
 
