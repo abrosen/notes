@@ -14,7 +14,7 @@
 
 %\usepackage{venturis2}
 
-%\linespread{1.3}
+\linespread{1.3}
 \title{Proposal}
 \author{Andrew Rosen}
 \begin{document}
@@ -44,6 +44,10 @@ Our framework also allows MapReduce-like or distributed machine learning platfor
 
 \end{abstract}
 
+%TODO: Replace first person singulars with first person plurals
+%TODO: Split proposal into Finished research and proposed experiments.
+%TODO: Rewrite vocab
+%TODO: Add pretty pictures for DHT
 
 \chapter{Introduction}
 
@@ -746,17 +750,25 @@ The toroidal metric space utilized in this paper is an extension of the ring top
 
 
 \subsection*{Distributed Greedy Voronoi Heuristic}
-Let's set aside the discussion of VHash for a moment and take for granted that it requires a fast and efficient way to compute Voronoi tessilations in an arbitrary number of dimensions.
-In addition, nodes should only have to compute their own Voronoi region, possibly those of it's neighbors. 
-Anything else is a waste of processing power.
+A Voronoi tessellation is the partition of a space into cells or regions along a set of objects $O$, such that all the points in a particular region are closer to one object than any other object.  
+We refer to the region owned by an object as that object's Voronoi region.
+Objects which are used to create the regions are called Voronoi generators.
+In network applications that use Voronoi tessellations, nodes in the network act as the Voronoi generators.
 
-This is a nontrivial problem.
-There are fast and efficient algorithms to compute the Voronoi tessellation for an entire network, but they only exist for 2 dimensions.
-Computing the Voronoi tessellation or Delaunay Triangulation for 3 or more dimensions is extremely expensive.
+The Voronoi tessellation and Delaunay triangulation are dual problems, as an edge between two objects in a Delaunay triangulation exists if and only if those object's Voronoi regions border each other.  
+This means that solving either problem will yield the solution to both.   
+An example Voronoi diagram is shown in Figure \ref{voro-ex}.
+For additional information, Aurenhammer \cite{voronoi} provides a formal and extremely thorough description of Voronoi tessellations, as well as their applications.
 
-Instead of trying to exactly compute the Voronoi regions, we approximate them.
 
 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/voronoi}
+	\caption{An example Voronoi diagram for objects on a 2-dimensional space.  The black lines correspond to the borders of the Voronoi region, while the dashed lines correspond to the edges of the Delaunay Triangulation.}
+	\label{voro-ex}
+\end{figure}
 
 
 
@@ -1162,6 +1174,45 @@ One assertion is why not use some kind of mechanism for ensuring even distributi
 The issue there is that our solutions for doing this are centralized distribution or a spring-model mechanism (or the binning mechanism of Dynamo, but the paper is a bit roundabout on how to do that).
 
 \chapter{Proposed Experiments}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \chapter{Previous Writing to incorporate above}
 
