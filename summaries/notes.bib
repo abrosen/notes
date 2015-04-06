@@ -1,157 +1,3 @@
-@article{lua2005survey,
-  title={A survey and comparison of peer-to-peer overlay network schemes.},
-  author={Lua, Eng Keong and Crowcroft, Jon and Pias, Marcelo and Sharma, Ravi and others}
-}
-
-
-@article{chord,
- author = {Stoica, Ion and Morris, Robert and Karger, David and Kaashoek, M. Frans and Balakrishnan, Hari},
- title = {Chord: {A} {S}calable {P}eer-to-{P}eer {L}ookup {S}ervice for {I}nternet {A}pplications},
- journal = {SIGCOMM Comput. Commun. Rev.},
- issue_date = {October 2001},
- volume = {31},
- issue = {4},
- month = {August},
- year = {2001},
- issn = {0146-4833},
- pages = {149--160},
- numpages = {12},
- url = {http://doi.acm.org/10.1145/964723.383071},
- doi = {http://doi.acm.org/10.1145/964723.383071},
- acmid = {383071},
- publisher = {ACM},
- address = {New York, NY, USA}
-} 
-
-
-@inproceedings{bittorrent,
-    title={Incentives build robustness in BitTorrent},
-    author={Cohen, Bram},
-    booktitle={Workshop on Economics of Peer-to-Peer systems},
-    volume={6},
-    pages={68--72},
-    year={2003}
-}
-
-
-@misc{mainline,
-    author = {Loewenstern, Andrew and Norberg, Arvid},
-    title = {{BEP} 5: {DHT} {P}rotocol},
-    month = {March},
-    year = {2013},
-    howpublished = {\url{http://www.bittorrent.org/beps/bep_0005.html}},
-}
-
-@INPROCEEDINGS{mainlineMeasure, 
-    author={Liang Wang and Kangasharju, J.}, 
-    booktitle={Peer-to-Peer Computing (P2P), 2013 IEEE Thirteenth International Conference on}, 
-    title={Measuring large-scale distributed systems: case of BitTorrent Mainline DHT}, 
-    year={2013}, 
-    month={Sept}, 
-    pages={1-10}, 
-    abstract={Peer-to-peer networks have been quite thoroughly measured over the past years, however it is interesting to note that the BitTorrent Mainline DHT has received very little attention even though it is by far the largest of currently active overlay systems, as our results show. As Mainline DHT differs from other systems, existing measurement methodologies are not appropriate for studying it. In this paper we present an efficient methodology for estimating the number of active users in the network. We have identified an omission in previous methodologies used to measure the size of the network and our methodology corrects this. Our method is based on modeling crawling inaccuracies as a Bernoulli process. It guarantees a very accurate estimation and is able to provide the estimate in about 5 seconds. Through experiments in controlled situations, we demonstrate the accuracy of our method and show the causes of the inaccuracies in previous work, by reproducing the incorrect results. Besides accurate network size estimates, our methodology can be used to detect network anomalies, in particular Sybil attacks in the network. We also report on the results from our measurements which have been going on for almost 2.5 years and are the first long-term study of Mainline DHT.}, 
-    keywords={computer network security;peer-to-peer computing;stochastic processes;Bernoulli process;BitTorrent Mainline DHT;Sybil attacks;active overlay systems;active user estimation;crawling inaccuracy modeling;large-scale distributed system measurement;network anomaly detection;network size estimation;peer-to-peer networks;Accuracy;Crawlers;Estimation;Instruments;Monitoring;Peer-to-peer computing;Protocols}, 
-    doi={10.1109/P2P.2013.6688697},}
-
-
-@incollection{kademlia,
-  title={Kademlia: A peer-to-peer information system based on the xor metric},
-  author={Maymounkov, Petar and Mazieres, David},
-  booktitle={Peer-to-Peer Systems},
-  pages={53--65},
-  year={2002},
-  publisher={Springer}
-}
-
-@inproceedings{pastry,
-  title={Pastry: Scalable, decentralized object location, and routing for large-scale peer-to-peer systems},
-  author={Rowstron, Antony and Druschel, Peter},
-  booktitle={Middleware 2001},
-  pages={329--350},
-  year={2001},
-  organization={Springer}
-}
-
-
-@article{tapestry,
-  title={Tapestry: A resilient global-scale overlay for service deployment},
-  author={Zhao, Ben Y and Huang, Ling and Stribling, Jeremy and Rhea, Sean C and Joseph, Anthony D and Kubiatowicz, John D},
-  journal={Selected Areas in Communications, IEEE Journal on},
-  volume={22},
-  number={1},
-  pages={41--53},
-  year={2004},
-  publisher={IEEE}
-}
-
-@article{plaxton1999accessing,
-    title={Accessing nearby copies of replicated objects in a distributed environment},
-    author={Plaxton, C Greg and Rajaraman, Rajmohan and Richa, Andrea W},
-    journal={Theory of Computing Systems},
-    volume={32},
-    number={3},
-    pages={241--280},
-    year={1999},
-    publisher={Springer}
-}
-
-@article{hildrum2004distributed,
-  title={Distributed object location in a dynamic network},
-  author={Hildrum, Kirsten and Kubiatowicz, John D and Rao, Satish and Zhao, Ben Y},
-  journal={Theory of Computing Systems},
-  volume={37},
-  number={3},
-  pages={405--440},
-  year={2004},
-  publisher={Springer}
-}
-
-
-@article{can,
-  title={A Scalable Content-Addressable Network},
-  author={Ratnasamy, Sylvia and Francis, Paul and Handley, Mark and Karp, Richard and Shenker, Scott},
-  year={2001}
-}
-
-@inproceedings{rowstron2001pastry,
-  title={Pastry: Scalable, decentralized object location, and routing for large-scale peer-to-peer systems},
-  author={Rowstron, Antony and Druschel, Peter},
-  booktitle={Middleware 2001},
-  pages={329--350},
-  year={2001},
-  organization={Springer}
-}
-
-
-@incollection{dolr,
-  title={Towards a common API for structured peer-to-peer overlays},
-  author={Dabek, Frank and Zhao, Ben and Druschel, Peter and Kubiatowicz, John and Stoica, Ion},
-  booktitle={Peer-to-Peer Systems II},
-  pages={33--44},
-  year={2003},
-  publisher={Springer}
-}
-
-@incollection{rhea2003structured,
-  title={Structured peer-to-peer overlays need application-driven benchmarks},
-  author={Rhea, Sean C and Roscoe, Timothy and Kubiatowicz, John},
-  booktitle={Peer-to-Peer Systems II},
-  pages={56--67},
-  year={2003},
-  publisher={Springer}
-}
-
-@inproceedings{ara-ants,
-  title={ARA-the ant-colony based routing algorithm for MANETs},
-  author={Gunes, Mesut and Sorges, Udo and Bouazizi, Imed},
-  booktitle={Parallel Processing Workshops, 2002. Proceedings. International Conference on},
-  pages={79--85},
-  year={2002},
-  organization={IEEE}
-}
-
-
-
 @article{milgram1967small,
   title={The small world problem},
   author={Milgram, Stanley},
@@ -173,82 +19,11 @@
 }
 
 
-@article{malkhi2001viceroy,
-  title={Viceroy: A Scalable and Dynamic Emulation of the Butterfly},
-  author={Malkhi, Dahlia and Naor, Moni and Ratajczak, David},
-  year={2001}
-}
-
-
-@article{watts1998collective,
-  title={Collective dynamics of ‘small-world’networks},
-  author={Watts, Duncan J and Strogatz, Steven H},
-  journal={nature},
-  volume={393},
-  number={6684},
-  pages={440--442},
-  year={1998},
-  publisher={Nature Publishing Group}
-}
-
-@article{kleinberg2000navigation,
-  title={Navigation in a small world},
-  author={Kleinberg, Jon M},
-  journal={Nature},
-  volume={406},
-  number={6798},
-  pages={845--845},
-  year={2000},
-  publisher={Nature Publishing Group}
-}
-
-
-@inproceedings{kleinberg2000small,
-  title={The small-world phenomenon: An algorithmic perspective},
-  author={Kleinberg, Jon},
-  booktitle={Proceedings of the thirty-second annual ACM symposium on Theory of computing},
-  pages={163--170},
-  year={2000},
-  organization={ACM}
-}
-
-@article{singh2012ant,
-  title={Ant colony algorithms in MANETs: A review},
-  author={Singh, Gurpreet and Kumar, Neeraj and Kumar Verma, Anil},
-  journal={Journal of Network and Computer Applications},
-  volume={35},
-  number={6},
-  pages={1964--1972},
-  year={2012},
-  publisher={Elsevier}
-}
-
-@article{correia2010simple,
-  title={Simple ant routing algorithm strategies for a (Multipurpose) MANET model},
-  author={Correia, Fernando and Vaz{\~a}o, Teresa},
-  journal={Ad Hoc Networks},
-  volume={8},
-  number={8},
-  pages={810--823},
-  year={2010},
-  publisher={Elsevier}
-}
-
-
 @article{shen2013scalable,
   title={A scalable and mobility-resilient data search system for large-scale mobile wireless networks},
   author={Shen, Haiying and Li, Ze and Chen, Kang},
   year={2013},
   publisher={IEEE}
-}
-
-@inproceedings{ratnasamy2002ght,
-  title={GHT: a geographic hash table for data-centric storage},
-  author={Ratnasamy, Sylvia and Karp, Brad and Yin, Li and Yu, Fang and Estrin, Deborah and Govindan, Ramesh and Shenker, Scott},
-  booktitle={Proceedings of the 1st ACM international workshop on Wireless sensor networks and applications},
-  pages={78--87},
-  year={2002},
-  organization={ACM}
 }
 
 
@@ -258,62 +33,6 @@
   booktitle={Proceedings of the twentieth annual symposium on Computational geometry},
   pages={253--262},
   year={2004},
-  organization={ACM}
-}
-
-@incollection{lichurn,
-  title={Comparing the performance of distributed hash tables under churn},
-  author={Li, Jinyang and Stribling, Jeremy and Gil, Thomer M and Morris, Robert and Kaashoek, M Frans},
-  booktitle={Peer-to-Peer Systems III},
-  pages={87--99},
-  year={2005},
-  publisher={Springer}
-}
-
-@inproceedings{induced,
-  title={Induced Churn as Shelter from Routing-Table Poisoning.},
-  author={Condie, Tyson and Kacholia, Varun and Sank, Sriram and Hellerstein, Joseph M and Maniatis, Petros},
-  booktitle={NDSS},
-  year={2006}
-}
-
-@book{wu2004handbook,
-  title={Handbook on theoretical and algorithmic aspects of sensor, ad hoc wireless, and peer-to-peer networks},
-  author={Wu, Jie},
-  year={2004},
-  publisher={CRC Press}
-}
-
-@article{dhtsec,
-  title={A survey of DHT security techniques},
-  author={Urdaneta, Guido and Pierre, Guillaume and Steen, Maarten Van},
-  journal={ACM Computing Surveys (CSUR)},
-  volume={43},
-  number={2},
-  pages={8},
-  year={2011},
-  publisher={ACM}
-}
-
-
-
-
-@inproceedings{li2013zht,
-  title={ZHT: A light-weight reliable persistent dynamic scalable zero-hop distributed hash table},
-  author={Li, Tonglin and Zhou, Xiaobing and Brandstatter, Kevin and Zhao, Dongfang and Wang, Ke and Rajendran, Anupam and Zhang, Zhao and Raicu, Ioan},
-  booktitle={Parallel \& Distributed Processing (IPDPS), 2013 IEEE 27th International Symposium on},
-  pages={775--787},
-  year={2013},
-  organization={IEEE}
-}
-
-
-@inproceedings{karp2000gpsr,
-  title={GPSR: Greedy perimeter stateless routing for wireless networks},
-  author={Karp, Brad and Kung, Hsiang-Tsung},
-  booktitle={Proceedings of the 6th annual international conference on Mobile computing and networking},
-  pages={243--254},
-  year={2000},
   organization={ACM}
 }
 
@@ -365,112 +84,6 @@
 
 
 
-@inproceedings{godfrey2005heterogeneity,
-  title={Heterogeneity and load balance in distributed hash tables},
-  author={Godfrey, P Brighten and Stoica, Ion},
-  booktitle={INFOCOM 2005. 24th Annual Joint Conference of the IEEE Computer and Communications Societies. Proceedings IEEE},
-  volume={1},
-  pages={596--606},
-  year={2005},
-  organization={IEEE}
-}
-
-@inproceedings{dynamo,
-    title={Dynamo: amazon's highly available key-value store},
-    author={DeCandia, Giuseppe and Hastorun, Deniz and Jampani, Madan and Kakulapati, Gunavardhan and Lakshman, Avinash and Pilchin, Alex and Sivasubramanian, Swaminathan and Vosshall, Peter and Vogels, Werner},
-    booktitle={ACM SIGOPS Operating Systems Review},
-    volume={41},
-    number={6},
-    pages={205--220},
-    year={2007},
-    organization={ACM}
-}
-
-
-
-
-@article{mapreduce,
-  title={MapReduce: {S}implified {D}ata {P}rocessing on {L}arge {C}lusters},
-  author={Dean, Jeffrey and Ghemawat, Sanjay},
-  journal={Communications of the ACM},
-  volume={51},
-  number={1},
-  pages={107--113},
-  year={2008},
-  publisher={ACM}
-}
-
-
-@inproceedings{shvachko2010hadoop,
-  title={The {H}adoop {D}istributed {F}ile {S}ystem},
-  author={Shvachko, Konstantin and Kuang, Hairong and Radia, Sanjay and Chansler, Robert},
-  booktitle={Mass Storage Systems and Technologies (MSST), 2010 IEEE 26th Symposium on},
-  pages={1--10},
-  year={2010},
-  organization={IEEE}
-}
-
-
-@misc{hadoop,
-	title={Hadoop},
-	note = {http://hadoop.apache.org/}
-}
-
-@article{marozzo2012p2p,
-    title={P2{P}-{M}ap{R}educe: {P}arallel {D}ata {P}rocessing in {D}ynamic {C}loud {E}nvironments},
-    author={Marozzo, Fabrizio and Talia, Domenico and Trunfio, Paolo},
-    journal={Journal of Computer and System Sciences},
-    volume={78},
-    number={5},
-    pages={1382--1402},
-    year={2012},
-    publisher={Elsevier}
-}
-
-
-@INPROCEEDINGS{leemap, 
-    author={Kyungyong Lee and Tae Woong Choi and Ganguly, A. and Wolinsky, D.I. and Boykin, P.O. and Figueiredo, R.}, 
-    booktitle={Parallel and Distributed Processing Workshops and Phd Forum (IPDPSW), 2011 IEEE International Symposium on}, 
-    title={Parallel {P}rocessing {F}ramework on a {P}2{P} {S}ystem {U}sing {M}ap and {R}educe {P}rimitives}, 
-    year={2011}, 
-    pages={1602-1609}, 
-    keywords={functional programming;multicast communication;parallel processing;pattern clustering;peer-to-peer computing;processor scheduling;tree data structures;Brunet P2P system;P2P nodes;PlanetLab;distributed K-Means clustering;distribution latency cost;functional programming models;map primitives;multicast method;parallel processing framework;reduce primitives;remote procedure call invocations;self-organizing multicast tree;structured peer-to-peer networks;task processing;Clustering algorithms;Data mining;Google;Monitoring;Parallel processing;Peer to peer computing;Routing}, 
-    doi={10.1109/IPDPS.2011.315}, 
-    ISSN={1530-2075},
-}
-
-
-
-@inproceedings{symphony,
-    title={Symphony: {D}istributed {H}ashing in a {S}mall {W}orld.},
-    author={Manku, Gurmeet Singh and Bawa, Mayank and Raghavan, Prabhakar and others},
-    booktitle={USENIX Symposium on Internet Technologies and Systems},
-    pages={10},
-    year={2003}
-}
-
-
-@article{brunet,
-  author    = {P. Oscar Boykin and
-               Jesse S. A. Bridgewater and
-               Joseph S. Kong and
-               Kamen M. Lozev and
-               Behnam Attaran Rezaei and
-               Vwani P. Roychowdhury},
-  title     = {A Symphony Conducted by Brunet},
-  journal   = {CoRR},
-  volume    = {abs/0709.4048},
-  year      = {2007},
-  ee        = {http://arxiv.org/abs/0709.4048},
-  bibsource = {DBLP, http://dblp.uni-trier.de}
-}
-
-@misc{hadoopAssumptions,
-  title = {Virtual Hadoop},
-  author = Apache,
-  note = {http://wiki.apache.org/hadoop/Virtual%20Hadoop}
-}
-
 
 @inproceedings{lee2012pond,
   title={Pond: dynamic creation of htc pool on demand using a decentralized resource discovery system},
@@ -480,7 +93,6 @@
   year={2012},
   organization={ACM}
 }
-
 
 
 
@@ -497,8 +109,6 @@
 }
 
 
-
-
 @inproceedings{anderson2004boinc,
   title={Boinc: A system for public-resource computing and storage},
   author={Anderson, David P},
@@ -509,60 +119,6 @@
 }
 
 
-@incollection{harren2002complex,
-  title={Complex queries in DHT-based peer-to-peer networks},
-  author={Harren, Matthew and Hellerstein, Joseph M and Huebsch, Ryan and Loo, Boon Thau and Shenker, Scott and Stoica, Ion},
-  booktitle={Peer-to-Peer Systems},
-  pages={242--250},
-  year={2002},
-  publisher={Springer}
-}
-
-
-@incollection{triantafillou2004towards,
-  title={Towards a unifying framework for complex query processing over structured peer-to-peer data networks},
-  author={Triantafillou, Peter and Pitoura, Theoni},
-  booktitle={Databases, Information Systems, and Peer-to-Peer Computing},
-  pages={169--183},
-  year={2004},
-  publisher={Springer}
-}
-
-@incollection{sybil,
-	title={The sybil attack},
-	author={Douceur, John R},
-	booktitle={Peer-to-peer Systems},
-	pages={251--260},
-	year={2002},
-	publisher={Springer}
-}
-
-@inproceedings{srivatsa2004vulnerabilities,
-	title={Vulnerabilities and security threats in structured overlay networks: A quantitative analysis},
-	author={Srivatsa, Mudhakar and Liu, Ling},
-	booktitle={Computer Security Applications Conference, 2004. 20th Annual},
-	pages={252--261},
-	year={2004},
-	organization={IEEE}
-}
-
-@inproceedings{p2p-cloud,
-	author = {Babaoglu, Ozalp and Marzolla, Moreno and Tamburini, Michele},
-	title = {Design and Implementation of a P2P Cloud System},
-	booktitle = {Proceedings of the 27th Annual ACM Symposium on Applied Computing},
-	series = {SAC '12},
-	year = {2012},
-	isbn = {978-1-4503-0857-1},
-	location = {Trento, Italy},
-	pages = {412--417},
-	numpages = {6},
-	url = {http://doi.acm.org/10.1145/2245276.2245357},
-	doi = {10.1145/2245276.2245357},
-	acmid = {2245357},
-	publisher = {ACM},
-	address = {New York, NY, USA},
-	keywords = {P2P systems, cloud computing, gossip algorithms},
-} 
 
 @article{larson2002folding,
 	title={Folding@ Home and Genome@ Home: Using distributed computing to tackle previously intractable problems in computational biology},
@@ -580,56 +136,4 @@
 	pages={50--55},
 	year={2014},
 	publisher={IEEE}
-}
-
-@article{CFS,
-	title={Wide-{A}rea {C}ooperative {S}torage with {CFS}},
-	author={Dabek, Frank and Kaashoek, M Frans and Karger, David and Morris, Robert and Stoica, Ion},
-	journal={ACM SIGOPS Operating Systems Review},
-	volume={35},
-	number={5},
-	pages={202--215},
-	year={2001},
-	publisher={ACM}
-}
-
-
-@article{voronoi,
-	title={Voronoi diagrams—a survey of a fundamental geometric data structure},
-	author={Aurenhammer, Franz},
-	journal={ACM Computing Surveys (CSUR)},
-	volume={23},
-	number={3},
-	pages={345--405},
-	year={1991},
-	publisher={ACM}
-}
-
-@inproceedings{manku2003symphony,
-	title={Symphony: Distributed Hashing in a Small World.},
-	author={Manku, Gurmeet Singh and Bawa, Mayank and Raghavan, Prabhakar and others},
-	booktitle={USENIX Symposium on Internet Technologies and Systems},
-	pages={10},
-	year={2003}
-}
-
-@article{bern1991expected,
-	title={The expected extremes in a Delaunay triangulation},
-	author={Bern, Marshall and Eppstein, David and Yao, Frances},
-	journal={International Journal of Computational Geometry \& Applications},
-	volume={1},
-	number={01},
-	pages={79--91},
-	year={1991},
-	publisher={World Scientific}
-}
-
-
-@incollection{raynet,
-	title={Peer to peer multidimensional overlays: Approximating complex structures},
-	author={Beaumont, Olivier and Kermarrec, Anne-Marie and Rivi{\`e}re, {\'E}tienne},
-	booktitle={Principles of Distributed Systems},
-	pages={315--328},
-	year={2007},
-	publisher={Springer}
 }
