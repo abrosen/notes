@@ -15,23 +15,28 @@ def decay(initial, t, halflife):
     return initial * (.5)**(t/halflife)
 
 
-def getLevels(initial, supplementals, halflife, interval,  num_sup=2, max_time=24):
+def getLevels(initial, supplementals, halflife, interval, max_time=24):
+    num_sup=len(supplementals)
     times = np.arange(0,max_time,0.1)
     levels = [decay(initial, t, halflife) for t in times]
-    for offset in xrange(1,num_sup+1):
+    for offset in range(1,num_sup+1):
         sup_levels =  np.zeros(interval*offset/0.1)
         sup_levels =  list(sup_levels) + [decay(supplementals[offset-1], t - interval*offset, halflife) for t in np.arange(interval*offset,max_time,0.1)]
-        print sup_levels
-        for i in xrange(len(levels)):
+        for i in range(len(levels)):
             levels[i] = levels[i]+sup_levels[i]
 
 
     return times, levels
 
-times0, levels0 =  getLevels(10,[10,5],2.1,3.5)
-times1, levels1 =  getLevels(10,[10,5],2.5,3.5)
-times2, levels2 =  getLevels(10,[10,5],2.9,3.5)
-times3, levels3 =  getLevels(10,[10,5],3.3,3.5)
+init = 10
+supplemental = [10,10]
+spacing = 4
+
+
+times0, levels0 =  getLevels(init,supplemental,2.1,spacing)
+times1, levels1 =  getLevels(init,supplemental,2.5,spacing)
+times2, levels2 =  getLevels(init,supplemental,2.9,spacing)
+times3, levels3 =  getLevels(init,supplemental,3.3,spacing)
 
 plt.plot(times0,levels0, 'go-',label = "half-life = 2.1")
 plt.plot(times1,levels1, 'ko-',label = "half-life = 2.5")

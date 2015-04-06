@@ -1,0 +1,354 @@
+
+\chapter{Proposal}
+
+DHTs have received a great deal of research due to their popularity as the backbone for structured P2P system primarily used for file-sharing.
+There are two recent and fairly open questions that I want to examine.
+
+\begin{enumerate}
+	\item How can DHTs effectively be used for distributed computations?  
+	In what contexts is this feasible:  only in the data center, or can a large-scale worldwide P2P network be used to do distributed computation?
+	Is it better to use DHTs as an organizing mechanism, or as the actual platform for computation.
+	\item How can nodes autonomously load balance?
+\end{enumerate}
+
+
+\section{DHT Distributed Computing}
+%TODO: Intro
+Distributed computing is a current trend and is the future trend.
+We see this in the development of cloud computing \cite{p2p-cloud}, volunteer computing frameworks like BOINC \cite{anderson2004boinc} and Folding@Home \cite{larson2002folding},and MapReduce  \cite{mapreduce}.
+Google's MapReduce  in particular has rapidly become an integral part in the world of data processing.  
+A user can use MapReduce to take a large problem, split it into small, equivalent tasks and send those tasks to other processors for computation.  
+The results are sent back to the user and combined into one answer. 
+
+Popular platforms for MapReduce, such as Hadoop \cite{hadoop}  \cite{shvachko2010hadoop}, are explicitly designed to be used in large datacenters \cite{hadoopAssumptions} and the majority of research has been focused there.  
+However, as we've previously noted, there are notable issues with a centralized design.
+
+First and foremost is the issue of fault-tolerance.
+Centralized designs have a single point of failure \cite{shvachko2010hadoop}.
+So long as all computing resources located in one geographical area or rely on a particular node, a power outage or catastrophic event could interrupt computations or otherwise disrupt the platform \cite{babaoglu2014people}.
+
+A centralized design assumes that the network is relatively unchanging and may not have mechanisms to handle node failure during execution or, conversely, cannot speed up the execution of a job by adding additional workers on the fly.  
+Many environments also anticipate a certain degree in homogeneity in the system.
+Finally deploying these systems and developing programs for them has an extremely steep learning curve.
+
+There is no reason that these assumptions need to be the case for MapReduce, or for many distributed computing frameworks in general.
+
+Moving away from the data center context opens up more possibilities for distributed computing, such as P2P clouds \cite{p2p-cloud}.
+However, without a centralized framework, the network needs some kind of protocol to organize the various components in the network.
+As part of our research, we developed a highly robust and distributed MapReduce framework based on Chord, called ChordReduce.
+
+There a number of reasons to used a DHT as the protocol for a distributed computing platform.
+First, nodes ID and their location in the network are strongly bound to what data they are responsible for, such that any node can lookup which node is responsible a particular piece of data.
+This obviates the need for a centralized organizer to maintain this bit of metadata or assign backups for data, as nodes can do this autonomously.
+DHTs assume that network is heterogeneous, rather than homogeneous.
+
+They have been used for over a decade for P2P file-sharing applications for these reasons.
+My goal is to further develop ChordReduce and create a DHT based platform for solving embarrassingly parallel problems using DHTs.
+
+\begin{itemize}
+	\item Build a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
+	\item Use this framework to implement a few of the more popular DHTs.
+	\item Create a  processor scoring mechanism for creating virtual nodes.
+	\item Do computing tasks over these implemented DHTs.
+	\begin{itemize}
+		\item The emphasis is our framework is optimized for robustness over everything.
+		\item Do we want to build a IaaS or PaaS?
+	\end{itemize}
+\end{itemize}
+
+
+%\subsubsection{P2P cloud}
+%http://www.cs.unibo.it:443/pub/TR/UBLCS/2011/2011-10.pdf
+
+%Clouds and Volunteer Computing platforms are different.
+%Clouds@home
+%Nanodatacenter
+
+\subsection{ChordReduce}
+
+
+ChordReduce is designed as a more abstract framework for MapReduce, able to run on any arbitrary distributed configuration.
+ChordReduce leverages the features of distributed hash tables to handle distributed file storage, fault tolerance, and lookup.  
+We designed ChordReduce to ensure that no single node is a point of failure and that there is no need for any node to coordinate the efforts of other nodes during processing.
+
+
+
+\subsubsection{File System}
+Our central design philosophy was to leverage as many features of the underlying DHT as possible.  
+For example, we don't need to create a new distributed file system as we can just use the DHT to hash file identifiers and use the DHT to store the file at the node responsible for that key.
+
+If the file is large, we can instead use Dabek et al.'s Cooperative File System or CFS \cite{CFS}.
+In CFS, files are split into approximately equally sized blocks.  
+Each block is treated as an individual file and is assigned a key equal to the hash of it's contents.  
+The block is then stored at the node responsible for that key. 
+The node which would normally be responsible for the whole file instead stores a \textit{keyfile}.  
+The keyfile is an ordered list of the keys corresponding to the files' block and is created as the blocks are assigned their respective keys.  
+When the user wants to retrieve a file, they first obtain the keyfile and then request each block specified in the keyfile.
+
+
+\subsubsection{Computation}
+
+
+ChordReduce treats each task or target computation as an object of data.
+This means we can distribute them in the same manner as files and rely on the protocol to route them and provide robustness.
+
+
+In ChordReduce, each node takes on responsibilities of both a worker node and master node, in the same way that a node in a P2P file-sharing service acts as both a client and a server.  
+A user starts a job contacts a node at a specified hash address and provides it with the tasks.  
+This address can be chosen arbitrarily or be a known node in the ring. 
+We call this node the \textit{stager} for this particular job.  
+
+The job of the stager divide the work into \emph{data atoms}, the smallest units of work. 
+This might represent block of text, the result of a summation for a particular intermediate value, or a subset of items to be sorted. 
+The specifics of how to divide the work are defined by the user in a \emph{stage} function.  
+The data atoms also contain user created Map and Reduce functions.
+
+If the user wants to perform a MapReduce job on a particular file on the network, the stager locates the keyfile for the data and creates a data atom for each block in the file.  
+Each data atom is then sent to the node responsible for their corresponding block.  
+When the data atom reaches it's destination node, that node retrieves the necessary data and applies the Map function.  
+The results are stored in a new data atom,  which are then sent back to the stager's hash address (or some other user defined address).  
+This will take $\log_{2} n$ hops traveling over Chord's fingers.  
+At each hop, the node waits a predetermined minimal amount of time to accumulate additional results (In our experiments, this was 100 milliseconds).  
+Nodes that receive at least two results merge them using the Reduce function.  
+The results are continually merged until only one remains at the hash address of the stager. 
+
+
+Some MapReduce jobs don't rely on a file stored on the network, such as a Monte-Carlo approximation
+In this case, the created data atoms are then each given a random hash and sent to the node responsible for that hash address, guaranteeing they are evenly distributed throughout the network. 
+From there, the execution is identical to the above scenario.
+
+
+%Once the data atoms are sent out, the stager's job is done and it behaves like any other node in the network. The staging period is the only time ChordReduce is vulnerable to churn, and only if the stager leaves the ring in the middle of sending out data atoms.  The user would get some results back, but only for the data the stager managed to send out.
+
+Once all the Reduce tasks are finished, the user retrieves his results from the node at the stager's address.  
+This may not be the stager himself, as the stager may no longer be in the network.  
+The stager does not need to collect the results himself, since the work is sent to the stager's hash address, rather than the stager itself.  
+Thus, the stager could quit the network after staging, and both the user and the network would be unaffected by the change. % Here, we are leverging two features. First, we use the automatic assignment of responsibility to automatically route the data to the sucessor.  %Second, the same process Chord uses to backup files is used to backup the intermediate data. 
+
+Similar precautions are taken for nodes working on Map and Reduce tasks.  
+Those tasks are backed up by a node's successor, who will run the task if the node leaves before finishing its work (e.g. the successor loses his predecessor).   
+The task is given a timeout by the node.  
+If the backup node detects that the responsible node has failed, he starts the work and backs up again to \emph{his} successor.  
+Otherwise, the data is tossed once the timeout expires.
+This is done to prevent a job being submitted twice.
+
+An advantage of our system is the ease of development and deployment.  
+The developer does not need to worry about distributing work evenly, nor does he have to worry about any node in the network going down. 
+ The stager does not need to keep track of the status of the network.  
+ The underlying Chord ring handles that automatically.  
+ If the user finds they need additional processing power during runtime, they can boot up additional nodes, which would automatically be assigned work based on their hash value.   
+ If a node goes down while performing an operation, his successor takes over for him.  
+ This makes the system extremely robust during runtime.
+
+
+\subsubsection{Robustness}
+Since the system is distributed, we need to assume that any member of the network can go down at any time.
+When a node fails or leaves Chord, the failed node's successor will become responsible for all of the failed nodes keys. 
+Likewise, each node in the ChordReduce network relies on their successor to act as a backup.
+
+To prevent data from becoming irretrievable, each node periodically sends backups to its successor.  
+In order to prevent a cascade of backups of backups, the node sends data that it is currently responsible for.  
+
+This changes as nodes enter and leave the network.  
+If a node's successor leaves, the node sends a backup to his new successor.  
+If the node fails, the successor is able to take his place almost immediately.  
+This scheme is used to not only backup files, but the computational tasks as well.
+
+This procedure prevents any single node failure or sequences of failures from harming the network. 
+Only the failure of multiple neighboring nodes poses a threat to the network's integrity.  
+
+Node's ID in the network does not map to a geographical locations.
+Any failure that affects multiple nodes simultaneously would be spread uniformly throughout the network.
+This means if successive nodes to fail simultaneously, they do so independently.
+
+Let each node has failure rate $r < 1$ and that the each node backs up their data with $s$ successive nodes downstream. 
+If one of these nodes fail, the next successive node takes its place and the next upstream node becomes another backup. 
+This ensures there will always be $s$ backups. 
+The integrity of the ring would only be jeopardized if $s+1$ successive nodes failed simultaneously.
+The chances of this would be $r^s+1$, as each failure would be independent.
+
+
+A final consequence of this is load-balancing during runtime.  
+When a joining node $n$ find his successor, $n$ asks if the successor is holding any data $n$ should be responsible for.  
+The successor looks at all the data $n$ is responsible for and sends it to $n$.  
+The successor maintains this data as a backup for $n$.  
+Because Map tasks are backed up in the same manner as data, a node can take the data and corresponding tasks he's responsible for and begin performing Map tasks immediately.
+
+
+
+\subsection{Heterogeneity Calculation}
+
+One of the advantages to using homogeneous hardware is that each machine, each core, each node is the same.
+To evenly distribute the workload, you just have to give each machine the same amount of work.
+
+This is more difficult in a heterogeneous system.
+Each machine can shoulder a different amount of work.
+How do we distribute work evenly across a heterogeneous system.
+
+We can solve this by adjusting the amount of nodes representing each machine in the network.
+Machines that can handle a larger load create more nodes in the network.
+Besides solving the heterogeneous load-balancing problem, increasing the number of nodes in the system increases the overall load-balancing of the system.
+
+
+The question I need to answer is ``how?''
+I need to create some unit of measurement for a distributed computing system and research if any other researchers have asked this problem (I haven't encountered any in my reading).
+Furthermore, this measurement might need to be relative to other nodes in the network, since the only basis for comparison are the scores of the peers.
+
+Finally, this process needs to be handled autonomously by each node, which is the other primary focus of my proposal.
+\section{Autonomous Load Balancing}
+
+
+
+During our experiments testing the capabilities of ChordReduce, we experienced a significant and completely unexpected anomaly while testing churn.
+One of the things previous research \cite{marozzo2012p2p}  \cite{leemap} in the same area we felt we needed to explore better was how a completely decentralized computation could handle churn.
+Now, despite our initial prototype being buggy and was only able to handle smallish networks, we were fairly certain of it's ability to handle churn.
+
+Marozzo et al.\ \cite{marozzo2012p2p} tested their network using churn rates of 0.025\%, 0.05\%, 0.1\%, 0.2\%, and 0.4\% per minute.
+The churn rate of $cr << 1$ per minute means that each minute on average, $cr \cdot n$ nodes leave the network and $cr \cdot n$  new nodes join the network.\footnote{It is standard practice to assume the joining rate and leaving rate are equal.}
+This could effectively be thought of as each node flipping a weighted coin every minute.
+When the coin lands on tails, the node leaves.
+A similar process happens for nodes wanting to join the network.
+
+We wanted the rubustness of our system to be beyond reproach, so we tested at rates from 0.0025\% to 0.8\% \textbf{\textit{per second}}, 120 times the fastest rate used to test P2P-MapReduce.
+This is an absurdly fast and unrealistic speed, the only purpose of which was to cement the robustness of the system.
+Since we were testing ChordReduce on Amazon's EC2 and paying per instance per hour, we didn't use any more nodes than necessary.
+Rather than having a pool of nodes waiting to join the network, we conserved our funds by having leaving nodes immediately rejoin the network under a new IP/port combo.
+The meant our churn operation was essentially a simultaneous leave and join.
+
+
+What we found was that jobs on ChordReduce finished twice as fast under the unrealistic levels churn (0.8\% per second) than no churn.
+This completely mystified us. 
+Churn is a disruptive force; how can it be aiding the network?
+
+\subsection{Hypothesis}
+We hypothesize this was due to the number of data pieces (larger) vs the number of workers (smaller).
+There were more workers than there were pieces of data, so some workers ended up with more data than others in the initial distributio.
+This means that there was some imbalance in the way data was distributed among nodes.
+This was \textit{further} exacerbated by small number of workers distributed over a large hash space, leading some nodes to have larger swaths of responsibility than others.
+
+Given this setup, without any churn, the operation would be:
+Workers get triggered, they start working, and the ones with little work finish their work quickly, and the network waits for the node with a bunch of work.
+
+Its important to note here that the work in ChordReduce was performed atomically, a piece at a time.
+When a node was working on a piece, it informed it's successor, then informed them when it finished.
+These pieces of work were also small, possibly too small.
+
+As mentioned previously, under our induced experimental churn, we had the nodes randomly fail and immediately join under a new IP/port combination, which yields a new hash.
+The failure rates were orders of magnitude higher than what would be expected in a ``real'' (nonexperimental) environment.
+The following possibilities could occur:
+\begin{itemize}
+	\item An node without any active jobs leaves.
+	It dies and and comes back with a new port chosen.
+	This new ID has a higher chance of landing in a larger region of responsibility (since larger regions are larger and new joining nodes have a greater ``chance'' of hashing to that location).
+	In other words, it has a (relatively) higher chance of moving into an space where it becomes acquires responsibility for enqueued jobs.
+	The outcomes of this are:
+	\begin{itemize}
+		\item The node rejoins in a region are doesn't acquire any new jobs.
+		This has no impact on the network (Case I).
+		\item The node rejoins in a region that has a jobs waiting to be done.
+		It acquires some of these jobs.
+		This speeds up performance (Case II).
+	\end{itemize}
+	\item A node with active jobs dies.
+	It rejoins in a new space.
+	The jobs were small, so not too much time is lost on the active job, and the enqueued jobs are backed up and the successor knows to complete them.
+	However, the node can rejoin in a more job-heavy region and acquire new jobs.
+	The outcomes of this are:
+	\begin{itemize}
+		\item A minor negative impact on runtime and load balancing (since the successor has more jobs to deal with) (Case III).
+		\item A possible counterbalance in load balancing by acquiring new jobs off a busy node (Case ``It probably evens out'').
+	\end{itemize}
+\end{itemize}
+
+Now here's the trick.
+The longer the nodes work on the jobs, the more nodes finish and have no jobs.
+This means as time increases, so do the occurrences that Case I and II occur.
+
+
+This leads us to two hypotheses:
+\begin{itemize}
+	\item Deleting nodes motivates other nodes to work harder to avoid deletion (a ``beatings will continue until morale improves'' situation).
+	\item Our high rate of churn was dynamically load-balancing the network.
+	It appears even the smallest effort of trying to dynamically load balance, such as rebooting random nodes to new locations, has benefits for runtime.
+	Our method is a horrible approximation of dynamic load-balancing, and it still shows improvement.
+\end{itemize}
+
+The first hypothesis is mentally pleasing to anyone who has tried to create a distributed system, but lacks rigor.
+
+
+We still have to verify the existence of this phenomena in an independent experiment.
+
+
+The questions and goals here are straight forward:
+\begin{itemize}
+	\item Further establish the phenomena exists.
+	\item We stumbled across this phenomena with a brute force method and still got promising results.  
+	Can we create a more accurate and mean
+	\item Can this phenomena be stochastically modeled or otherwise predicted via theoretical analysis?
+	\item In what contexts can this be used for DHTs?  Distributed computing?  Replication for file sharing?
+
+\end{itemize}
+
+
+
+My proposed scheme works like this: a node that determines that it can carry more of the network's weight.
+How it does this is a problem that needs to be solved.
+Regardless, once it has made this determination, the node choose an area in the keyspace for it to inject a replica into.
+
+This ties into the security research on DHTs I have done.
+
+
+
+\subsection{Sybil Attacks and Injection}
+We discovered injecting replicas is easy and simple in P2P networks, we use a Sybil attack.
+This was the focus of my Data Security project
+I hypothesize we can Sybil attacks for improving load balancing on demand.
+
+
+One of the key properties of structured peer-to-peer (P2P) systems is the lack of a centralized coordinator or authority.
+P2P systems remove the vulnerability of a single point of failure and the susceptibility to a denial of service attack \cite{sybil}, but in doing so, open themselves up to new attacks.
+
+Completely decentralized P2P systems are vulnerable to \textit{Eclipse attacks}, whereby an attacker completely occludes healthy nodes from one another.
+This prevents them from communicating without being intercepted by the adversary.
+Once an Eclipse attack has taken place, the adversary can launch a variety of crippling attacks, such as incorrectly routing messages or returning malicious data \cite{srivatsa2004vulnerabilities}.
+
+
+
+One way to accomplish this attack is to perform a \emph{Sybil attack} \cite{sybil}.
+In a Sybil attack, the attacker masquerades as multiple nodes, effectively over-representing the attacker's presence in the network to maximize the number of links that can be established with healthy nodes.
+If enough malicious nodes are injected into the system, the majority of the nodes will be occluded from one another, successfully performing an Eclipse attack.
+
+This vulnerability is well known \cite{dhtsec}. 
+Extensive research has been done assessing the damage an attacker can do after establishing themselves \cite{srivatsa2004vulnerabilities}.
+%Especially when a hash value to assign neighbors
+Little focus has been done on examining how the attacker can establish himself in the first place and precisely how easily the Sybil attack can be accomplished.
+
+
+%TODO: add security citation for self
+I focused on looking at the computational and memory costs of creating as many replicas as possible.
+The computation costs turn out to be fairly trivial and can be precomputed based on how IDs are assigned, a process I call \textit{mashing}.
+If a node obtains their ID via an IP/Port combination, and we limit an attacker to using only ephemeral IP addresses (16383 total), the per node cost of mashing is quite low.
+Per node, it takes 48 milliseconds to mash 16383 IP/Port combinations and only 352 kilobytes to store this information after precomputing it.
+
+
+An attacker would do this for each of his nodes, then join the network and insert as many Sybils as possible.
+I calculated that it would take only 1221 IP addresses to compromise 50\% of the links in a 20,000,000 node network.
+
+An altruistic member of the network could only inject replicas where they are needed.
+
+
+
+
+
+So given that we want nodes to insert nodes Why not let nodes choose keys manually or at random?
+First, this is bad practice which makes a Sybil attacks trivially easy to perform.
+Second, one of the primary benefits of using consistent hashing is that it allows a selection of conitguious keys to map to a uniform distribution.
+Most importantly for us, this distribution can be precomputed and reproduced as needed. 
+%Finally, putting constraints on what is used to generate IDs makes it more
+
+
+Perhaps we need an entirely new node type, a sentinel that exists merely for checking traffic conditions and load.
+This also breaks how we think of normal nodes.
+
+One assertion is why not use some kind of mechanism for ensuring even distribution of nodes?
+The issue there is that our solutions for doing this are centralized distribution or a spring-model mechanism (or the binning mechanism of Dynamo, but the paper is a bit roundabout on how to do that).

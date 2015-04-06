@@ -1,0 +1,192 @@
+\chapter{Introduction}
+\label{chapter:intro}
+% % % layout
+% % % Distributed Computing Challenges
+% % % Qualities of DHTs
+% % % Hypothesis = These Problems + These qualiteies -> solution
+% % % Framework of what these solutions are and what they can do
+
+Distributed Computing is well understood to be the approach to take to solve large problems.  
+Many problems can be broken up into multiple parts that can be solved simultaneously, yielding a much quicker result than a single working attacking the problem.
+However, there are two broad obstacles in distributed computing.
+
+%Is this 1 problem or two
+The first is figuring out how the mechanics of efficiently distributing a problem to multiple workers and asynchronously coordinating their effort.  
+The second is creating and maintaining the computation platform itself.
+
+
+Some specific challenges are:
+\begin{description}
+	\item[Scalability] - Distributed computing platforms should not be completely static; if the platform would be improved by the addition of a new resource, it should be possible to add that resource.  
+	The addition of new workers in a distributed computing framework should be a minimally disruptive process.
+    This ties into the network's fault tolerance
+	\item[Load-Balancing]  This is one of the most important issues to consider when creating a framework for distributed computing. 
+    How do you split up a problem then distribute it so that no single worker is under or over-utilized?
+    Failing that, how do you minimize the imbalance in work?
+    Is there a way to do so at run time?
+    \item[Fault Tolerance]  Even in a network that is expected to remain static for long periods of time, the platform still has to deal with failure.  
+    In a centralized environment, hardware failures are common given enough machines.
+    We want our platform to gracefully handle failures during runtime and be able to quickly reassign work to other workers.
+    In addition, the network should be equally graceful in handling the introduction of new nodes during runtime.
+\end{description}
+
+Fortunately, these challenges are not unique to distributed computing but are also obstacles in distributed file storage.  
+In particular, distributed file storage applications that utilize Distributed Hash Tables are designed to handle these particular challenges.
+\section{Distributed Hash Tables}
+%\section{DHTs are better for distributed computing under many circumstances}
+Distributed Hash Tables (DHTs) are traditionally used as the backbone of structured Peer-to-Peer (P2P) file-sharing applications.
+The largest such application by far is Bittorrent \cite{bittorrent}, which is built using Mainline DHT \cite{mainline},  a  derivative of Kademlia \cite{kademlia}.
+The number of users on Bittorrent ranges from 15 million to 27 million users daily, with a turnover of 10 million users a day \cite{mainlineMeasure}.
+
+Most research on DHTs assumes that they will be used in the context of a large P2P file-sharing application  (or at least, an application \textit{potentially} incorporating millions of nodes).
+This lends the DHT to having particular qualities.
+The network must be able to handle members joining and leaving arbitrarily.
+The resulting application must be agnostic towards hardware.
+The network must be decentralized and split whatever burden there is equally among its members.
+
+In other words, distributed hash tables provide scalability, load-balancing, robustness, and heterogeneity to an application.
+More recent applications have examined leveraging these qualities, since these qualities are desirable in many different frameworks.
+For example, one paper \cite{Mateescu2011440} used a DHT as the name resolution layer of a large distributed database.
+Research has also been done in using DHTs as an organizing mechanism in distributed machine learning \cite{liparameter}. 
+
+
+I describe each of the aforementioned qualities and their ramifications below in sections \ref{subsec:ft}, \ref{subsec:lb}, \ref{subsec:scalability}, and \ref{subsec:hetero} .
+While these properties are  be individually enumerated, they are greatly intertwined and the division between their impacts can be somewhat arbitrary.
+
+\subsection{Robustness and Fault-Tolerance}
+\label{subsec:ft}
+One of the most important assumptions of DHTs is that they are deployed on a non-static network.
+DHTs need to be built to account for a high level what is called \textit{churn}.  
+Churn refers to the disruption of routing caused by the constant joining and leaving of nodes.
+This is mitigated by a few factors.
+
+First, the network is decentralized, with no single node acting as a single point of failure.
+This is accomplished by each node in the routing table having a small portion of the both the routing table and the information stored on the DHT (see the Load Balancing property below).
+
+Second is that each DHT has an inexpensive maintenance processes that mitigates the damage caused by churn.
+DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighbors can immediately assume responsibility.
+The join process also causes disruption to the network, as affected nodes have adjust their peerlists to accommodating the joiner. 
+
+The last property is that the hash algorithm used to distribute content evenly across the network(again see load balancing) also distributes nodes evenly across the DHT.  
+This means that nodes in the same geographic region occupy vastly different positions in the keyspace.  
+If an entire geographic region is affected by a network outage, this damage is spread evenly across the DHT, which can be handled.
+
+This property is the most important, as it deals with failure of entire sections of the network, rather than a single node.
+Recent research in using DHTs for High End Computing \cite{li2013zht} shows what can happen if we remove this assumption by placing the network that is almost completely static.
+
+The fault tolerance mechanisms in DHTs also provide near constant availability for P2P applications.
+The node that is responsible for a particular key can always be found, even when numerous failures or joins occur \cite{chord}.
+
+\subsection{Load Balancing}
+\label{subsec:lb}
+All Distributed Hash Tables use some kind of consistent hashing algorithm to associate nodes and file identifiers with keys.  
+These keys are generated by passing the identifiers into a hash function, typically SHA-160.
+The chosen hash function is typically large enough to avoid hash collisions and generates keys in a uniform manner. 
+The result of this is that as more nodes join the network, the distribution of nodes in the keyspace becomes more uniform, as does the distribution of files.
+
+However, because this is a random process, it is highly unlikely that each node will be spread evenly throughout the network.
+This appears to be a weakness, but can be turned into an advantage in heterogeneous systems by using \textit{virtual nodes} \cite{godfrey2005heterogeneity} \cite{dynamo}.
+When a node joins the network, it joins not at one position, but multiple virtual positions in the network \cite{dynamo}.
+Using virtual nodes allows load-balance optimization in a heterogeneous network; more powerful machines can create more virtual nodes and handle more of the overall responsibility in the network.
+
+DeCandia et al\. discussed various load balancing techniques that were tested on Dynamo \cite{dynamo}.  
+Each node was assigned a certain number of tokens and the node would create a virtual node for each token.
+The realization DeCandia et al\. had was that there was no reason to use the same scheme for data partitioning and data placement.
+DeCandia et al\. introduced two new strategies which work off assigning nodes equally sized partitions.
+
+
+% HELP
+Under these schemes, each virtual node maps to an ID as before, but the patitions each node is responsible for are equally sized\footnote{Need help here}.
+
+\subsubsection{Heterogeneity}
+\label{subsec:hetero}
+Heterogenity presents a challenge for load balancing DHTs due to conflicting assumptions and goals. 
+DHTs assume that members are usually going to be varied in hardware, while the load-balancing process defined in DHTs treats each node equally.
+It is much simpler to treat each node as equal unit.
+In other words, DHTs support heterogeneity, but do not attempt to exploit it.
+
+This doesn't mean that heterogeneity cannot be exploited
+Nodes can be given addition responsibilities manually, by running multiple instances of the P2P application on the same machine or creating more virtual nodes.
+However, this is not a feasible option for any kind of truly decentralized system and would need to be done automatically.
+There is no well-known mechanism to that exists to automatically  allocate virtual nodes on the fly \footnote{citation needed, although this can be similar to IRM}. 
+A few options present themselves.  % and are discuessed in \ref{}
+%add the above if the below is moved
+
+%This might be the wrong place for this
+One is to use adapt a request tracking mechanism, such as what is used in IRM, except instead of tracking file requests, it tracks requests that are directed to a particular (real) node. 
+If a particular (real) node receives an inordinate amount of requests, the node doing the detecting suggests that the node obtain another token/create another virtual node.
+Another strategy is to use the preference lists/successor predecessor lists, and observe the distribution of the workload, adjusting the virtual nodes based on that. 
+
+Dynamic load balancing may not be essential to P2P file-sharing applications, but is absolutely essential to any kind of P2P distributed computation.
+In our ChordReduce experiments, we observed that just approximating dynamic load-balancing by simulating high levels of churn noticeably improved results\footnote{We found this by accident, just by testing the network's fault tolerance in regards to a high level of churn}.
+
+
+
+%While most DHTs follow this scheme, there is some minor variation on how keys are generated.
+%Some DHTs can or do use geographic information to generate keys.
+%In VHash, keys are not static, but move according to a simplified spring model.
+
+\subsection{Scalability}
+\label{subsec:scalability}
+In order to maintain scalability, a DHT has to ensure that as the network grows larger:
+
+\begin{itemize}
+    \item Churn does not have a disproportionate overhead.  
+    For example, in a 1000 node network, a joining or leaving node will affect only an extremely small subset of these nodes.
+    \footnote{We will see that this requirement can  be  relaxed in  very specific cases \cite{li2013zht}.}
+    \item Lookup request speeds (usually measured in hops) grow by a much smaller amount, possibly not at all.
+\end{itemize}
+
+Using consistent hashing allows the network to scale up incrementally, adding one node at a time \cite{dynamo}.
+In addition, each join operation has minimal impact on the network, since a node affects only its immediate neighbors on a join operation.
+Similarly, the only nodes that need to react to a node leaving are its neighbors.
+This is almost instantaneous if the network is using backups.
+Other nodes can be notified of the missing node passively through maintenance or in response to a lookup.
+
+There have been multiple proposed strategies for tackling scalability, and it is these strategies which play the greatest role in driving the variety of DHT architectures. 
+Each DHT must strikes a balance between memory cost of the peerlist and lookup time. 
+The vast majority of DHTs choose to use $\lg(N)$ sized routing tables and  $\lg(n)$ hops\footnote{log n or log N, matters}. 
+Chapter \ref{chapter:background} discusses these tradeoffs in greater detail and how they affect the each DHT.
+
+
+
+
+
+%\section{Different or subproblem: Certain DHTs are better at one application than another due to differences}
+%\subsection{Design Differences Impacts}
+%\subsection{Geometries}
+%\subsection{Routing Table Construction}
+%\subsection{Implementation Differences Impacts}
+%\paragraph{Recursive or iterative seek}
+
+
+\section{Hypothesis:  problems in distributed computing + solutions =  dissertation topic}
+Distributed computing platforms need to be scalable, fault-tolerant, and load balancing.
+In addition, the ability to incorporate heterogeneous hardware is a definite benefit.
+Distributed Hash Tables can provide an application with all of these qualities.
+P2P applications have been using DHTs for large-scale distributed file sharing applications for years now and are particularly effective.
+
+
+I propose that DHTs can be used to create P2P distributed computing platforms that are completely decentralized.
+Rather than keys being assigned to some data, we can assign keys to tasks and automatically distribute those tasks to the responsible nodes
+There would be no need for some central coordinator or scheduler.
+
+A successful DHT based computing platform would need to address the problem of dynamic load-balancing.
+This is currently an unsolved problem and if an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management.
+If a computation  is running too slow, new nodes can be added to the network  during runtime or idle nodes can boot up more virtual nodes (now that I think of it this is two different but highly related problems: internal and external).
+
+
+The next chapter will delve into how DHTs work and examine specific DHTs.
+The remainder of the paper will then discuss the work I plan on doing to demonstrate the viability of using DHTs for distributed computing.
+
+
+%Add these bullets to the above paragraph
+%\begin{itemize} 
+%	\item DHTs can use consistent hashing supplemented by virtual nodes to efficiently load-balance.
+%	The larger the network grows, the more evenly distributed the load becomes. 
+%	\item DHTs are highly resilient to damage and can handle abnormally high rates of disruption.  
+%	This is extremely desirable in any kind of distributed application %
+%	\item Large-scale P2P file sharing applications have been using DHTs for a long time and
+%    \item DHTs are extremely good if your problem is embarrassingly par
+%    \item Heterogeneity
+%\end{itemize}
