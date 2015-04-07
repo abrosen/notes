@@ -10,12 +10,26 @@ where each “_” is a single digit.
 # the sqrt of 1_2_3_4_5_6_7_8_9 must end in 3 or 7
 # 1_2_3_4_5_6_7_8_  must sumdigit %4 == 0 
 # max number in search space 1929394959697989900
-# it's square root is 1389026623.ajfosdfja
-# so 1389026620 is max
+# sqrt(19293949596979899)
+# 138902662.31062636
+# so 138902662 is max
+# 138902659
 
 
 
 # less search space if we use sqrt
 import math
 
-print(math.sqrt(1929394959697989900))
+def doTheThing():
+    ans = 0
+    for i in range(138902659,0,-2):
+        x = str(i**2)
+        if x[0::2] == '123456789':
+            ans = i
+            break
+    print(ans*10)
+    
+    
+if __name__ == '__main__':
+    doTheThing()
+    
