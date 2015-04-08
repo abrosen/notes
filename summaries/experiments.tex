@@ -25,7 +25,8 @@ The steps involved in this are listed below.
 	\item Create a  processor scoring mechanism for creating virtual nodes.
 	\begin{itemize}
 		\item This score is a relative score, since the amount of work a node can carry is determined by the amount other nodes can carry.
-		
+		\item The score is based off of processor speed (maybe using Bogomips as the default for a while).
+		\item This is compared to the scores of neighboring nodes  of all the node's replicas and should give a gauge of the node's relative processing power.
 		\item This ties in directly to the autonomous load balancing.
 	\end{itemize}
 	\begin{itemize}
