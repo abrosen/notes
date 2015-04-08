@@ -3,15 +3,40 @@
 
 \section{Distributed DHT Computing}
 
-\subsection{Abstract Framework}
-This portion has been done jointly with Brendan.
 
 
-\subsection{}
+
+Our goal is to further develop ChordReduce and release a complete verion: a DHT based platform for solving embarrassingly parallel problems using DHTs.
+The steps involved in this are listed below.
+
+\begin{itemize}
+	\item We must create a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
+	\begin{itemize}
+		\item This will be done in Python3 jointly with Brendan.
+		\item We will be using test driven design.
+		\item The goal of this step is \textbf{not} to create a DHT, but to create an easily extensible abstract framework anyone to make DHTs.
+		\item The abstraction comes from implementing the relationship we found between DHT spheres of responsibility and Voronoi tessellations
+	\end{itemize}
+	\item We will use the above framework to implement a few of the more popular DHTs.
+	\begin{itemize}
+		\item This will serve as both examples for home to implement our framework as well and the building blocks for the next step.
+	\end{itemize}
+	\item Implement MapReduce on these DHTs and compare their performances.
+	\item Create a  processor scoring mechanism for creating virtual nodes.
+	\begin{itemize}
+		\item This score is a relative score, since the amount of work a node can carry is determined by the amount other nodes can carry.
+		
+		\item This ties in directly to the autonomous load balancing.
+	\end{itemize}
+	\begin{itemize}
+		\item The emphasis is our framework is optimized for robustness over everything else.
+	\end{itemize}
+	
+\end{itemize}
+
 
 
 \section{Autonomous load balancing}
 
-\subsubsection{}
 
 

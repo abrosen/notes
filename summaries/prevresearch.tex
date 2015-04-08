@@ -43,18 +43,6 @@ This obviates the need for a centralized organizer to maintain this bit of metad
 DHTs assume that network is heterogeneous, rather than homogeneous.
 
 They have been used for over a decade for P2P file-sharing applications for these reasons.
-My goal is to further develop ChordReduce and create a DHT based platform for solving embarrassingly parallel problems using DHTs.
-
-\begin{itemize}
-	\item Build a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
-	\item Use this framework to implement a few of the more popular DHTs.
-	\item Create a  processor scoring mechanism for creating virtual nodes.
-	\item Do computing tasks over these implemented DHTs.
-	\begin{itemize}
-		\item The emphasis is our framework is optimized for robustness over everything.
-		\item Do we want to build a IaaS or PaaS?
-	\end{itemize}
-\end{itemize}
 
 
 %\subsubsection{P2P cloud}
@@ -190,7 +178,7 @@ Machines that can handle a larger load create more nodes in the network.
 Besides solving the heterogeneous load-balancing problem, increasing the number of nodes in the system increases the overall load-balancing of the system.
 
 
-The question I need to answer is ``how?''
+The question we must answer is ``how?''
 I need to create some unit of measurement for a distributed computing system and research if any other researchers have asked this problem (I haven't encountered any in my reading).
 Furthermore, this measurement might need to be relative to other nodes in the network, since the only basis for comparison are the scores of the peers.
 
@@ -209,7 +197,7 @@ This could effectively be thought of as each node flipping a weighted coin every
 When the coin lands on tails, the node leaves.
 A similar process happens for nodes wanting to join the network.
 
-We wanted the rubustness of our system to be beyond reproach, so we tested at rates from 0.0025\% to 0.8\% \textbf{\textit{per second}}, 120 times the fastest rate used to test P2P-MapReduce.
+We wanted the robustness of our system to be beyond reproach, so we tested at rates from 0.0025\% to 0.8\% \textbf{\textit{per second}}, 120 times the fastest rate used to test P2P-MapReduce.
 This is an absurdly fast and unrealistic speed, the only purpose of which was to cement the robustness of the system.
 Since we were testing ChordReduce on Amazon's EC2 and paying per instance per hour, we didn't use any more nodes than necessary.
 Rather than having a pool of nodes waiting to join the network, we conserved our funds by having leaving nodes immediately rejoin the network under a new IP/port combo.
