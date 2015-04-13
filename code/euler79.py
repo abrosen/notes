@@ -3,8 +3,8 @@
 FILE =  "p079_keylog.txt"
 
 class Node(object):
-    self.out = []
-    self.incoming = []
+    out = []
+    incoming = []
     def __init__(self, name):
         self.name = name
     
@@ -15,6 +15,8 @@ class Node(object):
         self.incoming.append(e)
 
 
+
+
 def doTheThing():
     attempts = list(set(open(FILE, 'r').read().split()))
     
@@ -23,7 +25,21 @@ def doTheThing():
     print(attempts)
     
     
-    nodes = set()
+    nums = []
+    for attempt in attempts:
+        for num in attempt:
+            if num not in nums:
+                nums.append(num)
+        
+    nodes = []
+    
+    for num in nums:
+        nodes.append(Node(num))
+    
+    for attempt in attempts:
+        pass
+    
+    
     ordering = []
     S = set()
     
