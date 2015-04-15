@@ -12,9 +12,12 @@ def buildDict(words):
 def doTheThing():
 	words = open(FILE).read().split(',')
 	words = list(map(lambda x: x.strip('"'), words))
-	d =  buildDict(words)
-	print(d)
-
+	d = buildDict(words)
+	anagrams = []
+	for combo in d:
+		if len(d[combo]) > 1:
+			anagrams.append(d[combo])
+	print(anagrams)
 
 if __name__ == '__main__':
 	doTheThing()
