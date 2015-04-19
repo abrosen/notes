@@ -7,51 +7,50 @@
 % % % Framework of what these solutions are and what they can do
 
 Distributed Computing is well understood to be the approach to take to solve large problems.  
-Many problems can be broken up into multiple parts that can be solved simultaneously, yielding a much quicker result than a single working attacking the problem.
+Many problems can be broken up into multiple parts that can be solved simultaneously, yielding a much quicker result than a single worker attacking the problem.
 However, there are two broad obstacles in distributed computing.
 
 %Is this 1 problem or two
-The first is figuring out how the mechanics of efficiently distributing a problem to multiple workers and asynchronously coordinating their effort.  
+The first is figuring out the mechanics of efficiently distributing a problem to multiple workers and asynchronously coordinating their effort.  
 The second is creating and maintaining the computation platform itself.
 
 
 Some specific challenges are:
 \begin{description}
-	\item[Scalability] - Distributed computing platforms should not be completely static; if the platform would be improved by the addition of a new resource, it should be possible to add that resource.  
+	\item[Scalability] - Distributed computing platforms should not be completely static and should grow to accommodate new needs.
+	If a platform would be improved by the addition of a new resource, it should be possible to easily add that resource.
 	The addition of new workers in a distributed computing framework should be a minimally disruptive process.
-    This ties into the network's fault tolerance
+    This ties into the concept of fault tolerance.
+	\item[Fault Tolerance]  Even in a network that is expected to remain static for long periods of time, the platform still has to deal with node failures.  
+	We want our platform to gracefully handle failures during runtime and be able to quickly reassign work to other workers.
+	In addition, the network should be equally graceful in handling the introduction of new nodes during runtime.
 	\item[Load-Balancing]  This is one of the most important issues to consider when creating a framework for distributed computing. 
     How do you split up a problem then distribute it so that no single worker is under or over-utilized?
     Failing that, how do you minimize the imbalance in work?
     Is there a way to do so at run time?
-    \item[Fault Tolerance]  Even in a network that is expected to remain static for long periods of time, the platform still has to deal with failure.  
-    In a centralized environment, hardware failures are common given enough machines.
-    We want our platform to gracefully handle failures during runtime and be able to quickly reassign work to other workers.
-    In addition, the network should be equally graceful in handling the introduction of new nodes during runtime.
 \end{description}
 
-Fortunately, these challenges are not unique to distributed computing but are also obstacles in distributed file storage.  
-In particular, distributed file storage applications that utilize Distributed Hash Tables are designed to handle these particular challenges.
+Fortunately, these challenges are not unique to distributed computing.  
+Most notably, distributed file storage applications that utilize Distributed Hash Tables are designed to handle these particular challenges.
 \section{Distributed Hash Tables}
 %\section{DHTs are better for distributed computing under many circumstances}
 Distributed Hash Tables (DHTs) are traditionally used as the backbone of structured Peer-to-Peer (P2P) file-sharing applications.
 The largest such application by far is Bittorrent \cite{bittorrent}, which is built using Mainline DHT \cite{mainline},  a  derivative of Kademlia \cite{kademlia}.
 The number of users on Bittorrent ranges from 15 million to 27 million users daily, with a turnover of 10 million users a day \cite{mainlineMeasure}.
 
-Most research on DHTs assumes that they will be used in the context of a large P2P file-sharing application  (or at least, an application \textit{potentially} incorporating millions of nodes).
-This lends the DHT to having particular qualities.
+Most research on DHTs assumes that DHTs will be used in the context of a large P2P file-sharing application  (or at least, an application \textit{potentially} incorporating millions of nodes).
+This leads the DHT to having particular qualities.
 The network must be able to handle members joining and leaving arbitrarily.
 The resulting application must be agnostic towards hardware.
 The network must be decentralized and split whatever burden there is equally among its members.
 
 In other words, distributed hash tables provide scalability, load-balancing, robustness, and heterogeneity to an application.
-More recent applications have examined leveraging these qualities, since these qualities are desirable in many different frameworks.
+Recent applications have leveraged these qualities, since these qualities are desirable in many different frameworks.
 For example, one paper \cite{Mateescu2011440} used a DHT as the name resolution layer of a large distributed database.
 Research has also been done in using DHTs as an organizing mechanism in distributed machine learning \cite{liparameter}. 
 
-
-I describe each of the aforementioned qualities and their ramifications below in sections \ref{subsec:ft}, \ref{subsec:lb}, \ref{subsec:scalability}, and \ref{subsec:hetero} .
-While these properties are  be individually enumerated, they are greatly intertwined and the division between their impacts can be somewhat arbitrary.
+We describe each of the aforementioned qualities and their ramifications below in sections \ref{subsec:ft}, \ref{subsec:lb}, \ref{subsec:scalability}, and \ref{subsec:hetero} .
+While these properties are individually enumerated, they are greatly intertwined and the division between their impacts can be somewhat arbitrary.
 
 \subsection{Robustness and Fault-Tolerance}
 \label{subsec:ft}
