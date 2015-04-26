@@ -1,13 +1,13 @@
 \chapter{Background}
 \label{chapter:background}
 
-DHTs have been a vibrant area of research for the past decade, with some of the concepts dating further back.
+DHTs have been a vibrant area of research for the past decade, with several of the concepts dating further back.
 Numerous DHTs have been developed over the years.
 This is partly because the process of designing DHTs involves making tradeoffs, with no choice being strictly better than any other.
 
 % % %unified terminology
 The large number of DHTs have lead many papers use different terms to describe congruent elements of DHTs, as some terms may make sense only in one context.
-Since this paper will cover multiple DHTs that would use different terms,  I've created a unified terminology:
+Since this paper will cover multiple DHTs that would use different terms,  we have created a unified terminology:
 
 
 \begin{enumerate}
@@ -38,9 +38,9 @@ Similarly, All DHTs perform the same operations with minor variation.
 	Unless otherwise specified, \texttt{key} is assumed be the hashkey of \texttt{value}.
 	This assumption is broken in Tapestry.
 	\item[\texttt{get(key)}] - This operates like lookup, except the context is to return the value stored by a \texttt{put}.
-	This is a subtle difference, since one could \texttt{lookup(key)} and ask it directly.
-	However, many implementations use backup operations and caching which will store multiple copies of the value along the network
-	If we don't care which node returns the value mapped with key, or if it is a backup,  we can express it with \texttt{get}.
+	This is a subtle difference, since one could \texttt{lookup(key)} and ask the corresponding node directly.
+	However, many implementations use backup operations and caching which will store multiple copies of the value along the network.
+	If we do not care which node returns the value mapped with \texttt{key}, or if it is a backup,  we can express it with \texttt{get}.
 	\item[\texttt{delete(key, value)}] - This is self-explanatory.  Typically, DHTs do not worry about key deletion and leave that option to the specific application.
     When DHTs do address the issue, they often assume that stored key-value pairs have a specified time-to-live, after which they are automatically removed.
 \end{enumerate}
@@ -49,7 +49,7 @@ On the local level, each node has to be able to \textit{join }and perform mainte
 \begin{enumerate}
 	\item[\texttt{join()}]  The join process encompasses two steps.
     First, the joining node needs to initialize its peerlist. 
-    It doesn't necessarily need a complete peerlist the moment it joins, but it must initialize one. 
+    It does not necessarily need a complete peerlist the moment it joins, but it must initialize one. 
     Second, the joining node needs to inform other nodes of its existence.
     \item[Maintenance]  Maintenance procedures generally are either \textit{active} or \textit{lazy}.
     In active maintenance, peers are periodically pinged and are replaced when they are no longer detected.
@@ -69,16 +69,20 @@ We assume that nodes never politely leave the network but always abruptly fail, 
 Chord \cite{chord} is the archetypal ring-based DHT and it is impossible to create a new ring-based DHT without making some comparison to Chord.
 It is notable due its straightforward routing, its rules which make ownership of keys very easy to sort out, and the large number of derivatives.
 
+% Should I put this in?
+Chord is extremely famous in computer science, and the original paper was voted the 4th most influential paper (citation needed).
+However, recent research has demonstrated that there have been no correct implementation of Chord in over a decade.
+
 
 \subsection*{Peerlist and Geometry}
-Chord is a 1-dimensional modular ring in which all messages travel in one direction - upstream, hopping from one node to another with a greater ID until it wraps around.
-Each member of the network and the data stored is hashed to a unique $m$-bit key or ID, corresponding to one of the $2^m$ locations on a ring. 
+Chord is a 1-dimensional modular ring in which all messages travel in one direction - upstream, hopping from one node to another node with a greater ID until it wraps around.
+Each member of the network and the data stored within it is hashed to a unique $m$-bit key or ID, corresponding to one of the $2^m$ locations on a ring. 
 
 A node in the network is responsible for all the data with keys upstream from its predecessor's ID, up through and including its own ID.  
 If a node is responsible for some key, it is referred to being the root or successor of that key.
 
 Lookup and routing is performed by recursively querying nodes upstream.
-However, querying only neighbors would take $O(n)$ time to lookup a key.
+Querying only neighbors in this manner would take $O(n)$ time to lookup a key.
 
 
 To speedup lookups, each node maintains a table of $m$ shortcuts to other peers, called the \textit{finger table}.
