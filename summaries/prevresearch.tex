@@ -1,5 +1,6 @@
-
 \chapter{Proposal}
+%TODO: Add in other algorithm blocks and pictures from CHRONUS paper
+
 
 DHTs have received a great deal of research due to their popularity as the backbone for structured P2P system primarily used for file-sharing.
 There are two recent and fairly open questions that I want to examine.
@@ -225,7 +226,7 @@ As mentioned previously, under our induced experimental churn, we had the nodes 
 The failure rates were orders of magnitude higher than what would be expected in a ``real'' (nonexperimental) environment.
 The following possibilities could occur:
 \begin{itemize}
-	\item An node without any active jobs leaves.
+	\item A node without any active jobs leaves.
 	It dies and and comes back with a new port chosen.
 	This new ID has a higher chance of landing in a larger region of responsibility (since larger regions are larger and new joining nodes have a greater ``chance'' of hashing to that location).
 	In other words, it has a (relatively) higher chance of moving into an space where it becomes acquires responsibility for enqueued jobs.
