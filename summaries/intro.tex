@@ -16,6 +16,57 @@
 
 
 
+
+% What do I want to do?
+\section{What I Am Doing}
+
+Our goal is to create a framework to further generalize Distributed Hash Tables so they can be used for distributed computing.
+Distributed computing platforms need to be scalable, fault-tolerant, and load-balancing.
+In addition, the ability to incorporate heterogeneous hardware is a definite benefit.
+
+Distributed Hash Tables (DHTs) provide all of these qualities.
+P2P applications have been using DHTs for large-scale distributed file sharing applications for years now and are particularly effective.
+
+We propose that DHTs can be used to create P2P distributed computing platforms that are completely decentralized.
+Rather than keys being assigned to some data, we can assign keys to tasks and automatically distribute those tasks to the responsible node.s
+There would be no need for some central organized or scheduler to coordinate the nodes in the network.
+
+A successful DHT based computing platform would need to address the problem of dynamic load-balancing.
+This is currently an unsolved problem and if an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management.
+If a computation  is running too slow, new nodes can be added to the network  during runtime or idle nodes can boot up more virtual nodes (now that I think of it this is two different but highly related problems: internal and external).
+
+%Move this bit to the end?
+The next chapter will delve into how DHTs work and examine specific DHTs.
+The remainder of the proposal will then discuss the work I plan on doing to demonstrate the viability of using DHTs for distributed computing.
+
+
+
+% How I will do it is in the experiments chapter
+
+% Why should you care?
+\section{Why You Should Be Excited}
+
+Distrtibuted Hash Tables are the backbone for many P2P systems.
+
+
+\subsection{Applications}
+
+Distributed Hash Tables have numerous applications:
+
+\begin{itemize}
+	\item P2P file sharing is by far the most prominent application of DHTs.  The most well-known application is BitTorrent \cite{bittorrent}, which is built on Mainline DHT \cite{mainline}.
+	\item Distributed DNS.
+	\item Distributed storage.
+	\item Distributed search (faroo)
+\end{itemize}
+
+\subsubsection{General Challenges of Distributed Computing}
+
+
+\section{Old stuff starts here}
+
+
+
 Distributed Computing is well understood to be the approach to take to solve large problems.  
 Many problems can be broken up into multiple parts that can be solved simultaneously, yielding a much quicker result than a single worker attacking the problem.
 However, there are two broad obstacles in distributed computing.
@@ -169,24 +220,6 @@ Chapter \ref{chapter:background} discusses these tradeoffs in greater detail and
 %\paragraph{Recursive or iterative seek}
 
 
-\section{Hypothesis:  problems in distributed computing + solutions =  dissertation topic}
-Distributed computing platforms need to be scalable, fault-tolerant, and load balancing.
-In addition, the ability to incorporate heterogeneous hardware is a definite benefit.
-Distributed Hash Tables can provide an application with all of these qualities.
-P2P applications have been using DHTs for large-scale distributed file sharing applications for years now and are particularly effective.
-
-
-I propose that DHTs can be used to create P2P distributed computing platforms that are completely decentralized.
-Rather than keys being assigned to some data, we can assign keys to tasks and automatically distribute those tasks to the responsible nodes
-There would be no need for some central coordinator or scheduler.
-
-A successful DHT based computing platform would need to address the problem of dynamic load-balancing.
-This is currently an unsolved problem and if an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management.
-If a computation  is running too slow, new nodes can be added to the network  during runtime or idle nodes can boot up more virtual nodes (now that I think of it this is two different but highly related problems: internal and external).
-
-
-The next chapter will delve into how DHTs work and examine specific DHTs.
-The remainder of the paper will then discuss the work I plan on doing to demonstrate the viability of using DHTs for distributed computing.
 
 
 %Add these bullets to the above paragraph
