@@ -19,8 +19,10 @@
 
 % What do I want to do?
 \section{What I Am Doing}
-
+FOO
 Our goal is to create a framework to further generalize Distributed Hash Tables so they can be used for distributed computing.
+
+\subsection{Why I am doing this}
 Distributed computing platforms need to be scalable, fault-tolerant, and load-balancing.
 In addition, the ability to incorporate heterogeneous hardware is a definite benefit.
 
@@ -46,28 +48,31 @@ The remainder of the proposal will then discuss the work I plan on doing to demo
 % Why should you care?
 \section{Why You Should Be Excited}
 
-Distrtibuted Hash Tables are the backbone for many P2P systems.
-
-
+Distributed Hash Tables are the backbone for many P2P systems.
 \subsection{Applications}
 
 Distributed Hash Tables have numerous applications:
 
 \begin{itemize}
-	\item P2P file sharing is by far the most prominent application of DHTs.  The most well-known application is BitTorrent \cite{bittorrent}, which is built on Mainline DHT \cite{mainline}.
-	\item Distributed DNS.
-	\item Distributed storage.
-	\item Whatever Cassandra does
+	\item \textbf{P2P file sharing} is by far the most prominent use of DHTs.  
+	The most well-known application is BitTorrent \cite{bittorrent}, which is built on Mainline DHT \cite{mainline}.
+	\item DHTs have been used for \textbf{distributed storage} systems \cite{CFS}.
+	\item Distributed Domain Name Systems (DNS) have been built upon DHTs \cite{cox2002serving} \cite{pappas2006comparative}.
+	Distributed DNSs are much more robust that DNS to orchestrated attacks, but otherwise require more overhead.
 	\item Distributed search (faroo)
-	\item Botnets
+	\item Distributed machine learning \cite{liparameter}.
+	\item Many botnets are built on
 	\item Live video streaming (bittorrent live)
 \end{itemize}
 
-THe applications of what I'm doing
+The applications of what I'm doing:
 
 \begin{itemize}
-	
+	\item Completely decentralized MapReduce.
+	\item My work could be 
 \end{itemize}
+
+Unlike the current distributed applications which utilize distributed hash tables, we want to create a complete framework
 
 \subsubsection{General Challenges of Distributed Computing}
 
