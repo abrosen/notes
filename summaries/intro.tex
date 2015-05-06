@@ -19,23 +19,32 @@
 
 % What do I want to do?
 \section{What I Am Doing}
-FOO
-Our goal is to create a framework to further generalize Distributed Hash Tables so they can be used for distributed computing.
-
-\subsection{Why I am doing this}
+Our goal is to create a framework to further generalize Distributed Hash Tables (DHTs) so they can be used for distributed computing.
 Distributed computing platforms need to be scalable, fault-tolerant, and load-balancing.
-In addition, the ability to incorporate heterogeneous hardware is a definite benefit.
+%The ability to incorporate heterogeneous hardware is a definite benefit.
+We will discuss what each of these mean and why they are important in section \ref{sec:challenges}, but briefly:
 
-Distributed Hash Tables (DHTs) provide all of these qualities.
-P2P applications have been using DHTs for large-scale distributed file sharing applications for years now and are particularly effective.
+\begin{itemize}
+	\item The system should be able to work effectively no matter how large it gets.
+	As the system grows in size, we can expect the overhead to grow in size as well, but at an extremely slower rate.
+	\item The more machine integrated into the system, the more we can expect to see hardware failures.
+	The system needs to be able to automatically handle these hardware failures.
+	\item Having a large number of machines to use is worthless if the amount of work is divided unevenly among the system.
+	The same is true if the system hands out larger jobs to less powerful machines or smaller jobs to the more powerful machines.
+	%\item We cannot assume that we be able to replace our broken machines with exact replicas, nor do we assume we would want to. 
+\end{itemize}
 
+
+These are many of the same challenges that Peer-to-peer (P2P) file sharing applications have.
+Many P2P applications use DHTs to address theses challenges, since DHTs are designed with these problems in mind.
 We propose that DHTs can be used to create P2P distributed computing platforms that are completely decentralized.
-Rather than keys being assigned to some data, we can assign keys to tasks and automatically distribute those tasks to the responsible node.s
+%Rather than keys being assigned to some data, we can assign keys to tasks and automatically distribute those tasks to the responsible nodes
 There would be no need for some central organized or scheduler to coordinate the nodes in the network.
 
 A successful DHT based computing platform would need to address the problem of dynamic load-balancing.
-This is currently an unsolved problem and if an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management.
-If a computation  is running too slow, new nodes can be added to the network  during runtime or idle nodes can boot up more virtual nodes (now that I think of it this is two different but highly related problems: internal and external).
+This is currently an unsolved problem.
+If an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management.
+Similarly. if a distributed computation  is running too slow, new nodes can be added to the network during runtime or idle nodes can boot up more virtual nodes. %(now that I think of it this is two different but highly related problems: internal and external).
 
 %Move this bit to the end?
 The next chapter will delve into how DHTs work and examine specific DHTs.
@@ -46,10 +55,7 @@ The remainder of the proposal will then discuss the work I plan on doing to demo
 % How I will do it is in the experiments chapter
 
 % Why should you care?
-\section{Why You Should Be Excited}
-
-Distributed Hash Tables are the backbone for many P2P systems.
-\subsection{Applications}
+\section{Applications of Distributed Hash Tables}
 
 Distributed Hash Tables have numerous applications:
 
@@ -66,14 +72,21 @@ Distributed Hash Tables have numerous applications:
 	\item \textbf{Live video streaming} (bittorrent live) \cite{mol2009design}.
 \end{itemize}
 
-We can see  from this list that DHTs are %hot
+We can see from this list that DHTs are %hot
 
-The applications of what I'm doing:
 
+The primary application of what I am doing is to create 
+
+My work could be used for a quick and intuitive way to solve embarrassingly parallel problems, such as:
 \begin{itemize}
-	\item Completely decentralized MapReduce.
-	\item My work could be used for a quick and intuitive way to solve embarrassingly parallel problems.
+	\item MapReduce problems.
+	\item Brute force cryptography.
+	\item Genetic algorithms.
+	\item Markov chain Monte Carlo methods.
+	\item Random forests.
 \end{itemize}
+Essentially, any process that is easily \texttt{map}pable to individual nodes, we want to do it. 
+
 
 Unlike the current distributed applications which utilize distributed hash tables, we want to create a complete framework which can be used to build decentralized applications.
 We have found no existing projects that provide a means of building your own DHT and DHT based applications.
@@ -83,9 +96,16 @@ We have found no existing projects that provide a means of building your own DHT
 % So you're diong these things with this tool
 \section{Why Use Distributed Hash Tables in Distributed Computing}
 
-\subsection{General Challenges of Distributed Computing}
-\subsection{How DHTs Address these Challenges}
+% Okay so this is all great, but what's special about a DHT
+% First, let's talk about the problems with distributed computing
 
+\subsection{General Challenges of Distributed Computing}
+\label{sec:challenges}
+
+\subsection{How DHTs Address these Challenges}
+% Rather than avoiding failure by using a centralized manager, we embrace failure 
+
+%We are not geared toward a datacenter-centric setup
 
 \section{Roadmap}
 
