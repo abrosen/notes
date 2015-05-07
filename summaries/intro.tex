@@ -44,7 +44,7 @@ Our framework would not be limited to only a P2P context, but could be applied i
 
 
 A successful DHT-based computing platform would need to address the problem of dynamic load-balancing.
-This is currently an unsolved problem.
+This is currently an unsolved\footnote{As far as we know.} problem. %I have to check a couple of papers of to confirm.
 If an application can dynamically reassign work to nodes added at runtime, this opens up new options for resource management.
 Similarly. if a distributed computation  is running too slow, new nodes can be added to the network during runtime or idle nodes can boot up more virtual nodes. %(now that I think of it this is two different but highly related problems: internal and external).
 
@@ -103,32 +103,43 @@ To understand why we want to use DHTs for distributed computing, we will first e
 \subsection{General Challenges of Distributed Computing}
 \label{sec:challenges}
 
-As we mentioned earlier, distributed computing platforms need to be scalable, fault-tolerant, and load-balancing
+As we mentioned earlier, distributed computing platforms need to be scalable, fault-tolerant, and load-balancing.
 We will look at these individually:
 
 
 \begin{description}
 	\item[Scalability] - Distributed computing platforms should not be completely static and should grow to accommodate new needs.
-	If a platform would be improved by the addition of a new resource, it should be possible to easily add that resource.
-	The addition of new workers in a distributed computing framework should be a minimally disruptive process.
-	
-	This ties into the concept of fault tolerance.
-	
+	However, as systems grow in size, the cost of keeping that system organized grows too.
+	The challenge of scalability is designing a protocol that grows this organizational cost at an extremely slow rate.
+	For example, a single node keeping track of all members of the system might be a tenable situation up to a certain point, but eventually, the cost becomes too high for a single node.
+	%not sure about this line
+	We want this organizational cost spread among many nodes to the point where this cost is insignificant. % 
 	\item[Fault Tolerance]  
-	Even in a network that is expected to remain static for long periods of time, the platform still has to deal with node failures.  
+	The quality of fault-tolerance or \textit{robustness} \footnote{There is apparently a subtle difference between fault-tolerance and robustness, but we will use the two interchangeably here until we get told to stop.} means that the system still works even after a component breaks (or many component break).
 	We want our platform to gracefully handle failures during runtime and be able to quickly reassign work to other workers.
 	In addition, the network should be equally graceful in handling the introduction of new nodes during runtime.
-	A quality of fault-tolerance or \textit{robustness} \footnote{There is apparently a subtle difference between fault-tolerance and robustness, but we will use the two interchangeably here until we get told to stop.}
 	
-	\item[Load-Balancing]  
-	How do you split up a problem then distribute it so that no single worker is under or over-utilized?
-	Failing that, how do you minimize the imbalance in work?
-	Is there a way to do so at run time?
-	A subproblem here is \textit{heterogeneity},\footnote{It could even be considered a problem in its own right.} or how should the system should handle different pieces of hardware with different amounts of computational power.
+	\item[Load-Balancing]
+	The challenge of load balancing is to evenly distribute the work among nodes in the network.
+	We do not wh
+	
+	A subproblem here is handling \textit{heterogeneity},\footnote{It could even be considered a problem in its own right.} or how should the system should handle different pieces of hardware with different amounts of computational power.
+	
+	O
 \end{description}
+
+
+It should be noted that there is not necessarily a hard and fast division between 
+
+O ne question we are particulerIs there a way to do so at run time?
+
 
 \subsection{How DHTs Address these Challenges}
 %Without getting into the details of what a DHT is, what do they do?
+
+Hash tables associate certain  cryptograpic keys with specific values.
+This is done with Hash function.
+Hash functions are designed to avoid Hash collision and the larger the keys, the less chance of a hash collision.
 
 % Rather than avoiding failure by using a centralized manager, we embrace failure 
 
