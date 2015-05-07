@@ -115,35 +115,95 @@ We will look at these individually:
 	%not sure about this line
 	We want this organizational cost spread among many nodes to the point where this cost is insignificant. % 
 	\item[Fault Tolerance]  
-	The quality of fault-tolerance or \textit{robustness} \footnote{There is apparently a subtle difference between fault-tolerance and robustness, but we will use the two interchangeably here until we get told to stop.} means that the system still works even after a component breaks (or many component break).
+	The quality of fault-tolerance or \textit{robustness} \footnote{There is apparently a subtle difference between fault-tolerance and robustness, but we will use the two interchangeably here until we get told to stop.} means that the system still works even after a component breaks (or many components break).
 	We want our platform to gracefully handle failures during runtime and be able to quickly reassign work to other workers.
 	In addition, the network should be equally graceful in handling the introduction of new nodes during runtime.
 	
 	\item[Load-Balancing]
 	The challenge of load balancing is to evenly distribute the work among nodes in the network.
-	We do not wh
+	This is always an approximation; rarely  are there exactly enough pieces for  every node to get the same amount of work.
+	The system needs an efficient set of rules for dividing arbitrary jobs into small pieces and sending those pieces to the nodes.
 	
 	A subproblem here is handling \textit{heterogeneity},\footnote{It could even be considered a problem in its own right.} or how should the system should handle different pieces of hardware with different amounts of computational power.
 	
-	O
+	
 \end{description}
+It should be noted that there is some crossover between these categories. 
+For example, adding new nodes to the system needs to have a low organizational overhead (scalability) and will change the network configuration, which will need to be updated (fault-tolerance).
 
 
-It should be noted that there is not necessarily a hard and fast division between 
-
-O ne question we are particulerIs there a way to do so at run time?
+%move below
+%One question we are particularly interested in answering touches on all three categories:  can we do load balancing during run-time?
+%A goal we have is t
 
 
 \subsection{How DHTs Address these Challenges}
 %Without getting into the details of what a DHT is, what do they do?
+Distributed Hash Tables are essentially distributed lookup tables.
+DHTs use a consistent hashing algorithm, such as SHA-1 \cite{sha1}, to associate nodes and file identifiers with keys.  
+These keys dictate where the nodes and files will be located on the network.
+The connections between nodes are organized such that any node can efficiently lookup the value associated with any given key, even though the node only knows a small portion of the network.
+We discuss the specifics this in Chapter \ref{chapter:background}.
 
-Hash tables associate certain  cryptograpic keys with specific values.
-This is done with Hash function.
-Hash functions are designed to avoid Hash collision and the larger the keys, the less chance of a hash collision.
+Nearly every DHT was designed with large, P2P applications in mind, with millions of nodes in the network and new nodes entering and leaving all the time.
+This has lead to DHTs being designed with specific qualities in mind.
+\paragraph{Scalability}
+The organization responsibility in DHTs is spread among all members of the network.
+Each node only knows a small subset of the network,\footnote{Except for ZHT \cite{li2013zht}, which breaks this rule deliberately and with gusto by giving each node a full copy of the routing table.} but can use the nodes it knows to efficiently find any other node in the network.
+Because each individual node only knows a small part of the network, the maintenance costs associated with organization are correspondingly small.
+
+Using consistent hashing allows the network to scale up incrementally, adding one node at a time \cite{dynamo}.
+In addition, each join operation has minimal impact on the network, since a node affects only its immediate neighbors on a join operation.
+Similarly, the only nodes that need to react to a node leaving are its neighbors.
+Other nodes can be notified of the missing node passively through maintenance or in response to a lookup.
+
+There have been multiple proposed strategies for tackling scalability, and it is these strategies which play the greatest role in driving the variety of DHT architectures. 
+Each DHT must strikes a balance between size of the lookup table and lookup time. 
+The vast majority of DHTs choose to use $\lg(n)$ sized tables and  $\lg(n)$ hops. 
+Chapter \ref{chapter:background} discusses these tradeoffs in greater detail and how they affect the each DHT.
+
+
+\paragraph{Fault-Tolerance}
+One of the most important assumptions of DHTs is that they are deployed on a non-static network.
+DHTs are built to account for a high level of \textit{churn}.\footnote{Again, except for ZHT.}  
+Churn refers to the disruption of routing caused by the constant joining and leaving of nodes.
+In other words, the network topology is assumed to always be in flux
+This is mitigated by a few factors.
+
+First, the network is decentralized, with no single node acting as a single point of failure.
+This is accomplished by each node in the routing table having a small portion of the both the routing table and the data stored on the DHT.
+
+Second is that each DHT has an inexpensive maintenance processes that mitigates the damage caused by churn.
+DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighboring nodes can immediately assume responsibility.
+The join process also slightly disrupt the topology, as affected nodes must adjust their peerlists to accommodate the joiner. 
+
+The last property is that the hashing algorithm used to distribute content evenly across the DHT also distributes nodes evenly across the DHT.  
+This means that nodes in the same geographic region occupy vastly different locations in the network.  
+If an entire geographic region is affected by a network outage, this damage is spread evenly across the DHT, which can be handled, rather than a contiguous portion.
+
+%This property is the most important, as it deals with failure of entire sections of the network, rather than a single node.
+%Recent research in using DHTs for High End Computing \cite{li2013zht} shows what can happen if we remove this assumption by working with an almost completely static network.
+
+The fault tolerance mechanisms in DHTs also provide near constant availability for P2P applications.
+The node that is responsible for a particular key can always be found, even when numerous failures or joins occur \cite{chord}.
+
+
+\paragraph{Load-Balancing}
+
 
 % Rather than avoiding failure by using a centralized manager, we embrace failure 
 
 %We are not geared toward a datacenter-centric setup
+
+
+
+
+%While most DHTs follow this scheme, there is some minor variation on how keys are generated.
+%Some DHTs can or do use geographic information to generate keys.
+%In VHash, keys are not static, but move according to a simplified spring model.
+
+
+
 
 \section{Roadmap}
 
@@ -161,33 +221,18 @@ The specifics are given in Chapter \ref{chapter:experiments}.
 
 
 
-Distributed Computing is well understood to be the approach to take to solve large problems.  
-Many problems can be broken up into multiple parts that can be solved simultaneously, yielding a much quicker result than a single worker attacking the problem.
-However, there are two broad obstacles in distributed computing.
-
-%Is this 1 problem or two
-The first is figuring out the mechanics of efficiently distributing a problem to multiple workers and asynchronously coordinating their effort.  
-The second is creating and maintaining the computation platform itself.
-
-
-Some specific challenges are:
-
-
-Fortunately, these challenges are not unique to distributed computing.  
-Most notably, distributed file storage applications that utilize Distributed Hash Tables are designed to handle these particular challenges.
-\section{Distributed Hash Tables}
-%\section{DHTs are better for distributed computing under many circumstances}
 Distributed Hash Tables (DHTs) are traditionally used as the backbone of structured Peer-to-Peer (P2P) file-sharing applications.
-The largest such application by far is Bittorrent \cite{bittorrent}, which is built using Mainline DHT \cite{mainline},  a  derivative of Kademlia \cite{kademlia}.
+The largest such application is Bittorrent \cite{bittorrent}, which is built using Mainline DHT \cite{mainline},  a  derivative of Kademlia \cite{kademlia}.
 The number of users on Bittorrent ranges from 15 million to 27 million users daily, with a turnover of 10 million users a day \cite{mainlineMeasure}.
 
-Most research on DHTs assumes that DHTs will be used in the context of a large P2P file-sharing application  (or at least, an application \textit{potentially} incorporating millions of nodes).
+Most research on DHTs assumes that DHTs will be used in the context of a large P2P file-sharing application (or at least, an application \textit{potentially} incorporating millions of nodes).
 This leads the DHT to having particular qualities.
+The application must be scalable and no single node knows every other node in the network.
 The network must be able to handle members joining and leaving arbitrarily.
 The resulting application must be agnostic towards hardware.
 The network must be decentralized and split whatever burden there is equally among its members.
 
-In other words, distributed hash tables provide scalability, load-balancing, robustness, and heterogeneity to an application.
+In other words, distributed hash tables provide scalability, fault-tolerance, and load-balancing to an application.
 Recent applications have leveraged these qualities, since these qualities are desirable in many different frameworks.
 For example, one paper \cite{Mateescu2011440} used a DHT as the name resolution layer of a large distributed database.
 Research has also been done in using DHTs as an organizing mechanism in distributed machine learning \cite{liparameter}. 
@@ -195,31 +240,24 @@ Research has also been done in using DHTs as an organizing mechanism in distribu
 We describe each of the aforementioned qualities and their ramifications below in sections \ref{subsec:ft}, \ref{subsec:lb}, \ref{subsec:scalability}, and \ref{subsec:hetero} .
 While these properties are individually enumerated, they are greatly intertwined and the division between their impacts can be somewhat arbitrary.
 
-\subsection{Robustness and Fault-Tolerance}
+\subsubsection{Scalability}
+\label{subsec:scalability}
+In order to maintain scalability, a DHT has to ensure that as the network grows larger:
+
+\begin{itemize}
+	\item Churn does not have a disproportionate overhead.  
+	For example, in a 1000 node network, a joining or leaving node will affect only an extremely small subset of these nodes.
+	\footnote{We will see that this requirement can  be  relaxed in  very specific cases \cite{li2013zht}.}
+	\item Lookup request speeds (usually measured in hops) grow by a much smaller amount, possibly not at all.
+\end{itemize}
+
+
+
+\subsubsection{Fault-Tolerance}
 \label{subsec:ft}
-One of the most important assumptions of DHTs is that they are deployed on a non-static network.
-DHTs need to be built to account for a high level what is called \textit{churn}.  
-Churn refers to the disruption of routing caused by the constant joining and leaving of nodes.
-This is mitigated by a few factors.
 
-First, the network is decentralized, with no single node acting as a single point of failure.
-This is accomplished by each node in the routing table having a small portion of the both the routing table and the information stored on the DHT (see the Load Balancing property below).
 
-Second is that each DHT has an inexpensive maintenance processes that mitigates the damage caused by churn.
-DHTs often integrate a backup process into their protocols so that when a node goes down, one of the neighbors can immediately assume responsibility.
-The join process also causes disruption to the network, as affected nodes have adjust their peerlists to accommodating the joiner. 
-
-The last property is that the hash algorithm used to distribute content evenly across the network(again see load balancing) also distributes nodes evenly across the DHT.  
-This means that nodes in the same geographic region occupy vastly different positions in the keyspace.  
-If an entire geographic region is affected by a network outage, this damage is spread evenly across the DHT, which can be handled.
-
-This property is the most important, as it deals with failure of entire sections of the network, rather than a single node.
-Recent research in using DHTs for High End Computing \cite{li2013zht} shows what can happen if we remove this assumption by placing the network that is almost completely static.
-
-The fault tolerance mechanisms in DHTs also provide near constant availability for P2P applications.
-The node that is responsible for a particular key can always be found, even when numerous failures or joins occur \cite{chord}.
-
-\subsection{Load Balancing}
+\subsubsection{Load Balancing}
 \label{subsec:lb}
 All Distributed Hash Tables use some kind of consistent hashing algorithm to associate nodes and file identifiers with keys.  
 These keys are generated by passing the identifiers into a hash function, typically SHA-160.
@@ -240,7 +278,7 @@ DeCandia et al\. introduced two new strategies which work off assigning nodes eq
 % HELP
 Under these schemes, each virtual node maps to an ID as before, but the patitions each node is responsible for are equally sized\footnote{Need help here}.
 
-\subsubsection{Heterogeneity}
+\paragraph{Heterogeneity}
 \label{subsec:hetero}
 Heterogenity presents a challenge for load balancing DHTs due to conflicting assumptions and goals. 
 DHTs assume that members are usually going to be varied in hardware, while the load-balancing process defined in DHTs treats each node equally.
@@ -261,35 +299,6 @@ Another strategy is to use the preference lists/successor predecessor lists, and
 
 Dynamic load balancing may not be essential to P2P file-sharing applications, but is absolutely essential to any kind of P2P distributed computation.
 In our ChordReduce experiments, we observed that just approximating dynamic load-balancing by simulating high levels of churn noticeably improved results\footnote{We found this by accident, just by testing the network's fault tolerance in regards to a high level of churn}.
-
-
-
-%While most DHTs follow this scheme, there is some minor variation on how keys are generated.
-%Some DHTs can or do use geographic information to generate keys.
-%In VHash, keys are not static, but move according to a simplified spring model.
-
-\subsection{Scalability}
-\label{subsec:scalability}
-In order to maintain scalability, a DHT has to ensure that as the network grows larger:
-
-\begin{itemize}
-    \item Churn does not have a disproportionate overhead.  
-    For example, in a 1000 node network, a joining or leaving node will affect only an extremely small subset of these nodes.
-    \footnote{We will see that this requirement can  be  relaxed in  very specific cases \cite{li2013zht}.}
-    \item Lookup request speeds (usually measured in hops) grow by a much smaller amount, possibly not at all.
-\end{itemize}
-
-Using consistent hashing allows the network to scale up incrementally, adding one node at a time \cite{dynamo}.
-In addition, each join operation has minimal impact on the network, since a node affects only its immediate neighbors on a join operation.
-Similarly, the only nodes that need to react to a node leaving are its neighbors.
-This is almost instantaneous if the network is using backups.
-Other nodes can be notified of the missing node passively through maintenance or in response to a lookup.
-
-There have been multiple proposed strategies for tackling scalability, and it is these strategies which play the greatest role in driving the variety of DHT architectures. 
-Each DHT must strikes a balance between memory cost of the peerlist and lookup time. 
-The vast majority of DHTs choose to use $\lg(N)$ sized routing tables and  $\lg(n)$ hops\footnote{log n or log N, matters}. 
-Chapter \ref{chapter:background} discusses these tradeoffs in greater detail and how they affect the each DHT.
-
 
 
 
