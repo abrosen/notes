@@ -90,17 +90,42 @@ The most direct application of a DHT distributed computing framework is  a quick
 \end{itemize}
 Unlike the current distributed applications which utilize DHTs, we want to create a complete framework which can be used to build decentralized applications.
 We have found no existing projects that provide a means of building your own DHT or DHT based applications. %without a given DHT in mind at least
-Lastly, our 
 
 
 % So you're diong these things with this tool
 \section{Why Use Distributed Hash Tables in Distributed Computing}
-Using distributed hash tables for distributed computing isn't necessarily the most intuitive step.
 % Okay so this is all great, but what's special about a DHT
 % First, let's talk about the problems with distributed computing
 
+Using distributed hash tables for distributed computing isn't necessarily the most intuitive step.
+To understand why we want to use DHTs for distributed computing, we will first examine some of the more prominent challenges in distributed computing.
+
 \subsection{General Challenges of Distributed Computing}
 \label{sec:challenges}
+
+As we mentioned earlier, distributed computing platforms need to be scalable, fault-tolerant, and load-balancing
+We will look at these individually:
+
+
+\begin{description}
+	\item[Scalability] - Distributed computing platforms should not be completely static and should grow to accommodate new needs.
+	If a platform would be improved by the addition of a new resource, it should be possible to easily add that resource.
+	The addition of new workers in a distributed computing framework should be a minimally disruptive process.
+	
+	This ties into the concept of fault tolerance.
+	
+	\item[Fault Tolerance]  
+	Even in a network that is expected to remain static for long periods of time, the platform still has to deal with node failures.  
+	We want our platform to gracefully handle failures during runtime and be able to quickly reassign work to other workers.
+	In addition, the network should be equally graceful in handling the introduction of new nodes during runtime.
+	A quality of fault-tolerance or \textit{robustness} \footnote{There is apparently a subtle difference between fault-tolerance and robustness, but we will use the two interchangeably here until we get told to stop.}
+	
+	\item[Load-Balancing]  
+	How do you split up a problem then distribute it so that no single worker is under or over-utilized?
+	Failing that, how do you minimize the imbalance in work?
+	Is there a way to do so at run time?
+	A subproblem here is \textit{heterogeneity},\footnote{It could even be considered a problem in its own right.} or how should the system should handle different pieces of hardware with different amounts of computational power.
+\end{description}
 
 \subsection{How DHTs Address these Challenges}
 %Without getting into the details of what a DHT is, what do they do?
@@ -135,19 +160,7 @@ The second is creating and maintaining the computation platform itself.
 
 
 Some specific challenges are:
-\begin{description}
-	\item[Scalability] - Distributed computing platforms should not be completely static and should grow to accommodate new needs.
-	If a platform would be improved by the addition of a new resource, it should be possible to easily add that resource.
-	The addition of new workers in a distributed computing framework should be a minimally disruptive process.
-    This ties into the concept of fault tolerance.
-	\item[Fault Tolerance]  Even in a network that is expected to remain static for long periods of time, the platform still has to deal with node failures.  
-	We want our platform to gracefully handle failures during runtime and be able to quickly reassign work to other workers.
-	In addition, the network should be equally graceful in handling the introduction of new nodes during runtime.
-	\item[Load-Balancing]  This is one of the most important issues to consider when creating a framework for distributed computing. 
-    How do you split up a problem then distribute it so that no single worker is under or over-utilized?
-    Failing that, how do you minimize the imbalance in work?
-    Is there a way to do so at run time?
-\end{description}
+
 
 Fortunately, these challenges are not unique to distributed computing.  
 Most notably, distributed file storage applications that utilize Distributed Hash Tables are designed to handle these particular challenges.
