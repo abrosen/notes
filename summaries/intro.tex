@@ -219,9 +219,36 @@ Nodes can be given addition responsibilities manually, by running multiple insta
 
 \subsubsection{Published}
 
+
+\begin{itemize}
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois ``MapReduce on a Chord Distributed Hash Table'' Presentation ICA CON 2014, Poster at IPDPS 2014 PhD Forum
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison ``VHASH: Spatial DHT based on Voronoi Tessellation'' ICA CON 2014
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison ``A Distributed Greedy Heuristic for Computing Voronoi Tessellations With Applications Towards Peer-to-Peer Networks'' IEEE IPDPS 2015 - Workshop on Dependable Parallel, Distributed and Network-Centric Systems
+	
+\end{itemize}
+
+
+
+
+	
+
+I also have a number of publications with other authors not relevant to the proposed work.
+\begin{itemize}
+	\item  Erin-Elizabeth A. Durham, Andrew Rosen, Robert W. Harrison
+	``A Model Architecture for Big Data applications using Relational Databases''
+	2014 IEEE BigData - C4BD2014 - Workshop on Complexity for Big Data  \cite{durham2014model}
+	\item Chinua Umoja, J.T. Torrance, Erin-Elizabeth A. Durham, Andrew Rosen, Dr. Robert Harrison
+	``A Novel Approach to Determine Docking Locations Using Fuzzy Logic and Shape Determination''
+	2014 IEEE BigData - Poster and Short Paper \cite{umoja2014novel}
+	\item  Erin-Elizabeth A. Durham, Andrew Rosen, Robert W. Harrison
+	``Optimization of Relational Database Usage Involving Big Data'' 
+	IEEE SSCI 2014 - CIDM 2014 - The IEEE Symposium Series on Computational Intelligence and Data Mining \cite{durham2014optimization}
+\end{itemize}
+
 \subsubsection{Unpublished}
 \begin{itemize}
-	\item Distributed DNS.
+	\item Brendan and I implemented our own Distributed DNS system.
+	\item Sybil paper.
 \end{itemize}
 \subsection{Summary of Proposal}
 
@@ -239,8 +266,6 @@ This section should produce one to two publications:  one for the framework itse
 The framework will be developed in either Go or Python3.
 These two languages are being considered due to their ease of programming.
 
-
-
 %significance is abstractions and our Voronoi definitations 
 
 \subsubsection{DHT Distributed Computing}
@@ -249,30 +274,26 @@ This portion will be the bulk of the experimental work and data gathering.
 Using our created framework, we will create implement and test distributed computing problems on different DHT implementations, such as Chord \cite{chord} and Kademlia \cite{kademlia}.
 
 \subsubsection{Autonomous Load-Balancing}
+Our goal here is to develop a new and efficient algorithm for balancing the workload among members of the DHT.
 Load balancing schemes do exist for file storage, but none exist for computation.
-
-\begin{itemize}
-	\item DHT framework
-	\begin{itemize}
-		\item Journal publication on the framework itself using the abstraction
-		\item Conference publication on Vhash expanding on DGVH.
-	\end{itemize}
-\end{itemize}
-
-\section{Old stuff starts here}
+Furthermore, we want to develop a system that takes into account the heterogeneity of a given system, allowing more powerful nodes to take on more responsibility.
 
 
 
-Distributed Hash Tables (DHTs) are traditionally used as the backbone of structured Peer-to-Peer (P2P) file-sharing applications.
-The largest such application is Bittorrent \cite{bittorrent}, which is built using Mainline DHT \cite{mainline},  a  derivative of Kademlia \cite{kademlia}.
-The number of users on Bittorrent ranges from 15 million to 27 million users daily, with a turnover of 10 million users a day \cite{mainlineMeasure}.
+%\section{Old stuff starts here}
 
-Most research on DHTs assumes that DHTs will be used in the context of a large P2P file-sharing application (or at least, an application \textit{potentially} incorporating millions of nodes).
-This leads the DHT to having particular qualities.
-The application must be scalable and no single node knows every other node in the network.
-The network must be able to handle members joining and leaving arbitrarily.
-The resulting application must be agnostic towards hardware.
-The network must be decentralized and split whatever burden there is equally among its members.
+
+
+%Distributed Hash Tables (DHTs) are traditionally used as the backbone of structured Peer-to-Peer (P2P) file-sharing applications.
+%The largest such application is Bittorrent \cite{bittorrent}, which is built using Mainline DHT \cite{mainline},  a  derivative of Kademlia \cite{kademlia}.
+%The number of users on Bittorrent ranges from 15 million to 27 million users daily, with a turnover of 10 million users a day \cite{mainlineMeasure}.
+
+%Most research on DHTs assumes that DHTs will be used in the context of a large P2P file-sharing application (or at least, an application \textit{potentially} incorporating millions of nodes).
+%This leads the DHT to having particular qualities.
+%The application must be scalable and no single node knows every other node in the network.
+%The network must be able to handle members joining and leaving arbitrarily.
+%The resulting application must be agnostic towards hardware.
+%The network must be decentralized and split whatever burden there is equally among its members.
 
 %In other words, distributed hash tables provide scalability, fault-tolerance, and load-balancing to an application.
 %Recent applications have leveraged these qualities, since these qualities are desirable in many different frameworks.
@@ -305,18 +326,18 @@ The network must be decentralized and split whatever burden there is equally amo
 %Some DHTs can or do use geographic information to generate keys.
 %In VHash, keys are not static, but move according to a simplified spring model.
 
-\paragraph{Heterogeneity}
-\label{subsec:hetero}
-A few options present themselves.  % and are discuessed in \ref{}
+%\paragraph{Heterogeneity}
+%\label{subsec:hetero}
+%A few options present themselves.  % and are discuessed in \ref{}
 %add the above if the below is moved
 
 %This might be the wrong place for this
-One is to use adapt a request tracking mechanism, such as what is used in IRM, except instead of tracking file requests, it tracks requests that are directed to a particular (real) node. 
-If a particular (real) node receives an inordinate amount of requests, the node doing the detecting suggests that the node obtain another token/create another virtual node.
-Another strategy is to use the preference lists/successor predecessor lists, and observe the distribution of the workload, adjusting the virtual nodes based on that. 
+%One is to use adapt a request tracking mechanism, such as what is used in IRM, except instead of tracking file requests, it tracks requests that are directed to a particular (real) node. 
+%If a particular (real) node receives an inordinate amount of requests, the node doing the detecting suggests that the node obtain another token/create another virtual node.
+%Another strategy is to use the preference lists/successor predecessor lists, and observe the distribution of the workload, adjusting the virtual nodes based on that. 
 
-Dynamic load balancing may not be essential to P2P file-sharing applications, but is absolutely essential to any kind of P2P distributed computation.
-In our ChordReduce experiments, we observed that just approximating dynamic load-balancing by simulating high levels of churn noticeably improved results\footnote{We found this by accident, just by testing the network's fault tolerance in regards to a high level of churn}.
+%Dynamic load balancing may not be essential to P2P file-sharing applications, but is absolutely essential to any kind of P2P distributed computation.
+%In our ChordReduce experiments, we observed that just approximating dynamic load-balancing by simulating high levels of churn noticeably improved results\footnote{We found this by accident, just by testing the network's fault tolerance in regards to a high level of churn}.
 
 
 
