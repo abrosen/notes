@@ -198,11 +198,19 @@ The chosen hash function is typically large enough to avoid hash collisions\foot
 
 Essentially, both nodes and data are spread about the network uniformly at random.
 Nodes are responsible for the files with keys ``close'' to their own.
-What ``close'' means depends on each individual , but we found it to be equivalent choosing a metric for Voronoi tessilation \cite{vhash}.
-However, because this is a random process, not all values are evenly distributed, but enough hash keys yield a cloase enough approximation.
+What ``close'' means depends on each individual , but we found it to be equivalent choosing a metric for Voronoi tessellation \cite{vhash}.
+However, because this is a random process, not all values are evenly distributed, but enough hash keys yield a close enough approximation.
 
+Heterogenity presents a challenge for load-balancing DHTs due to conflicting assumptions and goals. 
+DHTs assume that members are usually going to be varied in hardware, but the load-balancing process defined in DHTs treats each node equally.s
+In other words, DHTs support heterogeneity, but do not attempt to exploit it.
 
+This doesn't mean that heterogeneity cannot be exploited.
+Nodes can be given addition responsibilities manually, by running multiple instances of the P2P application on the same machine or creating more virtual nodes.
+%TODO:  Heat dissipation citation.
 
+%However, this is not a feasible option for any kind of truly decentralized system and would need to be done automatically.
+%There is no well-known mechanism to that exists to automatically allocate virtual nodes on the fly \footnote{citation needed, although this can be similar to IRM}. 
 
 
 \section{Roadmap}
@@ -212,14 +220,36 @@ However, because this is a random process, not all values are evenly distributed
 \subsubsection{Published}
 
 \subsubsection{Unpublished}
-
+\begin{itemize}
+	\item Distributed DNS.
+\end{itemize}
 \subsection{Summary of Proposal}
 
 
 The work we want to do can be divided into three distinct, but mutually dependent parts.
+One of these parts, the DHT framework, is a part that will be done jointly with Brendan Benshoof.
 The specifics are given in Chapter \ref{chapter:experiments}.
 
 
+\subsubsection{DHT Framework}
+The goal of the DHT framework is to create a ready-to-use framework for creating DHT applications.
+We will then use this to create the DHT applications for the DHT distributed computing.
+This section should produce one to two publications:  one for the framework itself and how our abstractions can be used to create any DHT, the other will be on expanding our VHash publication \cite{vhash}.
+
+The framework will be developed in either Go or Python3.
+These two languages are being considered due to their ease of programming.
+
+
+
+%significance is abstractions and our Voronoi definitations 
+
+\subsubsection{DHT Distributed Computing}
+
+This portion will be the bulk of the experimental work and data gathering.
+Using our created framework, we will create implement and test distributed computing problems on different DHT implementations, such as Chord \cite{chord} and Kademlia \cite{kademlia}.
+
+\subsubsection{Autonomous Load-Balancing}
+Load balancing schemes do exist for file storage, but none exist for computation.
 
 \begin{itemize}
 	\item DHT framework
@@ -277,15 +307,6 @@ The network must be decentralized and split whatever burden there is equally amo
 
 \paragraph{Heterogeneity}
 \label{subsec:hetero}
-Heterogenity presents a challenge for load balancing DHTs due to conflicting assumptions and goals. 
-DHTs assume that members are usually going to be varied in hardware, while the load-balancing process defined in DHTs treats each node equally.
-It is much simpler to treat each node as equal unit.
-In other words, DHTs support heterogeneity, but do not attempt to exploit it.
-
-This doesn't mean that heterogeneity cannot be exploited
-Nodes can be given addition responsibilities manually, by running multiple instances of the P2P application on the same machine or creating more virtual nodes.
-However, this is not a feasible option for any kind of truly decentralized system and would need to be done automatically.
-There is no well-known mechanism to that exists to automatically  allocate virtual nodes on the fly \footnote{citation needed, although this can be similar to IRM}. 
 A few options present themselves.  % and are discuessed in \ref{}
 %add the above if the below is moved
 

@@ -2,6 +2,24 @@
 \chapter{Proposed Work}
 \label{chapter:experiments}
 
+
+\section{DHT Framework}
+As mentioned in Chapter \ref{chapter:intro}, our plan is to create a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
+
+\begin{itemize}
+	\item This will be done jointly with Brendan.
+	\item The language used will either be Python3 or Go
+	\begin{itemize}
+		\item Python3 is easily to read and write and has support for coroutines.  However, we have to deal with the Global Interpreter Lock.
+		\item Go is safer than Python and is designed for concurrency.
+	\end{itemize}
+	\item We will be using test driven design.
+	\item The goal of this step is \textbf{not} to create a DHT, but to create an easily extensible abstract framework anyone to make DHTs.
+	\item The abstraction comes from implementing the relationship we found between DHT spheres of responsibility and Voronoi tessellations
+	
+\end{itemize}
+
+
 \section{Distributed DHT Computing}
 
 
@@ -11,13 +29,7 @@ Our goal is to further develop ChordReduce and release a complete verion: a DHT 
 The steps involved in this are listed below.
 
 \begin{itemize}
-	\item We must create a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
-	\begin{itemize}
-		\item This will be done in Python3 jointly with Brendan.
-		\item We will be using test driven design.
-		\item The goal of this step is \textbf{not} to create a DHT, but to create an easily extensible abstract framework anyone to make DHTs.
-		\item The abstraction comes from implementing the relationship we found between DHT spheres of responsibility and Voronoi tessellations
-	\end{itemize}
+	
 	\item We will use the above framework to implement a few of the more popular DHTs.
 	\begin{itemize}
 		\item This will serve as both examples for home to implement our framework as well and the building blocks for the next step.
