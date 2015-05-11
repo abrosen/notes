@@ -229,22 +229,31 @@ We then tested our prototype's fault-tolerance by executing MapReduce jobs under
 Our experiments with ludicrously high levels of churn created an anomaly in the runtime of our computations.
 Under absurd levels of experimental churn, we found that our computation was quicker than our experiments without churn.
 We hypothesize that this is because the random churn is acting as a (inefficient) process for autonomous load-balancing.
-
-This phenomena is described in detail in Chapter \ref{sec:auto-load-bal}, but .
+This phenomena is described in detail in Chapter \ref{sec:auto-load-bal}, but suggested to us that there was a way to  dynamically load-balance during execution.
 
 %VHash as the ur-example
-The second  \cite{vhash} \cite{dgvh}
+The second project we worked on was VHash \cite{vhash} \cite{dgvh}, a distributed hash table based on Delaunay Triangulation.
+VHash is unique for the way it could work in multidimensional spaces.
+
+We discovered the closeness metric used by DHTs to determine which node is responsible for what data is analogous to the metric used to create a Voronoi tessellation.
+This means the neighbors of the node map to Delaunay triangulations. 
+To the best of our knowledge, no other party has inferred the relationship between Voronoi tessellations, Delaunay triangulations and distributed hash tables.
+These properties gives us a way to postulate an \textit{ur}-DHT, a progenitor DHT which could be used to define all other DHTs.
+
 
 %DGVH shows that DHTs function even when the closeness metric is fuzzy
 
+
 %Sybil
+We also did a project which analyzed the amount of effort that would be required to attack a DHT using a method known as the Sybil attack \cite{sybil-analysis}.
+The Sybil attack \cite{sybil} is a well known attack against distributed systems, but it had not been fully analyzed from the perspective of an attacker.
+We believe that some of the components that are used to perform a Sybil attack can be used for autonomous load balancing.
+
 %looking for publication
-\cite{sybil-analysis}
 
 
 %distributed DNS:  experience building DHTs
-\subsubsection{Published}
-
+\subsubsection{Published Work}
 
 \begin{itemize}
 	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois ``MapReduce on a Chord Distributed Hash Table'' Presentation ICA CON 2014, Poster at IPDPS 2014 PhD Forum
@@ -271,11 +280,6 @@ I also have a number of publications with other authors not relevant to the prop
 	IEEE SSCI 2014 - CIDM 2014 - The IEEE Symposium Series on Computational Intelligence and Data Mining \cite{durham2014optimization}
 \end{itemize}
 
-\subsubsection{Unpublished}
-\begin{itemize}
-	\item Brendan and I implemented our own Distributed DNS system.
-	\item Sybil paper.
-\end{itemize}
 \subsection{Summary of Proposal}
 
 
