@@ -11,7 +11,10 @@
 %TODO: Get some structure!  Move background to background, this section should be purely motivation;  tell what dht's can do right now and what proposed uses there are and what YOU propose.  Also incorperate the challenges you need to overcome.  You can say these things are hard for DHTs and we'll tell you more in background.
 %TODO:  Make sure you have roadmap:  Highlevel What you have done, what you plan to do.
 
-
+Distributed Hash Tables (DHTs) are protocols and frameworks used by peer-to-peer (P2P) systems.
+They are used as the organizational backbone for many P2P file-sharing systems due to their scalability, fault-tolerance, and load-balancing properties.
+These same properties are highly desirable in a distributed computing environment, especially one that wants to use heterogeneous components.
+DHTs can be used not only as the framework to build a P2P file-sharing service, but a P2P distributed computing platform.
 
 
 % What do I want to do?
@@ -213,8 +216,33 @@ Nodes can be given addition responsibilities manually, by running multiple insta
 
 \section{Roadmap}
 
-\subsection{Work I have already done}
+In this section, we give a brief overview of our previous work.
+We go into further detail of our previous work in Chapter \ref{chapter:prev} and we enumerate the pieces of our dissertation in Chapter \ref{chapter:experiments}. 
+\subsection{Completed Work}
 
+%chord reduce
+One of our first projects was to create a distributed computing platform using the Chord DHT \cite{chordreduce}.
+Our goal here was to create a completely decentralized distributed computing framework which was fault-tolerant during job execution.
+We did this by implementing MapReduce over Chord.
+We then tested our prototype's fault-tolerance by executing MapReduce jobs under churn.
+
+Our experiments with ludicrously high levels of churn created an anomaly in the runtime of our computations.
+Under absurd levels of experimental churn, we found that our computation was quicker than our experiments without churn.
+We hypothesize that this is because the random churn is acting as a (inefficient) process for autonomous load-balancing.
+
+This phenomena is described in detail in Chapter \ref{sec:auto-load-bal}, but .
+
+%VHash as the ur-example
+The second  \cite{vhash} \cite{dgvh}
+
+%DGVH shows that DHTs function even when the closeness metric is fuzzy
+
+%Sybil
+%looking for publication
+\cite{sybil-analysis}
+
+
+%distributed DNS:  experience building DHTs
 \subsubsection{Published}
 
 
