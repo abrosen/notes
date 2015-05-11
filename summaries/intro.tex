@@ -198,7 +198,8 @@ The chosen hash function is typically large enough to avoid hash collisions\foot
 
 Essentially, both nodes and data are spread about the network uniformly at random.
 Nodes are responsible for the files with keys ``close'' to their own.
-What ``close'' means depends on each individual , but we found it to be equivalent choosing a metric for Voronoi tessellation \cite{vhash}.
+What ``close'' means depends on the specific implementation. 
+we found defining the meaning of ``close'' equivalent choosing a metric for Voronoi tessellation \cite{vhash}.
 However, because this is a random process, not all values are evenly distributed, but enough hash keys yield a close enough approximation.
 
 Heterogenity presents a challenge for load-balancing DHTs due to conflicting assumptions and goals. 
