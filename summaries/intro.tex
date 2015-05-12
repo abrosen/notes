@@ -6,15 +6,15 @@
 % % % Hypothesis = These Problems + These qualiteies -> solution
 % % % Framework of what these solutions are and what they can do
 
-%TODO: This chapter is a chapter long abstract/introduction.
-%TODO: What I want to do, why you should care.
-%TODO: Why you should care is applications.  What applications can you use be general but also give wide varity of specific examples
-%TODO: Motivational selling point
+
+%TODO: Create intro paragraph with paragraph from abstract
 %TODO: Get some structure!  Move background to background, this section should be purely motivation;  tell what dht's can do right now and what proposed uses there are and what YOU propose.  Also incorperate the challenges you need to overcome.  You can say these things are hard for DHTs and we'll tell you more in background.
 %TODO:  Make sure you have roadmap:  Highlevel What you have done, what you plan to do.
-%TODO:  A section with list of my papers (publications based on this work and ref the label for where comes up) (seperate list of stuff I've been involved in)
 
-
+Distributed Hash Tables (DHTs) are protocols and frameworks used by peer-to-peer (P2P) systems.
+They are used as the organizational backbone for many P2P file-sharing systems due to their scalability, fault-tolerance, and load-balancing properties.
+These same properties are highly desirable in a distributed computing environment, especially one that wants to use heterogeneous components.
+DHTs can be used not only as the framework to build a P2P file-sharing service, but a P2P distributed computing platform.
 
 
 % What do I want to do?
@@ -62,17 +62,17 @@ The remainder of the proposal will then discuss the work we plan on doing to dem
 Distributed Hash Tables have been used in numerous applications:
 
 \begin{itemize}
-	\item \textbf{P2P file sharing} is by far the most prominent use of DHTs.  
+	\item \textit{P2P file sharing} is by far the most prominent use of DHTs.  
 	The most well-known application is BitTorrent \cite{bittorrent}, which is built on Mainline DHT \cite{mainline}.
-	\item DHTs have been used for \textbf{distributed storage} systems \cite{CFS}.
-	\item \textbf{Distributed Domain Name Systems} (DNS) have been built upon DHTs \cite{cox2002serving} \cite{pappas2006comparative}.
+	\item DHTs have been used for \textit{distributed storage} systems \cite{CFS}.
+	\item \textit{Distributed Domain Name Systems} (DNS) have been built upon DHTs \cite{cox2002serving} \cite{pappas2006comparative}.
 	Distributed DNSs are much more robust that DNS to orchestrated attacks, but otherwise require more overhead.
 	%\item Distributed search (faroo)
-	\item DHT was used as the name resolution layer of a large \textbf{distributed database} \cite{Mateescu2011440}.
-	\item Distributed \textbf{machine learning} \cite{liparameter}.
-	\item Many \textbf{botnets} are now P2P based and built using well established DHTs \cite{saad2011detecting}. 
+	\item DHT was used as the name resolution layer of a large \textit{distributed database} \cite{Mateescu2011440}.
+	\item Distributed \textit{machine learning} \cite{liparameter}.
+	\item Many \textit{botnets} are now P2P based and built using well established DHTs \cite{saad2011detecting}. 
 	This is because the decentralized nature of P2P systems means there's no single vulnerable location in the botnet.
-	\item \textbf{Live video streaming} (BitTorrent live) \cite{mol2009design}.
+	\item \textit{Live video streaming} (BitTorrent live) \cite{mol2009design}.
 \end{itemize}
 
 We can see from this list that DHTs are primarily used in P2P applications, but other applications, such as botnets, use DHTs for their decentralization.
@@ -98,7 +98,7 @@ We have found no existing projects that provide a means of building your own DHT
 % Okay so this is all great, but what's special about a DHT
 % First, let's talk about the problems with distributed computing
 
-Using distributed hash tables for distributed computing isn't necessarily the most intuitive step.
+Using distributed hash tables for distributed computing is not necessarily the most intuitive step.
 To understand why we want to use DHTs for distributed computing, we will first examine some of the more prominent challenges in distributed computing.
 
 \subsection{General Challenges of Distributed Computing}
@@ -198,7 +198,8 @@ The chosen hash function is typically large enough to avoid hash collisions\foot
 
 Essentially, both nodes and data are spread about the network uniformly at random.
 Nodes are responsible for the files with keys ``close'' to their own.
-What ``close'' means depends on each individual , but we found it to be equivalent choosing a metric for Voronoi tessellation \cite{vhash}.
+What ``close'' means depends on the specific implementation. 
+we found defining the meaning of ``close'' equivalent choosing a metric for Voronoi tessellation \cite{vhash}.
 However, because this is a random process, not all values are evenly distributed, but enough hash keys yield a close enough approximation.
 
 Heterogenity presents a challenge for load-balancing DHTs due to conflicting assumptions and goals. 
@@ -215,10 +216,44 @@ Nodes can be given addition responsibilities manually, by running multiple insta
 
 \section{Roadmap}
 
-\subsection{Work I have already done}
+In this section, we give a brief overview of our previous work.
+We go into further detail of our previous work in Chapter \ref{chapter:prev} and we enumerate the pieces of our dissertation in Chapter \ref{chapter:experiments}. 
+\subsection{Completed Work}
 
-\subsubsection{Published}
+%chord reduce
+One of our first projects was to create a distributed computing platform using the Chord DHT \cite{chordreduce}.
+Our goal here was to create a completely decentralized distributed computing framework which was fault-tolerant during job execution.
+We did this by implementing MapReduce over Chord.
+We then tested our prototype's fault-tolerance by executing MapReduce jobs under churn.
 
+Our experiments with ludicrously high levels of churn created an anomaly in the runtime of our computations.
+Under absurd levels of experimental churn, we found that our computation was quicker than our experiments without churn.
+We hypothesize that this is because the random churn is acting as a (inefficient) process for autonomous load-balancing.
+This phenomena is described in detail in Chapter \ref{sec:auto-load-bal}, but suggested to us that there was a way to  dynamically load-balance during execution.
+
+%VHash as the ur-example
+The second project we worked on was VHash \cite{vhash} \cite{dgvh}, a distributed hash table based on Delaunay Triangulation.
+VHash is unique for the way it could work in multidimensional spaces.
+
+We discovered the closeness metric used by DHTs to determine which node is responsible for what data is analogous to the metric used to create a Voronoi tessellation.
+This means the neighbors of the node map to Delaunay triangulations. 
+To the best of our knowledge, no other party has inferred the relationship between Voronoi tessellations, Delaunay triangulations and distributed hash tables.
+These properties gives us a way to postulate an \textit{ur}-DHT, a progenitor DHT which could be used to define all other DHTs.
+
+
+%DGVH shows that DHTs function even when the closeness metric is fuzzy
+
+
+%Sybil
+We also did a project which analyzed the amount of effort that would be required to attack a DHT using a method known as the Sybil attack \cite{sybil-analysis}.
+The Sybil attack \cite{sybil} is a well known attack against distributed systems, but it had not been fully analyzed from the perspective of an attacker.
+We believe that some of the components that are used to perform a Sybil attack can be used for autonomous load balancing.
+
+%looking for publication
+
+
+%distributed DNS:  experience building DHTs
+\subsubsection{Published Work}
 
 \begin{itemize}
 	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois ``MapReduce on a Chord Distributed Hash Table'' Presentation ICA CON 2014, Poster at IPDPS 2014 PhD Forum
@@ -245,11 +280,6 @@ I also have a number of publications with other authors not relevant to the prop
 	IEEE SSCI 2014 - CIDM 2014 - The IEEE Symposium Series on Computational Intelligence and Data Mining \cite{durham2014optimization}
 \end{itemize}
 
-\subsubsection{Unpublished}
-\begin{itemize}
-	\item Brendan and I implemented our own Distributed DNS system.
-	\item Sybil paper.
-\end{itemize}
 \subsection{Summary of Proposal}
 
 
