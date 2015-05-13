@@ -30,12 +30,12 @@ A node is responsible for data that falls within its Voronoi region, which is de
 The peers that share a border for a Voronoi region are members of the node's Delaunay triangulation.
 Starting from any node in the network, we can find any particular node or the node responsible for a particular point in sublinear time.
 
-We've managed to derive the 
+Regardless of the definitions, each DHT protocol needs to specify specific qualities:
 
 \begin{description}
 	\item [Distance Metric] There needs to be a way to establish how far things are from one another.
 	Once we have a distance metric, we define what we mean when we say a node is responsible for all data \textit{close} to it.
-	This definition of \textit{closeness} is essential, since it defines what a node is responsible for and who its short hops are.
+	\item [Closeness Definition] This definition of \textit{closeness} is essential, since it defines what a node is responsible for and who its short hops are.
 	The definition of closeness and distance are related but different.
 	
 	We shall use Chord \cite{chord}  as an example.  
