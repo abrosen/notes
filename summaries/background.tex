@@ -224,6 +224,17 @@ The XOR distance metric means that distances are symmetric, which is not the cas
 Nodes in Kademlia maintain information about the network using a routing table that contains  $m$ lists, called $k$-buckets.
 For each $k$-bucket contains up to $k$ nodes that are distance $2^i$ to $2^{i+1}$, where $0 \leq i < m$.
 In other words, each $k$-bucket corresponds to a subtree of the network not containing the node.
+An example network is shown in Figure \ref{fig:kademlia}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{figs/kademlia}
+	\caption{An example Kademlia network from the original paper \cite{kademlia}. The ovals are the node's $k$-buckets.}
+	\label{fig:kademlia}
+\end{figure}
+
+
+
 
 Each $k$-bucket is maintained by a least recently seen eviction algorithm that skips live nodes.
 Whenever the node receives a message, it adds the sender's info to the tail of the corresponding $k$-bucket.
@@ -294,6 +305,16 @@ Each key is hashed into some point within the geometric space.
 \subsection*{Peerlist and Geometry}
 CAN uses an exceptionally simple peerlist consisting only of neighbors.  
 Every node in the CAN network is assigned a geometric region in the coordinate space and each node maintains a routing table consisting each node that borders the node's region.
+An example CAN network is shown in \ref{fig:can}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{figs/can}
+	\caption{An example CAN network from \cite{can}.}
+	\label{fig:can}
+\end{figure}
+
 
 The size of the routing table is a function of the number of dimensions, $O(d)$. 
 The lower bound on the routing tables size in a populated network (eg, a network with at least $2d$ nodes) is $\Omega(2d)$.  
