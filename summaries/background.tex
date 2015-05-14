@@ -161,7 +161,7 @@ An example Chord network is shown in Figure \ref{fig:chord}.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.45\linewidth]{figs/chord}
-	\caption{A Chord ring with 16 nodes.}
+	\caption{A Chord ring with 16 nodes.  The fingers (long hop connections) are shown cutting across the ring.}
 	\label{fig:chord}
 \end{figure}
 
@@ -425,6 +425,14 @@ A typical value for $L$ is $2^b$ or $2^{b+1}$.
 The leaf set is used for routing when the destination key is close to the current node's ID.
 The neighborhood set contains the $L$ closest nodes, as defined by some proximity metric.  
 It, however, is generally not used for routing.  
+Figure \ref{fig:pastry-table} shows an example peerlist of a node in PAST.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/pastry-table}
+	\caption{An example peerlist for a node in Pastry. Taken from the original Pastry paper \cite{pastry}.}
+	\label{fig:pastry-table}
+\end{figure}
 
 
 
@@ -759,13 +767,16 @@ This yields $k=(3d+1)^{2}+3d+1$ in the expected case, where the lower bound and 
 
 
 \section{Summary}
-%TODO:  Add a paragraph here
 % % % table
 % Perhaps geometries should be included?
 % be sure to include join and leave costs.
 
+We have seen that there are a wide variety of distributed hash tables, but they have some clearly defined characteristics that bind them all together.
+Table \ref{tab:tradeoffs} summarizes the information presented in this chapter.
+
+
 \begin{table}[h]
-	\small
+	\tiny
 	\centering
 	\begin{tabularx}{\textwidth}{ |X|X|X|X|X| }
 		\hline
