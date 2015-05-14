@@ -145,7 +145,7 @@ It is notable due its straightforward routing, its rules which make ownership of
 
 
 % Should I put this in?
-Chord is extremely famous in computer science, and was awarded the prestigious 2011 SIGCOMM Test of Time Award \cite{zave2012using}.
+Chord is extremely famous in Computer Science, and was awarded the prestigious 2011 SIGCOMM Test of Time Award \cite{zave2012using}.
 However, recent research has demonstrated that there have been no correct implementation of Chord in over a decade \cite{zave2012using}.
 
 
@@ -772,12 +772,12 @@ This yields $k=(3d+1)^{2}+3d+1$ in the expected case, where the lower bound and 
 		% Add join leave cost, avgerages and maxs
 		DHT & Routing Table Size & Lookup Time & Join/Leave & Comments \\ \hline  
 		
-		Chord \cite{chord} & $O(\log n)$, maximum $m +2s$ & $O(\log n)$, avg $\frac{1}{2} \log n)$  &  $<O(\log n^{2})$ total messages& $m$  = keysize in bits, $s$ is neighbors in 1 direction  \\ \hline
+		Chord \cite{chord} & $O(\log n)$, maximum $m +2s$ & $O(\log n)$, avg $(\frac{1}{2} \log n)$  &  $<O(\log n^{2})$ total messages& $m$  = keysize in bits, $s$ is neighbors in 1 direction  \\ \hline
 		
-		Kademlia \cite{kademlia} & $O(\log n)$, maximum $m\ \cdot k$ & $\lceil \log n\rceil) + c$ & $O(\log(n))$& This is without considering optimization   \\ \hline
+		Kademlia \cite{kademlia} & $O(\log n)$, maximum $m\ \cdot k$ & $(\lceil \log n\rceil) + c$ & $O(\log(n))$& This is without considering optimization   \\ \hline
 		CAN \cite{can} & $\Omega(2d)$ & $O(n^{\frac{1}{d}})$, average $\frac{d}{4}\cdot n^{\frac{1}{d}}$ & Affects $O(d)$ nodes & $d$ is the number of dimensions \\ \hline
 		
-		Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} & $O(\log_{\beta} n)$ & & &  NodeIDs are base $\beta$ numbers \\ \hline
+		Plaxton-based DHTs, Pastry \cite{pastry}, Tapestry \cite{tapestry} & $O(\log_{\beta} n)$ & $ O(\lceil \log_{2^{\beta}} \rceil) $ & $O(\log_{\beta} n)$ &  NodeIDs are base $\beta$ numbers \\ \hline
 		
         Symphony \cite{symphony}& $2k + 2$&   average $O(\frac{1}{k} \log^{2} n )$ & $O(\log^{2} n)$ messages,  constant $<1$ &  $k \geq 1$, fingers are chosen at random\\ \hline  
 		
