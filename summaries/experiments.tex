@@ -3,84 +3,113 @@
 \label{chapter:experiments}
 
 
-\section{DHT Framework}
+\section{UrDHT: Our DHT Framework}
 As mentioned in Chapter \ref{chapter:intro}, our plan is to create a highly configurable and easy to use DHT framework based off the DHT abstractions we have discovered.
+Rather than making a fully-functional DHT application on our own, we will be making a minimally functional DHT framework that will be easy to fork for a variety of applications.
+
+We call this proposed framework UrDHT, \textit{ur-} being the Germanic prefix denoting primal, or primitive, or original.
+UrDHT is a project which presents a minimal and extensible implementation for all the essential components for a DHT: the different aspects for a protocol definition, the storage of values, and the networking components.
+
 
 \begin{itemize}
-	\item This will be done jointly with Brendan.
-	\item The language used will either be Python3 or Go
+	\item This will be done jointly with Brendan and anyone else who is interested as a completely open source.
+	\item The language used will either be Python3 and/or Go.
 	\begin{itemize}
-		\item Python3 is easily to read and write and has support for coroutines.  However, we have to deal with the Global Interpreter Lock.
-		\item Go is safer than Python and is designed for concurrency.
+		\item Python3 is easy to read and write and has support for coroutines.  We know Python, but it does not do type checking and can be more dangerous.
+		\item Go is safer than Python and is designed for concurrency. It would be safer than Python.
+		\item Regardless of the language, we will be using test driven design.
 	\end{itemize}
-	\item We will be using test driven design.
-	\item The goal of this step is \textbf{not} to create a DHT, but to create an easily extensible abstract framework anyone to make DHTs.
-	\item The abstraction comes from implementing the relationship we found between DHT spheres of responsibility and Voronoi tessellations
+	\item The goal of this step is \textbf{not} to create a DHT, but to create an easily extensible abstract framework for DHTs.
+	\item The abstraction comes from implementing the relationship we found between DHT spheres of responsibility and Voronoi tessellations.  
+	This is the exciting part and novel of the project.
+	Our previous research \cite{vhash} has led us to assert that there is a mathematical formulation for different aspects which every DHT shares in common, such as a distance metric and closeness definition.
 	
 \end{itemize}
+
+\subsection{Expected Publications}
+We expect a pair of publications: one from the mathematical definitions for distributed hash tables and one from the UrDHT application itself.
+The UrDHT project is probably the stronger publication, since it is a fully fledged and novel framework.
+Furthermore, as an open-source application, we hope that it will be forked by many developers who wish to build applications that rely on DHTs.
+
+The mathematical formulations, on the other hand, serve as novel formulations and definitions of DHTs.
+They provide new insight, but do not serve as a new application or framework.
+However, the formulations can and should be presented as an atomic unit on their own.
 
 
 \section{Distributed DHT Computing}
 
-
-Our goal is to further develop ChordReduce and release a complete version: a DHT based platform for solving embarrassingly parallel problems using DHTs.
+The next step is to use the UrDHT framework to re-implement ChordReduce.
+Our goal is a DHT based platform for solving embarrassingly parallel problems using DHTs.
 The steps involved in this are listed below.
+\begin{itemize}
+	\item We will use UrDHT to implement a few of the more popular DHTs.
+	\begin{itemize}
+		\item We want to compare each of the DHTs to see if there is a difference between using one or another for distributed computing.
+		\item Using UrDHT for all the implementations will minimize the non-protocol differences between each DHT, which will allow for as fair a comparison as possible.
+		\item This will serve as both examples for home to implement our framework as well and the building blocks for the next step. 
+	\end{itemize}
+	\item Implement a distributed computing mechanism on each of the implemented DHTs for solving computing tasks.
+	\begin{itemize}
+		\item The emphasis of our distributed computing application is robustness and fault-tolerance.
+	\end{itemize}
+	\item Test each application using a variety of embarrassingly parallel problems, such as:
+	\begin{itemize}
+		\item Brute-force cryptanalysis.
+		\item MapReduce problems.
+		\item Monte-Carlo computations.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Expected Publications}
+Here there is one very clearly well defined application and publication.
+This would be a reimplementation of our original ChordReduce paper with a completely new problems and new results.
+
+
+\section{Autonomous Load Balancing}
+
+As we discussed multiple times, it would be highly beneficial to take advantage of each 
+
+The most straightforward way of doing this in a DHT context is to have more powerful node acquire a wider range
+
+The goals here are straightforward:
 
 \begin{itemize}
+	\item Further establish that the ``strategy'' of randomly inducing churn works at reducing.
+	If we successfully establish it exists,  we must determine if the process can be modeled.%stochastically modeled or otherwise predicted via theoretical analysis.
 	
-	\item We will use the above framework to implement a few of the more popular DHTs.
-	\begin{itemize}
-		\item This will serve as both examples for home to implement our framework as well and the building blocks for the next step.
-	\end{itemize}
-	\item Implement MapReduce on these DHTs and compare their performances.
 	\item Create a  processor scoring mechanism for creating virtual nodes.
 	\begin{itemize}
 		\item This score is a relative score, since the amount of work a node can carry is determined by the amount other nodes can carry.
-		\item The score is based off of processor speed (maybe using Bogomips as the default for a while).
-		\item This is compared to the scores of neighboring nodes  of all the node's replicas and should give a gauge of the node's relative processing power.
-		\item This ties in directly to the autonomous load balancing.
+		\item Furthermore, the score should also be a function of the node's range, since the amount of work is dictated by the amount of range ``owned'' the node. 
+		This means creating the first virtual node does not double the amount of work the node has.
+		\item This is compared to the scores of neighboring nodes  of all the node's replicas and should give a gauge of the node's relative  power.
 	\end{itemize}
+	\item Use this score in conjunction with various implemented strategies for autonomous load-balancing to find the most effective.
+	A few brainstormed strategies:
 	\begin{itemize}
-		\item The emphasis is our framework is optimized for robustness over everything else.
+		\item Passive load balancing -  Here, each node looks at range of its Sybil locations.
+		Based on its score, it choses the $k$ largest locations and injects Sybils.
+		No actual communication with other nodes is used.
+		\item IRM \cite{irm} based  strategy.
+		\item Invitation based -  Here we flip to strategy around.
+		If the node detects its region is too large or it has too much work; it invites other nodes to help.
+		The nodes look at the range in question and offer to help if they have a Sybil that fits and are not overloaded themselves.
+		The invited looks at the offers of help and selects the best candidate.
 	\end{itemize}
+	\item This may necessitate new node types, such as tracker nodes which exist only to eavesdrop on traffic loads.
+	%\item We also plan on modifying virtual nodes so they do not take on additional routing c.  
+	%We want to see how this change will impact the system.
+	\item We must determine under which contexts this kind of highly responsive load-balancing can be used. 
+	Is it only useful during distributed computation, or is it useful in file-sharing as well?
+	
 	
 \end{itemize}
 
 
-
-\section{Autonomous load balancing}
-
-The questions and goals here are straightforward:
-\begin{itemize}
-	\item Further establish the phenomena exists.
-	\item We stumbled across this phenomena with a brute force method and still got promising results.  
-	Can we create a more accurate and mean
-	\item Can this phenomena be stochastically modeled or otherwise predicted via theoretical analysis?
-	\item In what contexts can this be used for DHTs?  Distributed computing?  Replication for file sharing?
-	
-\end{itemize}
+\subsection{Expected Publications}
+We can expect that our research in this area would lead to a publication on autonomous load-balancing.
+In it, we would compare various strategies we implemented against each other, using the randomly induced churn as a baseline.
+In addition, there may be some traditional load-balancing strategies, which we would use to establish the strength of our strategies.
 
 
-
-
-Perhaps we need an entirely new node type, a sentinel that exists merely for checking traffic conditions and load.
-This also breaks how we think of normal nodes.
-
-It may also be that the virtual nodes for load balancing show not keep long hops, so they don't become inundated with routing messages.
-
-One assertion is why not use some kind of mechanism for ensuring even distribution of nodes?
-The issue there is that our solutions for doing this are centralized distribution or a spring-model mechanism (or the binning mechanism of Dynamo, but the paper is a bit roundabout on how to do that).
-
-\subsubsection{Brainstormed Methods}
-%My proposed scheme works like this: a node that determines that it can carry more of the network's weight.
-%How it does this is a problem that needs to be solved.
-%Regardless, once it has made this determination, the node choose an area in the keyspace for it to inject a replica into.
-
-
-\begin{itemize}
-	\item Passive load balancing (guessing):  no actual communication.
-	Here the node looks at the values it can mash, looks at the for that value neighbors, and if the size of that region is larger than average (as reported by the node's short )
-	\item Traffic watching using IRM
-	\item Invitition:  If the node detects its region is too large; it invites other nodes to join.
-\end{itemize}
 
