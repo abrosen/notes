@@ -23,7 +23,7 @@ A user can use MapReduce to take a large problem, split it into small, equivalen
 The results are sent back to the user and combined into one answer. 
 
 Popular platforms for MapReduce, such as Hadoop \cite{hadoop}  \cite{shvachko2010hadoop}, are explicitly designed to be used in large datacenters \cite{hadoopAssumptions} and the majority of research has been focused there.  
-However, as we've previously noted, there are notable issues with a centralized design.
+However, as we have previously mentioned, there are notable issues with a centralized design.
 
 First and foremost is the issue of fault-tolerance.
 Centralized designs have a single point of failure \cite{shvachko2010hadoop}.
@@ -34,16 +34,14 @@ Many environments also anticipate a certain degree in homogeneity in the system.
 Finally deploying these systems and developing programs for them has an extremely steep learning curve.
 
 There is no reason that these assumptions need to be the case for MapReduce, or for many distributed computing frameworks in general.
-
 Moving away from the data center context opens up more possibilities for distributed computing, such as P2P clouds \cite{p2p-cloud}.
 However, without a centralized framework, the network needs some kind of protocol to organize the various components in the network.
-As part of our research, we developed a highly robust and distributed MapReduce framework based on Chord, called ChordReduce.
+As part of our research, we developed a highly robust and distributed MapReduce framework based on Chord, called ChordReduce \cite{chordreduce}.
 
 There a number of reasons to used a DHT as the protocol for a distributed computing platform.
 First, nodes ID and their location in the network are strongly bound to what data they are responsible for, such that any node can lookup which node is responsible a particular piece of data.
 This obviates the need for a centralized organizer to maintain this bit of metadata or assign backups for data, as nodes can do this autonomously.
 DHTs assume that network is heterogeneous, rather than homogeneous.
-
 They have been used for over a decade for P2P file-sharing applications for these reasons.
 
 
@@ -55,7 +53,6 @@ They have been used for over a decade for P2P file-sharing applications for thes
 %Nanodatacenter
 
 \subsection{ChordReduce}
-
 
 ChordReduce is designed as a more abstract framework for MapReduce, able to run on any arbitrary distributed configuration.
 ChordReduce leverages the features of distributed hash tables to handle distributed file storage, fault tolerance, and lookup.  
@@ -77,8 +74,6 @@ When the user wants to retrieve a file, they first obtain the keyfile and then r
 
 
 \subsubsection{Computation}
-
-
 ChordReduce treats each task or target computation as an object of data.
 This means we can distribute them in the same manner as files and rely on the protocol to route them and provide robustness.
 
@@ -103,7 +98,7 @@ Nodes that receive at least two results merge them using the Reduce function.
 The results are continually merged until only one remains at the hash address of the stager. 
 
 
-Some MapReduce jobs don't rely on a file stored on the network, such as a Monte-Carlo approximation
+Some MapReduce jobs do not rely on a file stored on the network, such as a Monte-Carlo approximation
 In this case, the created data atoms are then each given a random hash and sent to the node responsible for that hash address, guaranteeing they are evenly distributed throughout the network. 
 From there, the execution is identical to the above scenario.
 
@@ -124,11 +119,11 @@ This is done to prevent a job being submitted twice.
 
 An advantage of our system is the ease of development and deployment.  
 The developer does not need to worry about distributing work evenly, nor does he have to worry about any node in the network going down. 
- The stager does not need to keep track of the status of the network.  
- The underlying Chord ring handles that automatically.  
- If the user finds they need additional processing power during runtime, they can boot up additional nodes, which would automatically be assigned work based on their hash value.   
- If a node goes down while performing an operation, his successor takes over for him.  
- This makes the system extremely robust during runtime.
+The stager does not need to keep track of the status of the network.  
+The underlying Chord ring handles that automatically.  
+If the user finds they need additional processing power during runtime, they can boot up additional nodes, which would automatically be assigned work based on their hash value.   
+If a node goes down while performing an operation, his successor takes over for him.  
+This makes the system extremely robust during runtime.
 
 
 \subsubsection{Robustness}
@@ -173,7 +168,7 @@ To evenly distribute the workload, you just have to give each machine the same a
 
 This is more difficult in a heterogeneous system.
 Each machine can shoulder a different amount of work.
-How do we distribute work evenly across a heterogeneous system.
+How do we distribute work evenly across a heterogeneous system?
 
 We can solve this by adjusting the amount of nodes representing each machine in the network.
 Machines that can handle a larger load create more nodes in the network.
@@ -181,7 +176,7 @@ Besides solving the heterogeneous load-balancing problem, increasing the number 
 
 
 The question we must answer is ``how?''
-I need to create some unit of measurement for a distributed computing system and research if any other researchers have asked this problem (I haven't encountered any in my reading).
+We need to create some unit of measurement for a distributed computing system and research if any other researchers have asked this problem.
 Furthermore, this measurement might need to be relative to other nodes in the network, since the only basis for comparison are the scores of the peers.
 
 Finally, this process needs to be handled autonomously by each node, which is the other primary focus of my proposal.
@@ -229,7 +224,7 @@ The following possibilities could occur:
 \begin{itemize}
 	\item A node without any active jobs leaves.
 	It dies and and comes back with a new port chosen.
-	This new ID has a higher chance of landing in a larger region of responsibility (since larger regions are larger and new joining nodes have a greater ``chance'' of hashing to that location).
+	This new ID has a higher chance of landing in a larger region of responsibility (since larger regions are larger and new joining nodes have a greater chance of hashing to that location).
 	In other words, it has a (relatively) higher chance of moving into an space where it becomes acquires responsibility for enqueued jobs.
 	The outcomes of this are:
 	\begin{itemize}
@@ -250,9 +245,8 @@ The following possibilities could occur:
 	\end{itemize}
 \end{itemize}
 
-Now here's the trick.
 The longer the nodes work on the jobs, the more nodes finish and have no jobs.
-This means as time increases, so do the occurrences that Case I and II occur.
+This means as time increases, so do the occurrences of Case I and II.
 
 
 This leads us to two hypotheses:
@@ -264,28 +258,26 @@ This leads us to two hypotheses:
 \end{itemize}
 
 The first hypothesis is mentally pleasing to anyone who has tried to create a distributed system, but lacks rigor.
+We still have to verify the existence of this phenomena in an independent experiment, and establishing that it does another goal of my dissertation.
 
 
-We still have to verify the existence of this phenomena in an independent experiment.
+Once we have established that it does exist, we need a better load-balancing strategy than randomly inducing.
+We want nodes to have a precomputed list of locations in which they can insert nodes to perform load-balancing on an ad-hoc basis during runtime.
+This precomputed list ties directly into the security research on DHTs we have done \cite{sybil-analysis}.
 
 
-The questions and goals here are straight forward:
-\begin{itemize}
-	\item Further establish the phenomena exists.
-	\item We stumbled across this phenomena with a brute force method and still got promising results.  
-	Can we create a more accurate and mean
-	\item Can this phenomena be stochastically modeled or otherwise predicted via theoretical analysis?
-	\item In what contexts can this be used for DHTs?  Distributed computing?  Replication for file sharing?
+%The questions and goals here are straightforward:
+%\begin{itemize}
+%	\item Further establish the phenomena exists.
+%	\item We stumbled across this phenomena with a brute force method and still got promising results.  
+%	Can we create a more accurate and mean
+%	\item Can this phenomena be stochastically modeled or otherwise predicted via theoretical analysis?
+%	\item In what contexts can this be used for DHTs?  Distributed computing?  Replication for file sharing?
 
-\end{itemize}
+%\end{itemize}
 
 
 
-My proposed scheme works like this: a node that determines that it can carry more of the network's weight.
-How it does this is a problem that needs to be solved.
-Regardless, once it has made this determination, the node choose an area in the keyspace for it to inject a replica into.
-
-This ties into the security research on DHTs I have done.
 
 
 
@@ -313,9 +305,7 @@ Extensive research has been done assessing the damage an attacker can do after e
 %Especially when a hash value to assign neighbors
 Little focus has been done on examining how the attacker can establish himself in the first place and precisely how easily the Sybil attack can be accomplished.
 
-
-%TODO: add security citation for self
-I focused on looking at the computational and memory costs of creating as many replicas as possible.
+We focused on looking at the computational and memory costs of creating as many replicas as possible.
 The computation costs turn out to be fairly trivial and can be precomputed based on how IDs are assigned, a process I call \textit{mashing}.
 If a node obtains their ID via an IP/Port combination, and we limit an attacker to using only ephemeral IP addresses (16383 total), the per node cost of mashing is quite low.
 Per node, it takes 48 milliseconds to mash 16383 IP/Port combinations and only 352 kilobytes to store this information after precomputing it.
@@ -325,20 +315,8 @@ An attacker would do this for each of his nodes, then join the network and inser
 I calculated that it would take only 1221 IP addresses to compromise 50\% of the links in a 20,000,000 node network.
 
 An altruistic member of the network could only inject replicas where they are needed.
-
-
-
-
-
-So given that we want nodes to insert nodes Why not let nodes choose keys manually or at random?
+Given that we want nodes to insert virtual nodes, why not let nodes choose keys from the entire keyspace?
 First, this is bad practice which makes a Sybil attacks trivially easy to perform.
-Second, one of the primary benefits of using consistent hashing is that it allows a selection of conitguious keys to map to a uniform distribution.
+Second, one of the primary benefits of using consistent hashing is that it allows a selection of contiguous keys to map to a uniform distribution.
 Most importantly for us, this distribution can be precomputed and reproduced as needed. 
 %Finally, putting constraints on what is used to generate IDs makes it more
-
-
-Perhaps we need an entirely new node type, a sentinel that exists merely for checking traffic conditions and load.
-This also breaks how we think of normal nodes.
-
-One assertion is why not use some kind of mechanism for ensuring even distribution of nodes?
-The issue there is that our solutions for doing this are centralized distribution or a spring-model mechanism (or the binning mechanism of Dynamo, but the paper is a bit roundabout on how to do that).

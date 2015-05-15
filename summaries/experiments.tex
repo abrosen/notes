@@ -23,9 +23,7 @@ As mentioned in Chapter \ref{chapter:intro}, our plan is to create a highly conf
 \section{Distributed DHT Computing}
 
 
-
-
-Our goal is to further develop ChordReduce and release a complete verion: a DHT based platform for solving embarrassingly parallel problems using DHTs.
+Our goal is to further develop ChordReduce and release a complete version: a DHT based platform for solving embarrassingly parallel problems using DHTs.
 The steps involved in this are listed below.
 
 \begin{itemize}
@@ -52,9 +50,33 @@ The steps involved in this are listed below.
 
 \section{Autonomous load balancing}
 
+The questions and goals here are straightforward:
+\begin{itemize}
+	\item Further establish the phenomena exists.
+	\item We stumbled across this phenomena with a brute force method and still got promising results.  
+	Can we create a more accurate and mean
+	\item Can this phenomena be stochastically modeled or otherwise predicted via theoretical analysis?
+	\item In what contexts can this be used for DHTs?  Distributed computing?  Replication for file sharing?
+	
+\end{itemize}
 
+
+
+
+Perhaps we need an entirely new node type, a sentinel that exists merely for checking traffic conditions and load.
+This also breaks how we think of normal nodes.
+
+It may also be that the virtual nodes for load balancing show not keep long hops, so they don't become inundated with routing messages.
+
+One assertion is why not use some kind of mechanism for ensuring even distribution of nodes?
+The issue there is that our solutions for doing this are centralized distribution or a spring-model mechanism (or the binning mechanism of Dynamo, but the paper is a bit roundabout on how to do that).
 
 \subsubsection{Brainstormed Methods}
+%My proposed scheme works like this: a node that determines that it can carry more of the network's weight.
+%How it does this is a problem that needs to be solved.
+%Regardless, once it has made this determination, the node choose an area in the keyspace for it to inject a replica into.
+
+
 \begin{itemize}
 	\item Passive load balancing (guessing):  no actual communication.
 	Here the node looks at the values it can mash, looks at the for that value neighbors, and if the size of that region is larger than average (as reported by the node's short )
