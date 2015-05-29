@@ -95,6 +95,12 @@ The goals here are straightforward:
 		If the node detects its region is too large or it has too much work; it invites other nodes to help.
 		The nodes look at the range in question and offer to help if they have a Sybil that fits and are not overloaded themselves.
 		The invited looks at the offers of help and selects the best candidate.
+		\item Another invitation based scheme is that each of the nodes submits itself as a potential filler to each of it's sybil locations.
+		The nodes that would be affected by this node's entry add it to a list of fillers. 
+		When the node decides it needs help, it selects of of the fillers to join.
+		These invitation based schemes have the advantage of nodes having control of their range. 
+		The question is it ``turtles all the way down'' here?
+		Do we let the replicas also call for help?
 	\end{itemize}
 	\item This may necessitate new node types, such as tracker nodes which exist only to eavesdrop on traffic loads.
 	%\item We also plan on modifying virtual nodes so they do not take on additional routing c.  
