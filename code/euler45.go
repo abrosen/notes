@@ -8,38 +8,43 @@ It can be verified that T285 = P165 = H143 = 40755.
 Find the next triangle number that is also pentagonal and hexagonal.
 
 
-This is not that hard.  
 
-We can i 
- * */
 
+
+This is not that hard.
+We can completely ignore triangle numbers from our analysis, since all hexagonal nums are triangle nums.
+* We can view the problem like this:
+* Find the hexagonal number > 40755 that is a pentagonal number.
+* It turns out that there's a test for pentagonal numbers and hexagonal numbers,
+* so we only really need to generate one of them and use a test.
+*
+*/
 
 package main
 
 import "math"
 
 func isPentagonal(x int) bool {
-    return  math.Mod((math.Sqrt(24*float64(x) + 1) + 1),6) == 0
+	return math.Mod((math.Sqrt(24*float64(x)+1)+1), 6) == 0
 }
 
 // returns the nth hexagonal number
 func hexagonal(n int) int {
-    return n*(2*n - 1)
+	return n * (2*n - 1)
 }
 
+func main() {
+	n := 144 // this starts after the point euler gave us.
+	done := false
+	ans := -5
+	for !done {
+		ans = hexagonal(n)
+		if isPentagonal(ans) {
+			done = true
+		} else {
+			n++
+		}
 
-func main(){
-    n := 144 // this starts after the point euler gave us.
-    done := false
-    ans := -5
-    for !done{
-        ans = hexagonal(n)
-        if isPentagonal(ans) { 
-            done = true
-        } else {
-            n++
-        }
-        
-    }
-    println(n,ans)
+	}
+	println(n, ans)
 }
