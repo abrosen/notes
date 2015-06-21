@@ -1,5 +1,7 @@
-\documentclass[11pt]{beamer}
-\usetheme{Pittsburgh}
+\documentclass[11pt,aspectratio=169]{beamer}
+\usetheme{Darmstadt}
+%\usecolortheme{dolphin}
+
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -9,11 +11,11 @@
 \usepackage{graphicx}
 
 \author{Andrew Rosen}
-\title[DHT Based Distributed Computing]{Proposal Defense\\ Towards a Framework for DHT-Based Disributed Computing}
+\title[DHT Distributed Computing]{Proposal Defense\\ Towards a Framework for DHT Distributed Computing}
 
 \logo{\includegraphics[height=1cm]{figs/logo}}
 \institute{Georgia State University}
-\date{July 15th, 5775 AM}
+\date{July 15th, 2015}
 %\subject{}
 %\setbeamercovered{transparent}
 %\setbeamertemplate{navigation symbols}{}
@@ -31,49 +33,125 @@
 \begin{document}
 \maketitle
 
-\begin{frame}
-	\frametitle{}
-\end{frame}
-
 
 \section{Introduction}
 
 
 \subsection{What I am doing}
 \begin{frame}{Objective}
-Our objective
+Our objective is to create a generalized framework for distributed computing using Distributed Hash Tables.
 
 \end{frame}
 
 \subsection{Distributed Computing and Challenges}
 
 \begin{frame}{What is Distributed Computing}
-	Our objective
 	
 \end{frame}
 
 
 \begin{frame}{Challenges}
-	Our objective
+	\begin{itemize}
+		\item<1-> Scalability
+		\item<2-> Fault-Tolerance
+		\item<3-> Load-Balancing
+	\end{itemize}
 	
 \end{frame}
 
 
 \subsection{What Are Distributed Hash Tables}
 
+\begin{frame}{Distributed Key/Value Stores}
+\end{frame}
+
+
+\begin{frame}{Current Applications}
+	Applications that use or incoperate DHTs:
+	\begin{itemize}
+		\item P2P File Sharing applications, such as Bittorrent \cite{bittorrent} \cite{mainline}.
+		\item Distributed File Storage \cite{CFS}.
+		\item Distributed Machine Learning \cite{liparameter}.
+		\item Name resolution in a large  distributed database \cite{Mateescu2011440}.
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{Strengths of DHTs }
-	Our objective
 	
 \end{frame}
+
+
 
 
 \section{Background}
 
 \subsection{The Components and Terminology}
+\begin{frame}{Functions}
+	\begin{description}
+		\item[put($ key $, $ value $)] Stores $value$ at the node responsible for $key$, where $key =  hash(value)$.
+		\item[get($ key $)] Returns the $ value $ associated with $key$.
+		\item[lookup($ key $)] Finds the node responsible for a given key.
+	\end{description}
+\end{frame}
 
 
+\subsection{Example DHTs}
+
+\begin{frame}{Chord}
+	content...
+\end{frame}
+
+\begin{frame}{Kademlia}
+\end{frame}
+
+\begin{frame}{VHash}
+	content...
+\end{frame}
 \section{Previous Work}
+
+\subsection{ChordReduce}
+
+\begin{frame}{ChordReduce}
+	content
+\end{frame}
+
+\subsection{VHash}
+
+
+\begin{frame}{DGVH}
+	content
+\end{frame}
+
+
+\subsection{Sybil}
+
+\begin{frame}{Sybil Analysis}
+	content
+\end{frame}
 
 \section{Proposed Work}
 
+
+
+\subsection{UrDHT}
+\begin{frame}{UrDHT}
+	This kind of framework does not exist.
+\end{frame}
+
+
+\subsection{DHT Distributed Computing}
+\begin{frame}{DHT Distributed Computing}
+	content
+\end{frame}
+
+
+
+\subsection{Autonomous Load-Balancing}
+\begin{frame}{Autonomous Load-Balancing}
+	content
+\end{frame}
+
+
+\bibliography{notes,dht,mapreduce,voronoi,dns,botnets,mine}
+\bibliographystyle{plain}
 \end{document}
