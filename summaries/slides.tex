@@ -115,9 +115,22 @@ We want to build a completely decentralized distributed computing framework.
 \begin{frame}{Strengths of DHTs }
 	DHTs are designed for large P2P applications, which means they need to be (and are):
 	\begin{description}
-		\item[Scalable]
-		\item[Fault-Tolerant]
+		\item[Scalable] 
+		\begin{itemize}
+			\item Each node knows a \emph{small} subset of the entire network.
+			\item Join/leave operations impact very few nodes.
+		\end{itemize}
+		\item[Fault-Tolerant] 
+		\begin{itemize}
+			\item The network is decentralized.
+			\item DHTs are designed to handle \alert{churn}.
+
+		\end{itemize}
 		\item[Load-Balancing]
+		\begin{itemize}
+			\item  Consistent hashing ensures that nodes and data are close to evenly distributed.
+			\item Nodes are responsible for the data closest to it.
+		\end{itemize}
 	\end{description}
 	
 \end{frame}
@@ -125,12 +138,26 @@ We want to build a completely decentralized distributed computing framework.
 \note[itemize]{
 	\item Remember to mention Napster. 
 	\item Distributed Hash Tables were designed to be used for completely decentralized P2P applications involving millions of nodes. 
-	\item As a result of the P2P focus, DHTs have the following qualities
-	}
+	\item As a result of the P2P focus, DHTs have the following qualities.
+	\item Scalability 
+	\begin{itemize}
+		\item The subset each node knows is such that we have expected $ \lg(n) $ lookup
+	\end{itemize}
+	\item Fault-Tolerance 
+	\begin{itemize}
+		\item Because Joins and node failures affect only nodes in the immediate vicinity, very few nodes are impacted by an individual operation.
+	\end{itemize}
+	\item Load Balancing
+	\begin{itemize}
+		\item The space is large enough to avoid Hash collisions
+	\end{itemize}	
+}
 
 \subsection{Why DHTs and Distributed Computing}
 
 \begin{frame}{DHTs Address the Specified Challenges}
+The big issues in distributed computing can be solved by the mechanisms provided by Distributed Hash Tables.
+
 \end{frame}
 
 \begin{frame}{Uses For DHT Distributed Computing}
@@ -146,7 +173,10 @@ We want to build a completely decentralized distributed computing framework.
 	\end{itemize}
 \end{frame}
 
-
+\note[itemize]{
+\item Need notes here
+\item Define Monte-Carlo Markov Chain
+}
 
 \section{Background}
 
