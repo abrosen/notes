@@ -197,6 +197,31 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	\item We'll go into more detail  about the difference between Distance and  Closeness in Chord
 	}
 
+
+\begin{frame}{Chord's Closest Metric.}
+	\begin{figure}
+		\centering
+		
+		\caption{A Voronoi diagram for a Chord network, using Chord's definition of closest.}
+		\includegraphics[width=0.3\linewidth]{figs/voro-chord-normal}
+		\label{fig:voro-chord-normal}
+	\end{figure}
+	
+\end{frame}
+\begin{frame}{Chord Using A Different Closest Metric}
+	\begin{figure}
+		\centering
+		\caption{A Voronoi diagram for a Chord network, where closest if defined by the node being the closest in either direction.}
+		\includegraphics[width=0.5\linewidth]{figs/voro-chord-alternative}
+		
+		\label{fig:voro-chord-alternative}
+	\end{figure}
+\end{frame}
+
+
+
+
+
 \begin{frame}{Terms and Variables}
 	\begin{itemize}
 		\item Network size is $n$ nodes.
@@ -215,6 +240,11 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	\item Short peers are actively maintained, long peers replaced gradulally and are not actively pinged.
 	\item We use root as it's is a topology agnostic term.
 	}
+
+
+
+
+
 
 \begin{frame}{Functions}
 	\begin{description}
@@ -254,28 +284,38 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	\item node $r$ is our root node.
 	\item $ i $ is the index on the list
 	\item English for  the equation, the long peers double in distance from the root node, allowing us to cover at least half the distance to our target in a step
-	\item In this way, we can achieve an expected $ \lg n $  lookup time. 
+	\item In this way, we can achieve an expected $ \lg n $  hops. 
 }
 
 
 \begin{frame}{Fault Tolerence in Chord}
 	\begin{itemize}
+		\item Local thread maintenance gradually fixes the network topology.
+		\begin{itemize}
+			\item Each node ``notifies'' its successor.
+			\item The successor replies with a better successor of one exists.
+		\end{itemize}
+		\item The long peers are gradually updated performing lookup on each entry.
 		\item Some implementations use predecessor and successor lists.
 	\end{itemize}
 \end{frame}
 
+
+
+\begin{frame}{Handleing Churn in General}
+	\begin{itemize}
+		\item Short peers, the neighbors, are periodically queried to:
+		\begin{itemize}
+			\item See of the node is still alive.
+			\item See if the neighbor knows about better nodes.
+		\end{itemize}
+		\item Long peer failures are reacted to and replaced by regular maintenance.
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{Other DHTs}
-	
 \end{frame}
 
-
-\begin{frame}{DHT and Voronoi Relationship}
-	content
-\end{frame}
-
-\begin{frame}{VHash}
-	
-\end{frame}
 \section{Previous Work}
 
 \subsection{ChordReduce}
@@ -287,6 +327,48 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \subsection{VHash}
 
 
+\begin{frame}{DHT and Voronoi Relationship}
+	We discovered a mapping between Distributed Hash Tables and Voronoi/Delaunay Triangulations
+\end{frame}
+
+\begin{frame}{Voronoi Tesselation}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{figs/new_voronoi}
+		\caption{A set of points and the generated Voronoi regions}
+		\label{fig:new_voronoi}
+	\end{figure}
+\end{frame}
+
+\note{Define
+	\begin{itemize}
+		\item Voronoi generators
+		\item Voronoi Region
+		\item Voronoi Tessellation/ Diagram
+	\end{itemize}
+}
+
+\begin{frame}{Delaunay Triangulation}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{figs/delaunay}
+		\caption{The same set of nodes with their corresponding Delaunay Triangulation.}
+		\label{fig:delaunay}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{DHT and Voronoi Relationship cont'd}
+	\begin{itemize}
+		\item Coprime
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{VHash}
+	\begin{itemize}
+		\item Voronoi-based Distributed Hash Table
+	\end{itemize}
+\end{frame}
 
 
 \begin{frame}{DGVH}
