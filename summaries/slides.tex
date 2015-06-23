@@ -181,31 +181,100 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \section{Background}
 
 \subsection{The Components and Terminology}
+
+
+\begin{frame}{Attributes of DHT}
+	\begin{itemize}
+		\item A distance and midpoint function.
+		\item A closeness definition.
+		\item A Peer management strategy.
+	\end{itemize}
+\end{frame}
+
+\note[itemize]{
+	\item There needs to be a way to establish how far things are from one another.
+	Once we have a distance metric, we define what we mean when we say a node is responsible for all data \textit{close} to it.
+	\item We'll go into more detail  about the difference between Distance and  Closeness in Chord
+	}
+
+\begin{frame}{Terms and Variables}
+	\begin{itemize}
+		\item Network size is $n$ nodes.
+		\item Keys and IDs are generated $m$ bit hash, usually SHA1.
+		\item Peerlists are made up of:
+		\begin{description}
+			\item[Short Peers] The neighboring nodes that define the network's topology.
+			\item[Long Peers] Routing shortcuts.
+		\end{description}
+		\item We'll call the node responsible for a key the $ root $ of the key.
+	\end{itemize}
+\end{frame}
+
+\note[itemize]{
+	\item SHA1 is being depreciated.  
+	\item Short peers are actively maintained, long peers replaced gradulally and are not actively pinged.
+	\item We use root as it's is a topology agnostic term.
+	}
+
 \begin{frame}{Functions}
 	\begin{description}
+		\item[lookup($ key $)] Finds the node responsible for a given key.
 		\item[put($ key $, $ value $)] Stores $value$ at the node responsible for $key$, where $key =  hash(value)$.
 		\item[get($ key $)] Returns the $ value $ associated with $key$.
-		\item[lookup($ key $)] Finds the node responsible for a given key.
 	\end{description}
 \end{frame}
 
 \note[itemize]{
-\item There is usually a delete function as well, but it's not important.
+	\item There is usually a delete function as well, but it's not important.
+	\item All nodes use the same general lookup:  Forward the message to the node closest to $key$
 }
+
+
 
 
 
 \subsection{Example DHTs}
 
 \begin{frame}{Chord}
-	content...
+	\begin{itemize}
+		\item Ring Topology
+		\item Short Peers: predecessor and successor in the ring.
+		\item Responsible for keys between their predecessor and their own.
+		\item Long Peers:  $\log n$ nodes, where the node at index $i$ in the  peerlist is 
+		$$ root(r + 2^{i-1}) \mod  m,  1 < i  < m $$
+		
+		
+		
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{Kademlia}
+\note[itemize]{
+	\item Chord is a favorite because we can draw it.
+	\item Draw a Chord network on the wall?
+	\item node $r$ is our root node.
+	\item $ i $ is the index on the list
+	\item English for  the equation, the long peers double in distance from the root node, allowing us to cover at least half the distance to our target in a step
+	\item In this way, we can achieve an expected $ \lg n $  lookup time. 
+}
+
+
+\begin{frame}{Fault Tolerence in Chord}
+	\begin{itemize}
+		\item Some implementations use predecessor and successor lists.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Other DHTs}
+	
+\end{frame}
+
+
+\begin{frame}{DHT and Voronoi Relationship}
+	content
 \end{frame}
 
 \begin{frame}{VHash}
-	Maybe, if room
+	
 \end{frame}
 \section{Previous Work}
 
@@ -216,6 +285,8 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \end{frame}
 
 \subsection{VHash}
+
+
 
 
 \begin{frame}{DGVH}
@@ -237,6 +308,8 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \begin{frame}{UrDHT}
 	This kind of framework does not exist.
 \end{frame}
+
+\note{At Brendan's suggestion We plan on extending the functionality of DHTs, post poll}
 
 
 \subsection{DHT Distributed Computing}
