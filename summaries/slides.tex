@@ -290,19 +290,19 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 \begin{frame}{Fault Tolerence in Chord}
 	\begin{itemize}
-		\item Local thread maintenance gradually fixes the network topology.
+		\item Local maintenance thread  gradually fixes the network topology.
 		\begin{itemize}
 			\item Each node ``notifies'' its successor.
-			\item The successor replies with a better successor of one exists.
+			\item The successor replies with a better successor if one exists.
 		\end{itemize}
-		\item The long peers are gradually updated performing lookup on each entry.
+		\item The long peers are gradually updated by performing a lookup on each entry.
 		\item Some implementations use predecessor and successor lists.
 	\end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Handleing Churn in General}
+\begin{frame}{Handling Churn in General}
 	\begin{itemize}
 		\item Short peers, the neighbors, are periodically queried to:
 		\begin{itemize}
