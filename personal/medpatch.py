@@ -28,8 +28,8 @@ def getLevels(initial, supplementals, halflife, interval, max_time=24):
 
     return times, levels
 
-init = 10
-supplemental = [10,10]
+init = 15
+supplemental = [15,10]
 spacing = 4
 
 
