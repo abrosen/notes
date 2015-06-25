@@ -335,6 +335,27 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	content
 \end{frame}
 
+
+\begin{frame}{Churn Results}
+	\begin{table}
+		\centering
+		\begin{tabular}{|r|r|r|} 
+			\hline 
+			Churn rate per second & Average runtime (s) & Speedup vs 0\% churn\\ \hline{}
+			0.8\% & 191.25 & 2.15 \\ \hline
+			0.4\% & 329.20 & 1.25 \\ \hline
+			0.025\% & 431.86 & 0.95 \\ \hline 
+			0.00775\%  & 445.47 & 0.92 \\ \hline 
+			0.00250\% & 331.80  &  1.24 \\ \hline 
+			0\% & 441.57 & 1.00 \\ \hline
+		\end{tabular}
+		\caption{The results of calculating $\pi$ by generating $10^8$ samples under churn. Churn is the chance for each node to join or leave the network. The large speedup is from joining nodes acquiring work during experimental runtime.} 
+		\label{tab:churnSpeed}
+	\end{table}
+	
+\end{frame}
+
+
 \subsection{VHash}
 
 
