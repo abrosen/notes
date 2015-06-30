@@ -1,11 +1,11 @@
 \chapter{Background}
 \label{chapter:background}
-%TODO: Add pretty pictures from other people's great
+This chapter gives a broad overview of the concepts and implementations of distributed hash tables.
+This will provide context for our completed and future work.
 
-DHTs have been a vibrant area of research for the past decade, with several of the concepts dating further back.
+DHTs have been a vibrant area of research for the past decade, with several of the concepts dating further back \cite{bittorrent} \cite{kademlia}  \cite{can} \cite{ratnasamy2002ght} \cite{prr} \cite{chord} \cite{pastry}.
 Numerous DHTs have been developed over the years.
 This is partly because the process of designing DHTs involves making tradeoffs, with no choice being strictly better than any other.
-
 %\section{What is a Distributed Hash Table?}
 
 
@@ -21,7 +21,7 @@ This mapping is consistent, so that even though the keys are distributed uniform
 
 DHTs are traditionally used to form a peer-to-peer overlay network, in which the DHT defines the network topology.
 Any member of the network can efficiently find the node that corresponds to a particular key.
-Data can be stored in the network and can be retrieved by finding the node that is responsible for that can.
+Data can be stored in the network and can be retrieved by finding the node that is responsible for that key.
 
 
 
