@@ -231,45 +231,46 @@ We hypothesized that this is because the random churn is acting as a (inefficien
 This phenomena is described in detail in Chapter \ref{sec:auto-load-bal}, but suggested to us that there was a way to  dynamically load-balance during execution.
 
 %VHash as the ur-example
-Our second project was to develop VHash \cite{vhash} \cite{dgvh}, a distributed hash table based on Delaunay Triangulation.
+Our second project was to develop VHash \cite{dgvh} \cite{vhash}, a distributed hash table based on Delaunay Triangulation.
 VHash is unique due to the way it could work in multidimensional spaces.
-Other DHTs use only
-Our experiments showed that 
+Other DHTs typically use a space with a single dimension and optimize for the number of hops.
+VHash can optimize for whatever attributes are used to define the space. 
+Our experiments showed that VHash outperforms Chord in terms of routing latency.
 
 
-We discovered the closeness metric used by DHTs to determine which node is responsible for what data is analogous to the metric used to create a Voronoi tessellation.
-This means the neighbors of the node map to Delaunay triangulations. 
-To the best of our knowledge, no other party has inferred the relationship between Voronoi tessellations, Delaunay triangulations and distributed hash tables.
-These properties gives us a way to postulate an \textit{ur}-DHT, a progenitor DHT which could be used to define all other DHTs.
 
-
-%DGVH shows that DHTs function even when the closeness metric is fuzzy
-
-
-%Sybil
-We also did a project which analyzed the amount of effort that would be required to attack a DHT using a method known as the Sybil attack \cite{sybil-analysis}.
+Our third project which analyzed the amount of effort that would be required to attack a DHT using a method known as the Sybil attack \cite{sybil-analysis}.
 The Sybil attack \cite{sybil} is a well known attack against distributed systems, but it had not been fully analyzed from the perspective of an attacker.
+Our results showed that attackers required relatively few resources to compromise a much larger network.
 We believe that some of the components that are used to perform a Sybil attack can be used for autonomous load balancing.
 
 %looking for publication
 
 
 %distributed DNS:  experience building DHTs
-\subsubsection{Published Work}
+\subsubsection{Publications}
 
 \begin{itemize}
-	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois ``MapReduce on a Chord Distributed Hash Table'' Presentation ICA CON 2014, Poster at IPDPS 2014 PhD Forum \cite{chordreduce}
-	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison ``VHASH: Spatial DHT based on Voronoi Tessellation'' Poster and Short Paper ICA CON 2014 \cite{vhash}
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois ``MapReduce on a Chord Distributed Hash Table'' Poster at IPDPS 2014 PhD Forum \cite{chordreduce}
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois ``MapReduce on a Chord Distributed Hash Table'' Presentation ICA CON 2014
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison ``VHASH: Spatial DHT based on Voronoi Tessellation'' Short Paper ICA CON 2014 \cite{vhash}
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison ``VHASH: Spatial DHT based on Voronoi Tessellation'' Poster ICA CON 2014 
 	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison ``A Distributed Greedy Heuristic for Computing Voronoi Tessellations With Applications Towards Peer-to-Peer Networks'' IEEE IPDPS 2015 - Workshop on Dependable Parallel, Distributed and Network-Centric Systems \cite{dgvh}
 	
 \end{itemize}
 
+The following papers are in progress:
 
+\begin{itemize}
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison ``UrDHT: A Generalized DHT''
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois ``The Sybil Attack on Peer-to-Peer Networks From the Attacker's Perspective''
+	\item Chaoyang Li, Andrew Rosen, Anu G. Bourgeois ``On Minimum Camera Set Problem in Camera Sensor Networks''
+\end{itemize}
 
 
 	
 
-I also have a number of publications with other authors not relevant to the proposed work.
+Below are publications with other authors not relevant to the proposed work.
 \begin{itemize}
 	\item  Erin-Elizabeth A. Durham, Andrew Rosen, Robert W. Harrison
 	``A Model Architecture for Big Data applications using Relational Databases''
@@ -282,6 +283,8 @@ I also have a number of publications with other authors not relevant to the prop
 	IEEE SSCI 2014 - CIDM 2014 - The IEEE Symposium Series on Computational Intelligence and Data Mining \cite{durham2014optimization}
 \end{itemize}
 
+
+
 \subsection{Summary of Proposal}
 
 
@@ -292,11 +295,16 @@ The specifics are given in Chapter \ref{chapter:experiments}.
 
 \subsubsection{DHT Framework}
 The goal of the DHT framework is to create a ready-to-use framework for creating DHT applications.
-We will then use this to create the DHT applications for the DHT distributed computing.
-This section should produce one to two publications:  one for the framework itself and how our abstractions can be used to create any DHT, the other will be on expanding our VHash publication \cite{vhash}.
+We will then use this to create the DHT applications for DHT distributed computing.
+While developing VHash, we discovered the closeness metric used by DHTs to determine which node is responsible for what data is analogous to the metric used to create a Voronoi tessellation.
+This means the neighbors of a node map to Delaunay triangulations. 
+To the best of our knowledge, no other party has inferred the relationship between Voronoi tessellations, Delaunay triangulations and DHTs.
+These properties give us a way to postulate an \textit{ur}-DHT, a progenitor DHT which could be used to define all other DHTs.
 
-The framework will be developed in either Go or Python3.
-These two languages are being considered due to their ease of programming.
+UrDht is an open source project which we created.
+We will use UrDHT to implement and test multiple DHTs and applications.
+Using the same base framework allows us to minimize implementation differences when comparing DHTs in experiments, but also allows us to create applications quickly.
+
 
 %significance is abstractions and our Voronoi definitations 
 
@@ -306,7 +314,7 @@ This portion will be the bulk of the experimental work and data gathering.
 Using our created framework, we will create implement and test distributed computing problems on different DHT implementations, such as Chord \cite{chord} and Kademlia \cite{kademlia}.
 
 \subsubsection{Autonomous Load-Balancing}
-Our goal here is to develop a new and efficient algorithm for balancing the workload among members of the DHT.
+Our goal is to develop a new and efficient algorithm for balancing the workload among members of the DHT.
 Load balancing schemes do exist for file storage, but none exist for computation.
 Furthermore, we want to develop a system that takes into account the heterogeneity of a given system, allowing more powerful nodes to take on more responsibility.
 
