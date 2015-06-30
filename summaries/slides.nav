@@ -1,4 +1,4 @@
-\beamer@endinputifotherversion {3.33pt}
+\beamer@endinputifotherversion {3.24pt}
 \headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
 \headcommand {\beamer@framepages {1}{1}}
 \headcommand {\sectionentry {1}{Introduction}{2}{Introduction}{0}}
@@ -44,21 +44,22 @@
 \headcommand {\beamer@framepages {27}{27}}
 \headcommand {\slideentry {2}{1}{5}{29/29}{The Components and Terminology}{0}}
 \headcommand {\beamer@framepages {29}{29}}
-\headcommand {\beamer@subsectionentry {0}{2}{2}{31}{Example DHTs}}\headcommand {\beamer@subsectionpages {23}{30}}
-\headcommand {\slideentry {2}{2}{1}{31/31}{Example DHTs}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{31}{Chord}}\headcommand {\beamer@subsectionpages {23}{30}}
+\headcommand {\slideentry {2}{2}{1}{31/31}{Chord}{0}}
 \headcommand {\beamer@framepages {31}{31}}
-\headcommand {\slideentry {2}{2}{2}{33/33}{Example DHTs}{0}}
+\headcommand {\slideentry {2}{2}{2}{33/33}{Chord}{0}}
 \headcommand {\beamer@framepages {33}{33}}
-\headcommand {\slideentry {2}{2}{3}{34/34}{Example DHTs}{0}}
+\headcommand {\slideentry {2}{2}{3}{34/34}{Chord}{0}}
 \headcommand {\beamer@framepages {34}{34}}
-\headcommand {\slideentry {2}{2}{4}{35/35}{Example DHTs}{0}}
+\headcommand {\slideentry {2}{2}{4}{35/35}{Chord}{0}}
 \headcommand {\beamer@framepages {35}{35}}
-\headcommand {\slideentry {2}{2}{5}{36/36}{Example DHTs}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{36}{Other DHTs}}\headcommand {\beamer@subsectionpages {31}{35}}
+\headcommand {\slideentry {2}{3}{1}{36/36}{Other DHTs}{0}}
 \headcommand {\beamer@framepages {36}{36}}
-\headcommand {\sectionentry {3}{Previous Work}{37}{Previous Work}{0}}
+\headcommand {\sectionentry {3}{Completed Work}{37}{Completed Work}{0}}
 \headcommand {\beamer@sectionpages {22}{36}}
-\headcommand {\beamer@subsectionpages {31}{36}}
-\headcommand {\slideentry {3}{0}{6}{37/37}{}{0}}
+\headcommand {\beamer@subsectionpages {36}{36}}
+\headcommand {\slideentry {3}{0}{2}{37/37}{}{0}}
 \headcommand {\beamer@framepages {37}{37}}
 \headcommand {\beamer@subsectionentry {0}{3}{1}{38}{ChordReduce}}\headcommand {\beamer@subsectionpages {37}{37}}
 \headcommand {\slideentry {3}{1}{1}{38/38}{ChordReduce}{0}}

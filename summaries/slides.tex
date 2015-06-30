@@ -399,6 +399,11 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \begin{frame}{DHT and Voronoi Relationship }
 	\begin{itemize}
 		\item Coprime
+		\item We can view DHTs in terms of Voronoi and Delaunay
+		\begin{itemize}
+			\item The set of keys the node is responsible for is its Voronoi region.
+			\item The nodes neighbors are it's Delaunay neighbors.
+		\end{itemize}
 	\end{itemize}
 \end{frame}
 
@@ -473,7 +478,6 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 
 
-
 \begin{frame}
 	\frametitle{The goal of the Sybil Attack in A P2P network}
 	See Whiteboard
@@ -498,7 +502,7 @@ The big issues in distributed computing can be solved by the mechanisms provided
 			\item We'll set $ num\_ports = 16383 $, the number of ephemeral ports.
 			\item Storage cost is 320 KiB.
 		\end{itemize}
-		\item I call the act of finding an ID by modulating your IP and port so you can inject a node \emph{mashing}.
+		\item We call the act of finding an ID by modulating your IP and port so you can inject a node \emph{mashing}.
 		\item In Mainline DHT, used by BitTorrent, you can choose your own ID at ``random.''   The implications should be apparent.
 	
 	\end{itemize}

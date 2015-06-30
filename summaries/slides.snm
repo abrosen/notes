@@ -3,6 +3,7 @@
 \beamer@slide {fig:chordreal}{33}
 \beamer@slide {tab:churnSpeed}{39}
 \beamer@slide {fig:new_voronoi}{41}
+\beamer@slide {fig:new_voronoi}{41}
 \beamer@slide {fig:delaunay}{43}
 \beamer@slide {exp_0}{47}
 \beamer@slide {fig:conv}{48}
@@ -14,6 +15,7 @@
 \beamer@slide {sub@conv4}{48}
 \beamer@slide {conv5}{48}
 \beamer@slide {sub@conv5}{48}
+\beamer@slide {eq:bad}{52}
 \beamer@slide {eq:bad}{52}
 \beamer@slide {fig:exp2}{54}
 \beamer@slide {fig:size_prob_all}{55}
