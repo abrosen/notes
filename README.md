@@ -1,3 +1,9 @@
 notes
 =====
-These are notes and fragments of the day to day work I do, not included in other projects
+
+
+#code
+programming practice
+
+#summaries
+my proposal work and other documents.
