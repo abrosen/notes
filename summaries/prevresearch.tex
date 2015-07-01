@@ -167,6 +167,180 @@ In the vast majority of cases, the number of peers is equal to the minimum size 
 This yields $k=(3d+1)^{2}+3d+1$ in the expected case, where the lower bound and expected complexities are $\Omega(1)$.
 
 
+
+\subsection{Experiments}
+We evaluated the effectiveness of DGVH in creating an  
+
+
+\subsubsection{Convergence}
+Our second set of experiments examines how DGVH could be used to create a DHT and how well it would perform in this task.
+Our simulation demonstrates how DGVH  can be used to create a stable overlay from a chaotic starting topology after a sufficient number of gossip cycles.  
+We do this by showing that the rate of successful lookups approaches 1.0.
+We compare these results to RayNet \cite{raynet}, which proposed that a random $k$-connected graph would be a good, challenging starting configuration for demonstrating convergence of a DHT to a stable network topology.
+
+During the first two cycles of the simulation, each node bootstraps its short peer list by appending 10 nodes, selected uniformly at random from the entire network.
+In each cycle, the nodes gossip (Algorithm \ref{alg:gossip}) and run DGVH using the new information.
+We then calculate the hit rate of successful lookups by simulating 2000 lookups from random nodes to random locations, as described in Algorithm \ref{routesim}.
+A lookup is successful when the network correctly determines which Voronoi region contains a randomly selected point.
+
+
+Our experimental variables for this simulation were the number of nodes in the DGVH generated overlay and the number of dimensions.  
+We tested network sizes of 500, 1000, 2000, 5000, and 10000 nodes each in 2, 3, 4, and 5 dimensions.
+The hit rate at each cycle is $\frac{hits}{2000}$, where $hits$ are the number of successful lookups.
+
+
+
+
+\begin{algorithm}
+	\caption{Routing Simulation Sample}
+	\label{routesim}
+	\begin{algorithmic}[1]  % the number is how many 
+		\State $start \leftarrow$ random node
+		\State$dest \leftarrow$ random set of coordinates
+		\State $ans \leftarrow$ node closest to $dest$
+		\If {$ans == start.lookup(dest)$}
+		\State increment $hits$
+		\EndIf
+	\end{algorithmic} 
+\end{algorithm}
+
+Our results are shown in Figures \ref{fig:conv2}, \ref{fig:conv3}, \ref{fig:conv4}, and \ref{fig:conv5} for each dimension.
+Our graphs show that the created overlay quickly constructs itself from a random configuration and that our hit rate reached 90\% by cycle 20, regardless of dimension.
+Lookups consistently approached a hit rate of 100\% by cycle 30. 
+In comparison, RayNet's routing converged to a perfect hit rate at around cycle 30 to 35 \cite{raynet}.
+As the network size and number of dimensions each increase, convergence slows, but not to a significant degree.
+
+\begin{figure*}
+	\label{fig:conv}
+	\centering 
+	\begin{tabular}{cc}
+		
+		\begin{subfigure}{0.5\columnwidth}
+			\includegraphics[width=\linewidth]{figs/conv_d2}
+			\caption{This plot shows the accuracy rate of lookups on a 2-dimensional network as it self-organizes.}
+			\label{fig:conv2}
+		\end{subfigure} &
+		
+		\begin{subfigure}{0.5\columnwidth}
+			\includegraphics[width=\linewidth]{figs/conv_d3}
+			\caption{This plot shows the accuracy rate of lookups on a 3-dimensional network as it self-organizes.}
+			\label{fig:conv3}
+		\end{subfigure} \\
+		
+		\begin{subfigure}{0.5\columnwidth}
+			\includegraphics[width=\linewidth]{figs/conv_d4}
+			\caption{This plot shows the accuracy rate of lookups on a 4-dimensional network as it self-organizes.}
+			\label{fig:conv4}
+		\end{subfigure} &
+		
+		
+		\begin{subfigure}{0.5\columnwidth}
+			\includegraphics[width=\linewidth]{figs/conv_d5}
+			\caption{This plot shows the accuracy rate of lookups on a 5-dimensional network as it self-organizes.}
+			\label{fig:conv5}
+		\end{subfigure}
+		
+	\end{tabular}
+	\caption{These figures show that, starting from a randomized network, DGVH forms a stable and consistent network topology.
+		The Y axis shows the success rate of lookups and the X axis show the number of gossips that have occurred.
+		Each point shows the fraction of 2000 lookups that successfully found the correct destination.}
+	
+\end{figure*}
+
+\subsubsection{Latency Distribution Test}
+The goal of our second set of experiments is to demonstrate VHash's ability to optimize a selected network metric: latency in this case. 
+In our simulation, we use the number of hops on the underlying network as an approximation of latency.
+We compared VHash's performance to that of a more traditional DHT, Chord \cite{chord}.
+Chord is a well established DHT with an $O(log(n))$ sized routing table and $O(log(n))$ lookup time measured in overlay hops.  
+Rather than examine the number of hops on the overlay network as our primary metric, as done most other analyses of lookup time \cite{kademlia} \cite{chord} \cite{pastry} \cite{raynet} \cite{voronet}, we are concerned with the actual latency lookups experience traveling through the \emph{underlay} network, the network the overlay is built upon.
+
+Overlay hops are used in most DHT evaluations as the primary measure of latency.
+It is the best approach available when there are no means of evaluating characteristics of the underlying network.
+VHash is designed with a capability to exploit the characteristics of the underlying network.
+For most realistic network sizes and structures, there is dramatic room for latency reduction in DHTs.
+
+
+
+For this experiment we constructed a 10000 node random scale free network (which has an approximate diameter of 3 hops) as an underlay network \cite{cohen2000resilience} \cite{pastor2001epidemic} \cite{hagberg2004}.
+We used a scale-free network as the underlay, as it is a simplified model of the Internet's topology \cite{cohen2000resilience} \cite{pastor2001epidemic}.
+From this underlay, we chose a random subset to be members of the overlay network.
+We then measured the distance in underlay hops between 10000 random source-destination nodes from the overlay. 
+VHash generates an embedding of the latency graph utilizing the distributed force directed model, with the latency function defined as the number of underlay hops between it and its peers.
+
+Our simulation created 100, 500, and 1000 node overlays for both VHash and Chord.
+We used 4 dimensions in VHash and a standard 160 bit identifier for Chord.
+
+
+
+
+\begin{figure}
+
+\begin{subfigure}{\columnwidth}
+\centering
+	\includegraphics[width=0.5\linewidth]{figs/hist_100}
+	\caption{Frequency of path lengths on Chord and VHash in a 100 node overlay.}	
+	\label{fig:hist100}
+\end{subfigure}
+
+\begin{subfigure}{\columnwidth}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/hist_500}
+	\caption{Frequency of path lengths on Chord and VHash in a 500 node overlay.}
+	\label{fig:hist500}
+\end{subfigure}
+
+\begin{subfigure}{\columnwidth}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/hist_1000}
+	\caption{Frequency of path lengths on Chord and VHash in a 1000 node overlay.}
+	\label{fig:hist1000}
+\end{subfigure}
+
+\caption{Figures \ref{fig:hist100}, \ref{fig:hist500}, and \ref{fig:hist1000} show the difference in the performance of Chord and VHash for 10,000 routing samples on a 10,000 node underlay network for differently sized overlays. 
+The Y axis shows the observed frequencies and the X axis shows the number of hops traversed on the underlay network.
+VHash consistently requires fewer hops for routing than Chord.}
+\end{figure}
+
+
+
+
+Figures \ref{fig:hist100}, \ref{fig:hist500}, and \ref{fig:hist1000} show the distribution of path lengths measured in underlay hops in both Chord and VHash.   
+In all three network sizes, VHash dramatically outperformed Chord and significantly reduced the underlay path lengths.  
+Besides having a much lower average path length, the variance was also considerably lower.
+
+For comparison, we also sampled the lookup length measured in overlay hops for a 1000 sized Chord and VHash network.  As seen in Figure \ref{fig:histover}, the paths in VHash's overlay were significantly shorter than those in Chord. 
+In comparing the overlay and underlay hops, we find that for each overlay hop in Chord, the lookup must travel 2.719 underlay hops on average; in VHash, lookups must travel 2.291 underlay hops on average for every overlay hop traversed. 
+Recall that this work is based on scale free networks, where latency improvements are difficult.
+An improvement of 0.4 hops over a diameter of 3 hops is significant.
+VHash has on average less overlay hops per lookup than Chord, and for each of these overlay hops we consistently traverse more efficiently across the underlay network.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{figs/hist_overlay_4d}
+	\caption{Comparison of Chord and VHash in terms of overlay hops.  Each overlay has 1000 nodes.  The Y axis denotes the observed frequencies of overlay hops and the X axis corresponds to the path lengths in overlay hops.}
+	\label{fig:histover}
+\end{figure}
+
+
+
+
+\subsection{Remarks}
+
+Voronoi tessellations have a wide potential for applications in ad-hoc networks, massively multiplayer games, P2P, and distributed networks. 
+However, centralized algorithms for Voronoi tessellation and Delaunay triangulation are not applicable to decentralized systems.
+In addition, solving Voronoi tessellations in more than 2 dimensions is computationally expensive.
+
+We created a distributed heuristic for Voronoi tessellations in an arbitrary number of dimensions.
+Our heuristic is fast and scalable, with a expected memory cost of $(3d+1)^{2}+3d+1$ and expected maximum runtime of O$(\frac{\log^{2} N}{\log^{2} \log N} )$.
+
+We ran two sets of experiments to demonstrate DGVH's effectiveness.
+Our first set of experiments demonstrated that our heuristic is reasonably accurate  and our second set demonstrates that reasonably accurate is sufficient to build a P2P network which can route accurately.
+
+
+Our next step is to create a formal protocol and implementation for a Voronoi tessellation-based distributed hash table using DGVH.  
+We can use this DHT to choose certain metrics we want to measure, such as latency, or trust, and embed that information as part of a node's identity.
+By creating an appropriate distance measurement, we can route along some path that minimizes or maximizes the desired metric.
+Rather than create an overlay that minimizes hops, we can have our overlay minimize latency, which is the actual goal of most routing algorithms.
+
 %\subsection*{Peerlist and Topology}
 %Like CAN \cite{can}, VHash tracks only neighbors for it's peers.
 %We enforce a lower limit on the size of the peerlist to avoid nodes being 
