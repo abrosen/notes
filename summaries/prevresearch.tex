@@ -2,17 +2,9 @@
 \label{chapter:prev}
 %TODO: Add in other algorithm blocks and pictures from CHRONUS paper
 
-
-DHTs have received a great deal of research due to their popularity as the backbone for structured P2P system primarily used for file-sharing.
-There are two recent and fairly open questions that I want to examine.
-
-\begin{enumerate}
-	\item How can DHTs effectively be used for distributed computations?  
-	In what contexts is this feasible:  only in the data center, or can a large-scale worldwide P2P network be used to do distributed computation?
-	Is it better to use DHTs as an organizing mechanism, or as the actual platform for computation.
-	\item How can nodes autonomously load balance?
-\end{enumerate}
-
+In this chapter, we will cover our completed research.
+Our research has focused on novel implementation ]and Distributed Hash Tables (DHTs).
+We have implemented and created an entirely new DHT called VHash \cite{vhash}, implemented MapReduce on Chord \cite{chordreduce}, and performed an analysis on an attack on DHTs.
 
 
 \section{VHash}
@@ -168,21 +160,22 @@ This yields $k=(3d+1)^{2}+3d+1$ in the expected case, where the lower bound and 
 
 
 
-\subsection{Experiments}
-We evaluated the effectiveness of DGVH in creating an  
-
+\subsection{Experimental Results}
+We evaluated the effectiveness of VHash and DGVH in creating a set of experiments.\footnote{Our results are pulled directly from \cite{dgvh} and \cite{vhash}.}
+The first experiment showed how VHash could use DGVH to create a routing mesh.
+Our second showed how optimizing for latency yielded better results than optimizing for least hops.
 
 \subsubsection{Convergence}
-Our second set of experiments examines how DGVH could be used to create a DHT and how well it would perform in this task.
-Our simulation demonstrates how DGVH  can be used to create a stable overlay from a chaotic starting topology after a sufficient number of gossip cycles.  
-We do this by showing that the rate of successful lookups approaches 1.0.
-We compare these results to RayNet \cite{raynet}, which proposed that a random $k$-connected graph would be a good, challenging starting configuration for demonstrating convergence of a DHT to a stable network topology.
+Our first experiment examined how DGVH could be used to create a routing overlay and how well it performed in this task.
+The simulation demonstrated how DGVH  formed a stable overlay from a chaotic starting topology after a number of cycles.  
+We compared our results to those in RayNet \cite{raynet}. 
+The authors of Raynet proposed a random $k$-connected graph would be a challenging initial configuration for showing a DHT relying on a gossip mechanism could converge to a stable topology.
 
-During the first two cycles of the simulation, each node bootstraps its short peer list by appending 10 nodes, selected uniformly at random from the entire network.
-In each cycle, the nodes gossip (Algorithm \ref{alg:gossip}) and run DGVH using the new information.
-We then calculate the hit rate of successful lookups by simulating 2000 lookups from random nodes to random locations, as described in Algorithm \ref{routesim}.
-A lookup is successful when the network correctly determines which Voronoi region contains a randomly selected point.
-
+In the initial two cycles of the simulation, each node bootstrapped its short peer list by appending 10 nodes, selected uniformly at random from the entire network.
+In each cycle, the nodes gossiped , swapping peer list information.
+They then ran DGVH using the new information.
+We calculated the hit rate of successful lookups by simulating 2000 lookups from random nodes to random locations, as described in Algorithm \ref{alg:routesim}.
+A lookup was considered successful if the network was able to determine which Voronoi region contained a randomly selected point.
 
 Our experimental variables for this simulation were the number of nodes in the DGVH generated overlay and the number of dimensions.  
 We tested network sizes of 500, 1000, 2000, 5000, and 10000 nodes each in 2, 3, 4, and 5 dimensions.
@@ -193,7 +186,7 @@ The hit rate at each cycle is $\frac{hits}{2000}$, where $hits$ are the number o
 
 \begin{algorithm}
 	\caption{Routing Simulation Sample}
-	\label{routesim}
+	\label{alg:routesim}
 	\begin{algorithmic}[1]  % the number is how many 
 		\State $start \leftarrow$ random node
 		\State$dest \leftarrow$ random set of coordinates
@@ -204,8 +197,8 @@ The hit rate at each cycle is $\frac{hits}{2000}$, where $hits$ are the number o
 	\end{algorithmic} 
 \end{algorithm}
 
-Our results are shown in Figures \ref{fig:conv2}, \ref{fig:conv3}, \ref{fig:conv4}, and \ref{fig:conv5} for each dimension.
-Our graphs show that the created overlay quickly constructs itself from a random configuration and that our hit rate reached 90\% by cycle 20, regardless of dimension.
+The results of our simulation are shown in Figures \ref{fig:conv2}, \ref{fig:conv3}, \ref{fig:conv4}, and \ref{fig:conv5}.
+Our graphs show that a correct overlay was quickly constructed from a random configuration and that our hit rate reached 90\% by cycle 20, regardless of the number of dimensions.
 Lookups consistently approached a hit rate of 100\% by cycle 30. 
 In comparison, RayNet's routing converged to a perfect hit rate at around cycle 30 to 35 \cite{raynet}.
 As the network size and number of dimensions each increase, convergence slows, but not to a significant degree.
@@ -248,24 +241,22 @@ As the network size and number of dimensions each increase, convergence slows, b
 \end{figure*}
 
 \subsubsection{Latency Distribution Test}
-The goal of our second set of experiments is to demonstrate VHash's ability to optimize a selected network metric: latency in this case. 
-In our simulation, we use the number of hops on the underlying network as an approximation of latency.
-We compared VHash's performance to that of a more traditional DHT, Chord \cite{chord}.
-Chord is a well established DHT with an $O(log(n))$ sized routing table and $O(log(n))$ lookup time measured in overlay hops.  
-Rather than examine the number of hops on the overlay network as our primary metric, as done most other analyses of lookup time \cite{kademlia} \cite{chord} \cite{pastry} \cite{raynet} \cite{voronet}, we are concerned with the actual latency lookups experience traveling through the \emph{underlay} network, the network the overlay is built upon.
+The goal of our second set of experiments was to demonstrate VHash's ability to optimize a selected network metric: latency in this case. 
+In our simulation, we used the number of hops on the underlying network as an approximation of latency.
+We compared VHash's performance to Chord \cite{chord}.
+As we discussed in Chapter \ref{chapter:background} Chord is a well established DHT with an $O(\log(n))$ sized routing table and $O(\log(n))$ lookup time measured in overlay hops.  
 
+Instead of using the number of hops on the overlay network as our metric, we are concerned with the actual latency lookups experience traveling through the \emph{underlay} network, the network upon which the overlay is built.
 Overlay hops are used in most DHT evaluations as the primary measure of latency.
-It is the best approach available when there are no means of evaluating characteristics of the underlying network.
+It is the best approach available when there are no means of evaluating the characteristics of the underlying network.
 VHash is designed with a capability to exploit the characteristics of the underlying network.
-For most realistic network sizes and structures, there is dramatic room for latency reduction in DHTs.
+With most realistic network sizes and structures, there is substantial room for latency reduction in DHTs.
 
-
-
-For this experiment we constructed a 10000 node random scale free network (which has an approximate diameter of 3 hops) as an underlay network \cite{cohen2000resilience} \cite{pastor2001epidemic} \cite{hagberg2004}.
-We used a scale-free network as the underlay, as it is a simplified model of the Internet's topology \cite{cohen2000resilience} \cite{pastor2001epidemic}.
-From this underlay, we chose a random subset to be members of the overlay network.
-We then measured the distance in underlay hops between 10000 random source-destination nodes from the overlay. 
-VHash generates an embedding of the latency graph utilizing the distributed force directed model, with the latency function defined as the number of underlay hops between it and its peers.
+For this experiment, we constructed scale free network with 10000 nodes placed at random (which has an approximate diameter of 3 hops) as an underlay network \cite{cohen2000resilience} \cite{pastor2001epidemic} \cite{hagberg2004}.
+We chose to use a scale-free network as the underlay, since  scale free networks model the Internet's topology \cite{cohen2000resilience} \cite{pastor2001epidemic}.
+We then chose a random subset of nodes to be members of the overlay network.
+Our next step was to measure the distance in underlay hops between 10000 random source-destination pairs in the overlay. 
+VHash generated an embedding of the latency graph utilizing a distributed force directed model, with the latency function defined as the number of underlay hops between it and its peers.
 
 Our simulation created 100, 500, and 1000 node overlays for both VHash and Chord.
 We used 4 dimensions in VHash and a standard 160 bit identifier for Chord.
@@ -305,11 +296,12 @@ VHash consistently requires fewer hops for routing than Chord.}
 
 
 Figures \ref{fig:hist100}, \ref{fig:hist500}, and \ref{fig:hist1000} show the distribution of path lengths measured in underlay hops in both Chord and VHash.   
-In all three network sizes, VHash dramatically outperformed Chord and significantly reduced the underlay path lengths.  
-Besides having a much lower average path length, the variance was also considerably lower.
+VHash significantly outperformed Chord and considerably reduced the underlay path lengths in three network sizes.  
 
-For comparison, we also sampled the lookup length measured in overlay hops for a 1000 sized Chord and VHash network.  As seen in Figure \ref{fig:histover}, the paths in VHash's overlay were significantly shorter than those in Chord. 
+We also sampled the lookup length measured in overlay hops for a 1000 sized Chord and VHash network.  
+As seen in Figure \ref{fig:histover}, the paths measured in overlay for VHash were significantly shorter than those in Chord. 
 In comparing the overlay and underlay hops, we find that for each overlay hop in Chord, the lookup must travel 2.719 underlay hops on average; in VHash, lookups must travel 2.291 underlay hops on average for every overlay hop traversed. 
+
 Recall that this work is based on scale free networks, where latency improvements are difficult.
 An improvement of 0.4 hops over a diameter of 3 hops is significant.
 VHash has on average less overlay hops per lookup than Chord, and for each of these overlay hops we consistently traverse more efficiently across the underlay network.
@@ -332,14 +324,14 @@ In addition, solving Voronoi tessellations in more than 2 dimensions is computat
 We created a distributed heuristic for Voronoi tessellations in an arbitrary number of dimensions.
 Our heuristic is fast and scalable, with a expected memory cost of $(3d+1)^{2}+3d+1$ and expected maximum runtime of O$(\frac{\log^{2} N}{\log^{2} \log N} )$.
 
-We ran two sets of experiments to demonstrate DGVH's effectiveness.
+We ran two sets of experiments to demonstrate VHash's effectiveness.
 Our first set of experiments demonstrated that our heuristic is reasonably accurate  and our second set demonstrates that reasonably accurate is sufficient to build a P2P network which can route accurately.
+Our second experiment showed that VHash  could significantly reduced the latency in Distributed Hash Tables.
 
-
-Our next step is to create a formal protocol and implementation for a Voronoi tessellation-based distributed hash table using DGVH.  
-We can use this DHT to choose certain metrics we want to measure, such as latency, or trust, and embed that information as part of a node's identity.
-By creating an appropriate distance measurement, we can route along some path that minimizes or maximizes the desired metric.
-Rather than create an overlay that minimizes hops, we can have our overlay minimize latency, which is the actual goal of most routing algorithms.
+%Our next step is to create a formal protocol and implementation for a Voronoi tessellation-based distributed hash table using DGVH.  
+%We can use this DHT to choose certain metrics we want to measure, such as latency, or trust, and embed that information as part of a node's identity.
+%By creating an appropriate distance measurement, we can route along some path that minimizes or maximizes the desired metric.
+%Rather than create an overlay that minimizes hops, we can have our overlay minimize latency, which is the actual goal of most routing algorithms.
 
 %\subsection*{Peerlist and Topology}
 %Like CAN \cite{can}, VHash tracks only neighbors for it's peers.
@@ -354,9 +346,20 @@ Rather than create an overlay that minimizes hops, we can have our overlay minim
 
 
 
-\section{DHT Distributed Computing}
-%TODO: Intro
-Distributed computing is a current trend and is the future trend.
+\section{ChordReduce}
+DHTs have received a great deal of research due to their popularity as the backbone for structured P2P system primarily used for file-sharing.
+There are two recent and fairly open questions that I want to examine.
+
+\begin{enumerate}
+	\item How can DHTs effectively be used for distributed computations?  
+	In what contexts is this feasible:  only in the data center, or can a large-scale worldwide P2P network be used to do distributed computation?
+	Is it better to use DHTs as an organizing mechanism, or as the actual platform for computation.
+	\item How can nodes autonomously load balance?
+\end{enumerate}
+
+\subsection{Background}
+
+Distributed computing is a current trend and will continue to be the approach for intensive  applications.
 We see this in the development of cloud computing \cite{p2p-cloud}, volunteer computing frameworks like BOINC \cite{anderson2004boinc} and Folding@Home \cite{larson2002folding},and MapReduce  \cite{mapreduce}.
 Google's MapReduce  in particular has rapidly become an integral part in the world of data processing.  
 A user can use MapReduce to take a large problem, split it into small, equivalent tasks and send those tasks to other processors for computation.  
@@ -392,7 +395,7 @@ They have been used for over a decade for P2P file-sharing applications for thes
 %Clouds@home
 %Nanodatacenter
 
-\subsection{ChordReduce}
+\subsection{What is ChordReduce?}
 
 ChordReduce is designed as a more abstract framework for MapReduce, able to run on any arbitrary distributed configuration.
 ChordReduce leverages the features of distributed hash tables to handle distributed file storage, fault tolerance, and lookup.  
@@ -498,6 +501,8 @@ When a joining node $n$ find his successor, $n$ asks if the successor is holding
 The successor looks at all the data $n$ is responsible for and sends it to $n$.  
 The successor maintains this data as a backup for $n$.  
 Because Map tasks are backed up in the same manner as data, a node can take the data and corresponding tasks he's responsible for and begin performing Map tasks immediately.
+
+\subsection{Experiments}
 
 
 
