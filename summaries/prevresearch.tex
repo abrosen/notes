@@ -491,7 +491,7 @@ Recall that a node's ID in the network does not map to a geographical locations.
 Any failure that affects multiple nodes simultaneously would be spread uniformly throughout the network.
 This means if successive nodes to fail simultaneously, they do so independently.
 
-Let each node has failure rate $r < 1$ and that the each node backs up their data with $s$ successive nodes downstream. 
+Assume node has failure rate $r < 1$ and that the each node backs up their data with $s$ successive nodes downstream. 
 If one of these nodes fail, the next successive node takes its place and the next upstream node becomes another backup. 
 This ensures there will always be $s$ backups. 
 The integrity of the ring would only be jeopardized if $s+1$ successive nodes failed simultaneously.
@@ -502,10 +502,71 @@ A final consequence of this is load-balancing during runtime.
 When a joining node $n$ find his successor, $n$ asks if the successor is holding any data $n$ should be responsible for.  
 The successor looks at all the data $n$ is responsible for and sends it to $n$.  
 The successor maintains this data as a backup for $n$.  
-Because Map tasks are backed up in the same manner as data, a node can take the data and corresponding tasks he's responsible for and begin performing Map tasks immediately.
+Because Map tasks are backed up in the same manner as data, a node can take the data and corresponding tasks he is responsible for and begin performing Map tasks immediately.
 
 \subsection{Experiments}
 
+\textit{For $pi$  when we varied x, y happened.  Here's a paragraph an a pretty picture.  Do this a couple more times and you have a results section }\textit{For wordcount, when we varied the blocksize we found this}
+
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{figs/expTime}
+	\caption{For a sufficiently large job, it was almost always preferable to distribute it.  When the job is too small, such as with the $10^{7}$ data set, our runtime is dominated by the overhead.  Our results are what we would expect when overhead grows logarithmically to the number of workers.}
+	\label{fig:expTime}
+\end{figure}
+
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{figs/expSpeed}
+	\caption{The larger the size of the job, the greater the gains of distributing with ChordReduce.  In addition, the larger the job, the more workers can be added before we start seeing diminishing returns.  This demonstrates that ChordReduce is scalable.}
+	\label{fig:expSpeed}
+\end{figure}
+
+Fig. \ref{fig:expTime} and Fig. \ref{fig:expSpeed} summarize the experimental results of job duration and speedup.  Our default series was the $10^{8}$ samples series.  On average, it took a single node 431 seconds, or approximately 7 minutes, to generate $10^{8}$ samples.  Generating the same number of samples using ChordReduce over 10, 20, 30, or 40 nodes was always quicker.  The samples were generated fastest when there were 20 workers, with a speedup factor of 4.96, while increasing the number of workers to 30 yielded a speedup of only 4.03.  At 30 nodes, the gains of distributing the work were present, but the cost of overhead ($k \cdot \log_{2}(n)$) had more of an impact.  This effect is more pronounced at 40 workers, with a speedup of 2.25.
+
+Since our data showed that approximating $\pi$ on one node with $10^{8}$ samples took approximately 7 minutes, collecting $10^{9}$ samples on a single node would take 70 minutes at minimum.  Fig. \ref{fig:expSpeed} shows that the $10^{9}$ set gained greater benefit from being distributed than the $10^{8}$ set, with the speedup factor at 20 workers being 9.07 compared to 4.03.  In addition, the gains of distributing work further increased at 30 workers and only began to decay at 40 workers, compared with the $10^{8}$ data set, which began its drop off at 30 workers. This behavior demonstrates that the larger the job being distributed, the greater the gains of distributing the work using ChordReduce.
+
+The $10^{7}$ sample set confirms that the network overhead is logarithmic.  At that size, it is not effective to run the job concurrently and we start seeing overheard acting as the dominant factor in runtime.  This matches the behavior predicted by our equation, $T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n)$. For a small $T_{1}$, $\frac{T_{1}}{n}$  approaches 0 as $n$ gets larger, while $k \cdot \log_{2}(n)$, our overhead, dominates the sample.  The samples from our data set fit this behavior, establishing that our overhead increases logarithmically with the number of workers.
+
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{figs/projTime}
+	\caption{The projected runtime using ChordReduce for differently sized jobs.  Each curve projects the expected behavior for job that takes a single worker the specified amount of time.}
+	\label{fig:projTime}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{figs/projSpeed}
+	\caption{The projected speedup for different sized jobs. }
+	\label{fig:projSpeed}
+\end{figure}
+
+Since we have now established that $T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n)$, we can estimate how long a job that takes an arbitrary amount of time to run on a single node would take using ChordReduce.  Our data points indicated that the mean value of $k$ for this problem was 36.5.  Fig. \ref{fig:projTime} shows that for jobs that would take more than $10^{4}$ seconds for single worker to complete, we can expect there would still be benefit to adding an additional worker, even when there are already 5000 workers already in the ring.  Fig. \ref{fig:projSpeed} further emphasizes this. Note that as the jobs become larger, the expected speedup from ChordReduce  approaches linear behavior.
+
+
+\begin{table}
+	\centering
+	\begin{tabular}{|r|r|r|} 
+		\hline 
+		Churn rate per second & Average runtime (s) & Speedup vs 0\% churn\\ \hline{}
+		0.8\% & 191.25 & 2.15 \\ \hline
+		0.4\% & 329.20 & 1.25 \\ \hline
+		0.025\% & 431.86 & 0.95 \\ \hline 
+		0.00775\%  & 445.47 & 0.92 \\ \hline 
+		0.00250\% & 331.80  &  1.24 \\ \hline 
+		0\% & 441.57 & 1.00 \\ \hline
+	\end{tabular}
+	\caption{} 
+	\label{tab:churnSpeed}
+\end{table}
+
+
+Table \ref{tab:churnSpeed} shows the experimental results for different rates of churn. These results show the system  is relatively insensitive to churn.  We started with 40 nodes in the ring and generated $10^{8}$ samples while experiencing different rates of churn, as specified in Table \ref{churnSpeed}.  At the 0.8\% rate of churn, there is a 0.8\% chance each second that any given node will leave the network followed by another node joining the network at a different location. The joining rate and leaving rate being identical is not an unusual assumption to make \cite{marozzo2012p2p} \cite{load}.  
+
+Our testing rates for churn are an order of magnitude higher than the rates used in the P2P-MapReduce simulation  \cite{marozzo2012p2p}.  In their paper, the highest rate of churn was only 0.4\% per minute. Because we were dealing with fewer nodes, we chose larger rates to demonstrate that ChordReduce could effectively handle a high level of churn.  
+
+
+Our experiments show that for a given problem, ChordReduce can effectively distribute the problem, yielding a substantial speedup.  Furthermore, our results showed that the larger the problem is, the more workers could be added before diminishing returns were incurred.  During runtime, we experienced multiple instances where $plot$ would fail to run and the stager would report socket errors, indicating that it had lost connection with a node in the ring.  Despite this turbulence, every node managed to reestablish connection with each other and report back all the data.  This further demonstrated that we were able to handle the churn in the network.
 
 
 \subsection{Heterogeneity Calculation}
