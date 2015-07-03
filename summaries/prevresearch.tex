@@ -506,75 +506,128 @@ Because Map tasks are backed up in the same manner as data, a node can take the 
 
 \subsection{Experiments}
 
-In order for ChordReduce to be a viable framework, we had to show these three properties:
+We created a prototype of ChordReduce in order to demonstrate it was a viable framework.
+To acheive this, we had to show ChordReduce had these three properties:
 \begin{enumerate}
-	\item ChordReduce provides significant speedup during a distributed job.
-	\item ChordReduce scales.
-	\item ChordReduce handles churn during execution.
+	\item ChordReduce provided significant speedup during a distributed job.
+	\item ChordReduce scaled.
+	\item ChordReduce handled churn during execution.
 \end{enumerate}
-Speedup can be demonstrated by showing that a distributed job is generally performed more quickly than the same job handled by a single worker.  More formally we need to establish that $\exists n$ such that $T_{n} < T_{1}$, where $T_{n}$ is the amount of time it takes for $n$ nodes to finish the job.
 
-To establish scalability, we need to show that the cost of distributing the work grows logarithmically with the number of workers.  In addition, we need to demonstrate that the larger the job is, the number of nodes we can have working on the problem without the overhead incurring diminishing returns increases. This can be stated as $$T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n)$$ where $\frac{T_{1}}{n}$ is the amount of time the job would take when distributed in an ideal universe and $k \cdot \log_{2}(n)$ is network induced overhead, $k$ being an unknown constant dependent on network latency and available processing power.
 
-Finally, to demonstrate robustness, we need to show that ChordReduce can handle arbitrary node failure in the ring and that such failures minimally impair the overall speed of the network.
+We needed to demonstrate speedup by showing that a job handled by multiple workers generally finished sooner than the same job handled by a single worker.  
+More formally we need to establish that $\exists n$ such that $T_{n} < T_{1}$, where $T_{n}$ is the amount of time it takes for $n$ nodes to finish the job.
 
-\subsection{Setup}
+To establish scalability, we needed to show that the cost of distributing the work grows logarithmically with the number of workers.  
+We needed to demonstrate that the larger the job is, the more nodes can work on the problem before we begin experiencing diminishing returns. 
+This can be stated as $$T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n)$$, where $\frac{T_{1}}{n}$ is the amount of time the job would take when distributed in an ideal universe and $k \cdot \log_{2}(n)$ is network induced overhead, $k$ being an unknown constant dependent on network latency and available processing power.
+
+Finally, to demonstrate robustness, we had to show that ChordReduce can handle arbitrary node failure in the ring and that such failures minimally impacted the overall speed of computation
+
+\subsubsection{Setup}
+
+
+To stress test our framework, we ran a Monte-Carlo approximation of $\pi$. 
+This process is analogous to having a square containing  the top-right quadrant of a circle (Fig. \ref{fig:dartboard}), and then throwing darts at random locations.  
+Counting the ratio of darts that land inside the circle to the total number of throws yields an approximation of $\frac{\pi}{4}$.  
+The more darts we throw, i.e. the more samples that are taken, the more accurate the approximation.\footnote{This is not and was not intended to be a particularly good approximation of $\pi$.
+Each additional digit of accuracy requires increasing the number of samples taken by an order of magnitude.}
+
+
+We chose this experiment for a number of reasons. 
+The job is extremely easy to distribute.  
+This also made it very easy to test scalability. 
+By doubling the amount of samples, we can double the amount of work each node gets.  
+We could also test the effectiveness of distributing the job among different numbers of workers.
+
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{figs/dartboard}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/dartboard}
 	\caption{The "dartboard." The computer throws a dart by choosing a random $x$ and $y$ between 0 and 1.  If $x^{2} + y^{2} < 1^{2} $, the dart landed inside the circle.  $A$ and $B$ are darts that landed inside the circle, while $C$ did not.}
 	\label{fig:dartboard}
 \end{figure}
 
-To stress test our framework, we ran a Monte-Carlo approximation of $\pi$. This process is largely analogous to having a square with the top-right quarter of a circle going through it (Fig. \ref{fig:dartboard}), and then throwing darts at random locations.  Counting the ratio of darts that land inside the circle to the total number of throws gives us an approximation of $\frac{\pi}{4}$.  The more darts thrown, i.e. the more samples that are taken, the more accurate the approximation\footnote{This is not intended to be a particularly good approximation of $\pi$. Each additional digit of accuracy requires increasing the number of samples taken by an order of magnitude.}.
 
-We chose this experiment for a number of reasons. The job is extremely easy to distribute.  This also made it very easy to test scalability. By doubling the amount of samples, we can double the amount of work each node gets.  We could also test the effectiveness of distributing the job among different numbers of workers.
+Each Map job was defined as the number of throws the node must make and yielded total number of throws and the number of throws that landed inside the circular section.  
+Reducing these results was then a matter of adding the respective fields together. 
 
-Each Map job is defined by the number of throws the node must make and yields a result containing the total number of throws and the number of throws that landed inside the circular section.  Reducing these results is then a matter of adding the respective fields together. 
+We ran our experiments using Amazons's Elastic Compute Cloud (EC2) service.  
+Amazon EC2 allows users to purchase an arbitrary amount of virtual machines by the hour. 
+Each node was an individual EC2 small instance with a preconfigured Ubuntu 12.04 image.  
+%These instances were capable enough to provide constant computation, but still weak enough that they would be overwhelmed by traffic on occasions, creating a constant churn effect in the ring.  
 
-We ran our experiments using Amazons's Elastic Compute Cloud (EC2) service.  Amazon EC2 allows users to purchase an arbitrary amount of virtual machines by the hour. Each node was an individual EC2 small instance \cite{amazon-instances} with a preconfigured Ubuntu 12.04 image.  These instances were capable enough to provide constant computation, but still weak enough that they would be overwhelmed by traffic on occasions, creating a constant churn effect in the ring.  
+Once started, nodes retrieved the latest version of the code and run it as a service, automatically joining the network.  
+We could choose any arbitrary node as the stager and tell it to run the MapReduce process. 
+We found that the network was robust enough that we could take a node we wanted to be the stager out of the network, modify its MapReduce test code, have it rejoin the network, and then run the new code without any problems. 
+Since only the stager had to know how to create the Map tasks, the other nodes did not have to be updated and execute the new tasks they are given.
 
-Once started, nodes retrieve the latest version of the code and run it as a service, automatically joining the network.  We can choose any arbitrary node as the stager and tell it to run the MapReduce process. We found that the network was robust enough that we could take a node we wanted to be the stager out of the network, modify its MapReduce test code, have it rejoin the network, and then run the new code without any problems. Since only the stager has to know how to create the Map tasks, the other nodes do not have to be updated and execute the new tasks they are given.
+We ran our experiments on groups of 1, 10, 20, 30, and 40 workers, which generated a $10^{8}$ sample set and a $10^{9}$ sample set.
+Additionally, we gathered data on a $10^{7}$ sample set using 1, 5, 10, 20, 30 workers.  
+To test churn, we ran an experiment where each node had an equal chance of leaving and joining the network and varied the level of churn over multiple runs.  
 
-We ran our experiments on groups of 1, 10, 20, 30, and 40 workers, which generated a $10^{8}$ sample set and a $10^{9}$ sample set.  Additionally, we gathered data on a $10^{7}$ sample set using 1, 5, 10, 20, 30 workers.  To test churn, we ran an experiment where each node had an equal chance of leaving and joining the network and varied the level of churn over multiple runs.  
-
-We also utilized a subroutine we wrote called $plot$, which sends a message sequentially around the ring to establish how many members there are.  If $plot$ failed to return in under a second, the ring was experiencing structural instability.
+We also utilized a subroutine we wrote called $plot$, which sends a message sequentially around the ring to establish how many members there are.  
+If $plot$ failed to return in under a second, the ring was experiencing structural instability.
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{figs/expTime}
-	\caption{For a sufficiently large job, it was almost always preferable to distribute it.  When the job is too small, such as with the $10^{7}$ data set, our runtime is dominated by the overhead.  Our results are what we would expect when overhead grows logarithmically to the number of workers.}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/expTime}
+	\caption{Our results show that for a sufficiently large job, it was almost always preferable to distribute it.  
+		When the job is too small, such as with the $10^{7}$ data set, our runtime is dominated by the overhead.  
+		Our results are what we would expect when overhead grows logarithmically to the number of workers.}
 	\label{fig:expTime}
 \end{figure}
 
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{figs/expSpeed}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/expSpeed}
 	\caption{The larger the size of the job, the greater the gains of distributing with ChordReduce.  In addition, the larger the job, the more workers can be added before we start seeing diminishing returns.  This demonstrates that ChordReduce is scalable.}
 	\label{fig:expSpeed}
 \end{figure}
 
-Fig. \ref{fig:expTime} and Fig. \ref{fig:expSpeed} summarize the experimental results of job duration and speedup.  Our default series was the $10^{8}$ samples series.  On average, it took a single node 431 seconds, or approximately 7 minutes, to generate $10^{8}$ samples.  Generating the same number of samples using ChordReduce over 10, 20, 30, or 40 nodes was always quicker.  The samples were generated fastest when there were 20 workers, with a speedup factor of 4.96, while increasing the number of workers to 30 yielded a speedup of only 4.03.  At 30 nodes, the gains of distributing the work were present, but the cost of overhead ($k \cdot \log_{2}(n)$) had more of an impact.  This effect is more pronounced at 40 workers, with a speedup of 2.25.
+Fig. \ref{fig:expTime} and Fig. \ref{fig:expSpeed} summarize the experimental results of job duration and speedup.  
+Our default series was the $10^{8}$ samples series.  
+On average, it took a single node 431 seconds, or approximately 7 minutes, to generate $10^{8}$ samples.  
+Generating the same number of samples using ChordReduce over 10, 20, 30, or 40 nodes was always quicker.  
+The samples were generated fastest when there were 20 workers, with a speedup factor of 4.96, while increasing the number of workers to 30 yielded a speedup of only 4.03.  
+At 30 nodes, the gains of distributing the work were present, but the cost of overhead ($k \cdot \log_{2}(n)$) had more of an impact.  
+This effect is more pronounced at 40 workers, which experienced  a speedup of only 2.25.
 
-Since our data showed that approximating $\pi$ on one node with $10^{8}$ samples took approximately 7 minutes, collecting $10^{9}$ samples on a single node would take 70 minutes at minimum.  Fig. \ref{fig:expSpeed} shows that the $10^{9}$ set gained greater benefit from being distributed than the $10^{8}$ set, with the speedup factor at 20 workers being 9.07 compared to 4.03.  In addition, the gains of distributing work further increased at 30 workers and only began to decay at 40 workers, compared with the $10^{8}$ data set, which began its drop off at 30 workers. This behavior demonstrates that the larger the job being distributed, the greater the gains of distributing the work using ChordReduce.
+Since our data showed that approximating $\pi$ on one node with $10^{8}$ samples took approximately 7 minutes, collecting $10^{9}$ samples on a single node would take 70 minutes at minimum.  
+Fig. \ref{fig:expSpeed} shows that the $10^{9}$ set gained greater benefit from being distributed than the $10^{8}$ set, with the speedup factor at 20 workers being 9.07 compared to 4.03.  
+In addition, dimishing returns only showed up at 40 workers, compared with the $10^{8}$ data set, which began its drop off at 30 workers.
+This behavior showed that the larger the job being distributed, the greater the gains of distributing the work using ChordReduce.
 
-The $10^{7}$ sample set confirms that the network overhead is logarithmic.  At that size, it is not effective to run the job concurrently and we start seeing overheard acting as the dominant factor in runtime.  This matches the behavior predicted by our equation, $T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n)$. For a small $T_{1}$, $\frac{T_{1}}{n}$  approaches 0 as $n$ gets larger, while $k \cdot \log_{2}(n)$, our overhead, dominates the sample.  The samples from our data set fit this behavior, establishing that our overhead increases logarithmically with the number of workers.
+The $10^{7}$ sample set confirms that the network overhead is logarithmic.  
+At that size, it is not effective to run the job concurrently and we start seeing overheard acting as the dominant factor in runtime.  
+This matches the behavior predicted by our equation, $T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n)$. 
+For a small $T_{1}$, $\frac{T_{1}}{n}$  approaches 0 as $n$ gets larger, while $k \cdot \log_{2}(n)$, our overhead, dominates the sample.  
+The samples from our data set fit this behavior, establishing that our overhead increases logarithmically with the number of workers.
 
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{figs/projTime}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/projTime}
 	\caption{The projected runtime using ChordReduce for differently sized jobs.  Each curve projects the expected behavior for job that takes a single worker the specified amount of time.}
 	\label{fig:projTime}
 \end{figure}
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{figs/projSpeed}
+	\centering
+	\includegraphics[width=0.5\linewidth]{figs/projSpeed}
 	\caption{The projected speedup for different sized jobs. }
 	\label{fig:projSpeed}
 \end{figure}
 
-Since we have now established that $T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n)$, we can estimate how long a job that takes an arbitrary amount of time to run on a single node would take using ChordReduce.  Our data points indicated that the mean value of $k$ for this problem was 36.5.  Fig. \ref{fig:projTime} shows that for jobs that would take more than $10^{4}$ seconds for single worker to complete, we can expect there would still be benefit to adding an additional worker, even when there are already 5000 workers already in the ring.  Fig. \ref{fig:projSpeed} further emphasizes this. Note that as the jobs become larger, the expected speedup from ChordReduce  approaches linear behavior.
+Since we were able to establish that $T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n)$, we created an estimate how long a job that takes an arbitrary amount of time to run on a single node would take using ChordReduce.  
+Our data points indicated that the mean value of $k$ for this problem was 36.5.  
+Fig. \ref{fig:projTime} shows that any jobs that would take more than $10^{4}$ seconds for single worker, we can expect there would still be benefit to adding an additional worker, even when there are already 5000 workers already in the ring.  
+Fig. \ref{fig:projSpeed} further emphasizes this. Note that as the jobs become larger, the expected speedup from ChordReduce  approaches linear behavior.
 
 
+Table \ref{tab:churnSpeed} shows the experimental results for different rates of churn. 
+We discus these experimental results and their significance in Section \ref{sec:auto-load-bal}.
 \begin{table}
 	\centering
 	\begin{tabular}{|r|r|r|}
@@ -592,12 +645,18 @@ Since we have now established that $T_{n} = \frac{T_{1}}{n} + k \cdot \log_{2}(n
 \end{table}
 
 
-Table \ref{tab:churnSpeed} shows the experimental results for different rates of churn. These results show the system  is relatively insensitive to churn.  We started with 40 nodes in the ring and generated $10^{8}$ samples while experiencing different rates of churn, as specified in Table \ref{churnSpeed}.  At the 0.8\% rate of churn, there is a 0.8\% chance each second that any given node will leave the network followed by another node joining the network at a different location. The joining rate and leaving rate being identical is not an unusual assumption to make \cite{marozzo2012p2p} \cite{load}.
+%These results show the system  is relatively insensitive to churn.  
+%We started with 40 nodes in the ring and generated $10^{8}$ samples while experiencing different rates of churn, as specified in Table \ref{churnSpeed}.  
+%At the 0.8\% rate of churn, there is a 0.8\% chance each second that any given node will leave the network followed by another node joining the network at a different location. 
+%The joining rate and leaving rate being identical is not an unusual assumption to make \cite{marozzo2012p2p} \cite{load}.
 
-Our testing rates for churn are an order of magnitude higher than the rates used in the P2P-MapReduce simulation  \cite{marozzo2012p2p}.  In their paper, the highest rate of churn was only 0.4\% per minute. Because we were dealing with fewer nodes, we chose larger rates to demonstrate that ChordReduce could effectively handle a high level of churn.
+%Our testing rates for churn are an order of magnitude higher than the rates used in the P2P-MapReduce simulation  \cite{marozzo2012p2p}.  In their paper, the highest rate of churn was only 0.4\% per minute. Because we were dealing with fewer nodes, we chose larger rates to demonstrate that ChordReduce could effectively handle a high level of churn.
 
 
-Our experiments show that for a given problem, ChordReduce can effectively distribute the problem, yielding a substantial speedup.  Furthermore, our results showed that the larger the problem is, the more workers could be added before diminishing returns were incurred.  During runtime, we experienced multiple instances where $plot$ would fail to run and the stager would report socket errors, indicating that it had lost connection with a node in the ring.  Despite this turbulence, every node managed to reestablish connection with each other and report back all the data.  This further demonstrated that we were able to handle the churn in the network.
+Our experiments show that for a given problem, ChordReduce can effectively distribute the problem, yielding a substantial speedup.  
+Furthermore, our results showed that the larger the problem is, the more workers could be added before diminishing returns were incurred.  
+During runtime, we experienced multiple instances where $plot$ would fail to run and the stager would report socket errors, indicating that it had lost connection with a node in the ring.  Despite this turbulence, every node managed to reestablish connection with each other and report back all the data.  
+This further demonstrated that we were able to handle the churn in the network.
 
 
 \subsection{Heterogeneity Calculation}
@@ -618,7 +677,8 @@ The question we must answer is ``how?''
 We need to create some unit of measurement for a distributed computing system and research if any other researchers have asked this problem.
 Furthermore, this measurement might need to be relative to other nodes in the network, since the only basis for comparison are the scores of the peers.
 
-Finally, this process needs to be handled autonomously by each node, which is the other primary focus of my proposal.
+Finally, this process needs to be handled autonomously by each node.
+This is part of the proposed work discussed in Chapter \ref{chapter:experiments}.
 \section{Autonomous Load Balancing}
 \label{sec:auto-load-bal}
 
