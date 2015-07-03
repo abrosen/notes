@@ -663,20 +663,18 @@ This further demonstrated that we were able to handle the churn in the network.
 
 One of the advantages to using homogeneous hardware is that each machine, each core, each node is the same.
 To evenly distribute the workload, you just have to give each machine the same amount of work.
+While a
 
-This is more difficult in a heterogeneous system.
-Each machine can shoulder a different amount of work.
+This is more difficult in a heterogeneous system, such as ChordReduce, as each machine can shoulder a different amount of work.
 How do we distribute work evenly across a heterogeneous system?
 
 We can solve this by adjusting the amount of nodes representing each machine in the network.
 Machines that can handle a larger load create more nodes in the network.
 Besides solving the heterogeneous load-balancing problem, increasing the number of nodes in the system increases the overall load-balancing of the system.
 
-
 The question we must answer is ``how?''
 We need to create some unit of measurement for a distributed computing system and research if any other researchers have asked this problem.
-Furthermore, this measurement might need to be relative to other nodes in the network, since the only basis for comparison are the scores of the peers.
-
+Furthermore, this measurement might need to be relative to other nodes in the network, since the only basis for comparison are the scores of the peers. 
 Finally, this process needs to be handled autonomously by each node.
 This is part of the proposed work discussed in Chapter \ref{chapter:experiments}.
 \section{Autonomous Load Balancing}
@@ -685,7 +683,7 @@ This is part of the proposed work discussed in Chapter \ref{chapter:experiments}
 
 During our experiments testing the capabilities of ChordReduce, we experienced a significant and completely unexpected anomaly while testing churn.
 One of the things previous research \cite{marozzo2012p2p}  \cite{leemap} in the same area we felt we needed to explore better was how a completely decentralized computation could handle churn.
-Now, despite our initial prototype being buggy and was only able to handle smallish networks, we were fairly certain of it's ability to handle churn.
+Now, despite our initial prototype having numerous bugs and only able to handle small networks, we were fairly certain of it's ability to handle churn.
 
 Marozzo et al.\ \cite{marozzo2012p2p} tested their network using churn rates of 0.025\%, 0.05\%, 0.1\%, 0.2\%, and 0.4\% per minute.
 The churn rate of $cr << 1$ per minute means that each minute on average, $cr \cdot n$ nodes leave the network and $cr \cdot n$  new nodes join the network.\footnote{It is standard practice to assume the joining rate and leaving rate are equal.}
@@ -694,24 +692,24 @@ When the coin lands on tails, the node leaves.
 A similar process happens for nodes wanting to join the network.
 
 We wanted the robustness of our system to be beyond reproach, so we tested at rates from 0.0025\% to 0.8\% \textbf{\textit{per second}}, 120 times the fastest rate used to test P2P-MapReduce.
-This is an absurdly fast and unrealistic speed, the only purpose of which was to cement the robustness of the system.
-Since we were testing ChordReduce on Amazon's EC2 and paying per instance per hour, we didn't use any more nodes than necessary.
+This is an absurdly fast and unrealistic speed, the only purpose of which was to cement the fault tolerance of the system.
+Since we were testing ChordReduce on Amazon's EC2 and paying per instance per hour, we limited the number of nodes.
 Rather than having a pool of nodes waiting to join the network, we conserved our funds by having leaving nodes immediately rejoin the network under a new IP/port combo.
 The meant our churn operation was essentially a simultaneous leave and join.
 
 
-What we found was that jobs on ChordReduce finished twice as fast under the unrealistic levels churn (0.8\% per second) than no churn.
+What we found was that jobs on ChordReduce finished twice as fast under the unrealistic levels churn (0.8\% per second) than no churn (Table \ref{tab:churnSpeed}).
 This completely mystified us.
 Churn is a disruptive force; how can it be aiding the network?
 
-\subsection{Hypothesis}
+\subsection*{Hypothesis}
 We hypothesize this was due to the number of data pieces (larger) vs the number of workers (smaller).
-There were more workers than there were pieces of data, so some workers ended up with more data than others in the initial distributio.
+There were more workers than there were pieces of data, so some workers ended up with more data than others in the initial distribution.
 This means that there was some imbalance in the way data was distributed among nodes.
 This was \textit{further} exacerbated by small number of workers distributed over a large hash space, leading some nodes to have larger swaths of responsibility than others.
 
 Given this setup, without any churn, the operation would be:
-Workers get triggered, they start working, and the ones with little work finish their work quickly, and the network waits for the node with a bunch of work.
+Workers get triggered, they start working, and the ones with little work finish their work quickly, and the network waits for the node with higher loads of work.
 
 Its important to note here that the work in ChordReduce was performed atomically, a piece at a time.
 When a node was working on a piece, it informed it's successor, then informed them when it finished.
@@ -723,13 +721,13 @@ The following possibilities could occur:
 \begin{itemize}
 	\item A node without any active jobs leaves.
 	It dies and and comes back with a new port chosen.
-	This new ID has a higher chance of landing in a larger region of responsibility (since larger regions are larger and new joining nodes have a greater chance of hashing to that location).
+	This new ID has a higher chance of landing in a larger region of responsibility (since new joining nodes have a greater chance of hashing to a larger region than a smaller).
 	In other words, it has a (relatively) higher chance of moving into an space where it becomes acquires responsibility for enqueued jobs.
 	The outcomes of this are:
 	\begin{itemize}
-		\item The node rejoins in a region are doesn't acquire any new jobs.
+		\item The node rejoins in a region and does not acquire any new jobs.
 		This has no impact on the network (Case I).
-		\item The node rejoins in a region that has a jobs waiting to be done.
+		\item The node rejoins in a region that has jobs waiting to be done.
 		It acquires some of these jobs.
 		This speeds up performance (Case II).
 	\end{itemize}
@@ -739,8 +737,8 @@ The following possibilities could occur:
 	However, the node can rejoin in a more job-heavy region and acquire new jobs.
 	The outcomes of this are:
 	\begin{itemize}
-		\item A minor negative impact on runtime and load balancing (since the successor has more jobs to deal with) (Case III).
-		\item A possible counterbalance in load balancing by acquiring new jobs off a busy node (Case ``It probably evens out'').
+		\item A minor negative impact on runtime and load balancing (since the successor has more jobs to handle) (Case III).
+		\item A possible counterbalance in load balancing by acquiring new jobs off a busy node (Case IV).
 	\end{itemize}
 \end{itemize}
 
@@ -753,11 +751,11 @@ This leads us to two hypotheses:
 	\item Deleting nodes motivates other nodes to work harder to avoid deletion (a ``beatings will continue until morale improves'' situation).
 	\item Our high rate of churn was dynamically load-balancing the network.
 	It appears even the smallest effort of trying to dynamically load balance, such as rebooting random nodes to new locations, has benefits for runtime.
-	Our method is a horrible approximation of dynamic load-balancing, and it still shows improvement.
+	Our method is a poor approximation of dynamic load-balancing, and it still shows improvement.
 \end{itemize}
 
 The first hypothesis is mentally pleasing to anyone who has tried to create a distributed system, but lacks rigor.
-We still have to verify the existence of this phenomena in an independent experiment, and establishing that it does another goal of my dissertation.
+We still have to verify the existence of this phenomena in an independent experiment, and establish that it does is part of the proposed work (Chapter \ref{chapter:experiments}).
 
 
 Once we have established that it does exist, we need a better load-balancing strategy than randomly inducing.
@@ -780,12 +778,7 @@ This precomputed list ties directly into the security research on DHTs we have d
 
 
 
-\subsection{Sybil Attacks and Injection}
-We discovered injecting replicas is easy and simple in P2P networks, we use a Sybil attack.
-This was the focus of my Data Security project
-I hypothesize we can Sybil attacks for improving load balancing on demand.
-
-
+\section{Sybil Attacks and Injection}
 One of the key properties of structured peer-to-peer (P2P) systems is the lack of a centralized coordinator or authority.
 P2P systems remove the vulnerability of a single point of failure and the susceptibility to a denial of service attack \cite{sybil}, but in doing so, open themselves up to new attacks.
 
@@ -793,11 +786,13 @@ Completely decentralized P2P systems are vulnerable to \textit{Eclipse attacks},
 This prevents them from communicating without being intercepted by the adversary.
 Once an Eclipse attack has taken place, the adversary can launch a variety of crippling attacks, such as incorrectly routing messages or returning malicious data \cite{srivatsa2004vulnerabilities}.
 
-
-
 One way to accomplish this attack is to perform a \emph{Sybil attack} \cite{sybil}.
 In a Sybil attack, the attacker masquerades as multiple nodes, effectively over-representing the attacker's presence in the network to maximize the number of links that can be established with healthy nodes.
 If enough malicious nodes are injected into the system, the majority of the nodes will be occluded from one another, successfully performing an Eclipse attack.
+
+%We discovered injecting replicas is easy and simple in P2P networks, we use a Sybil attack.
+%This was the focus of my Data Security project
+%I hypothesize we can Sybil attacks for improving load balancing on demand.
 
 This vulnerability is well known \cite{dhtsec}.
 Extensive research has been done assessing the damage an attacker can do after establishing themselves \cite{srivatsa2004vulnerabilities}.
