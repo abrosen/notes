@@ -28,8 +28,7 @@ def doTheThing():
             ans = i
             break
     print(ans*10)
-    
-    
+
+
 if __name__ == '__main__':
     doTheThing()
-    
