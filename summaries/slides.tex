@@ -13,6 +13,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{algorithmic}
 \captionsetup{compatibility=false}
 
 \author{Andrew Rosen}
@@ -499,7 +500,12 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	
 	\item ChordReduce finished twice as fast under the unrealistic levels churn (0.8\% per second) than no churn (Table \ref{tab:churnSpeed}).
 	
-	\item Churn is a disruptive force; how can it be aiding the network?
+	\item Churn is a disruptive force; how can it be aiding the network?  We have two hypotheses
+	\item Deleting nodes motivates other nodes to work harder to avoid deletion (a ``beatings will continue until morale improves'' situation).
+	\item Our high rate of churn was dynamically load-balancing the network.  How?
+	\item Nodes that die and rejoin are more likely to join a region owned by a node with larger region and therefore more work.
+	\item It appears even the smallest effort of trying to dynamically load balance, such as rebooting random nodes to new locations, has benefits for runtime.
+		Our method is a poor approximation of dynamic load-balancing, and it still shows improvement.
 	
 }
 
@@ -518,13 +524,26 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 
 
 \subsection{VHash}
-\begin{frame}{DHT and Voronoi Relationship}
+
+
+
+\begin{frame}{Goals}
+	VHash sprung from two related ideas:
 	\begin{itemize}
 	
-		\item Most DHTs optimize routing for the number of hops, rather than latency.
-		\item We discovered a mapping between Distributed Hash Tables and Voronoi/Delaunay Triangulations.
+		\item<1-> We wanted a way be able optimize latency by embedding in into the routing overlay. \note<1>{Most DHTs optimize routing for the number of hops, rather than latency.}
+		\begin{itemize}
+			\item<1> Or any other metric we wanted.
+		\end{itemize}
+		\item<2-> We wanted to create a DHT based off of Voronoi tessellation. Unfortunately: \note<2>{ We discovered a mapping between Distributed Hash Tables and Voronoi/Delaunay Triangulations.}
+		\begin{itemize}
+			\item<3-> Distributed algorithms for this problem don't really exist.  \note<3>{I lie, they do exist, but they all are ``run the global algorithm on your local subset.  And if we move out of or above 2D Euclidean space, as Brendan wanted to, no fast algorithms exist at all.  We quickly determined that solving was never really a feasible option. So that leaves approximation}
+			\item<4-> Existing approximation algorithms were unsuitable. \note<4>{Simple approximations have no guarantees of connectivity, which is very bad for a routing topology.  Better algorithms that existed for this problem technically ran in constant time, but had a prohibitively high sampling.  So to understand what I'm talking about here, let's briefly define what a Voronoi tessellation is.}
+		\end{itemize}
+%		\item<5>  We wanted to the nodes to move in the key space to adjust to . \note{Just a minor challenge no }
 	\end{itemize}
 \end{frame}
+
 
 \begin{frame}{Voronoi Tesselation}
 	\begin{figure}
@@ -570,12 +589,60 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Distributed Greedy Voronoi Heuristic}
 
-\begin{frame}{DGVH}
-	content
+	\begin{itemize}
+		\item The majority of Delaunay links cross the corresponding Voronoi edges.
+		\item We can test if the midpoint between two potentially connecting nodes is on the edge of the voronoi region.
+		\item This intuition fails if the midpoint between two nodes does not fall on their voronoi edge.
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{DGVH Heuristic}
+
+		\begin{algorithmic}[1]  % the numberis how many lines
+			\STATE Given node $n$ and its list of $candidates$.
+			\STATE $peers \leftarrow$ empty set that will contain $n$'s one-hop peers
+			\STATE Sort $candidates$ in ascending order by each node's distance to $n$
+			\STATE Remove the first member of $candidates$ and add it to $peers$
+			\FORALL{$c$ in $candidates$}
+			\STATE $m$ is the midpoint between $n$ and $c$
+			\IF{Any node in $peers$ is closer to $m$ than $n$}
+			\STATE Reject $c$ as a peer
+			\ELSE
+			\STATE Remove $c$ from $candidates$
+			\STATE Add $c$ to $peers$
+			\ENDIF
+			\ENDFOR
+		\end{algorithmic}
+
 \end{frame}
 
 
+
+\note{This algorithm is "egocentric". It is meant to be run by a single node in a distributed network and is actively seeking to find it's deluany peers.
+	\begin{enumerate}
+	\item 'n' is the "myself" node, and the location we are seeking to find the peers of.
+	\item  peers is a set that will build the peerlist in
+	\item We sort the candidates from closest to farthest.
+	\item The closest candidate is always guaranteed to be a peer.
+	\item Iterate through the sorted list of candidates and either add them to the peers set or discard them.
+	\item We calculate the midpoint between the candidate and the center 'n'. 
+	\item If this midpoint is closer to a peer than 'n', then it does not fall on the interface between the location's Voronoi regions.
+	\item in this case discard it
+	\item otherwise add it the current peerlist
+	\end{enumerate}
+Theoretically, this is worst case $O(n^2)$.
+
+However in practice, this is $O(nlog(n) (sorting) + kn)$
+where$k$ is the number of Delaunay peers.
+
+We are well aware that 2d-euclidean algorithms exist in O(nlog(n)) time. 
+While we use that use case to communicate the algorithm, it is intended to be used in more exotic spaces. 
+
+realistically k is the function of the metric space and is O(1) for euclidean spaces.
+}
 
 
 
