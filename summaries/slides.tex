@@ -265,7 +265,7 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 
 
-\subsection{Chord}
+\subsection{Example DHT: Chord}
 
 \begin{frame}{Chord}
 	\begin{itemize}
@@ -325,27 +325,21 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \end{frame}
 
 
-\subsection{Other DHTs}
-\begin{frame}{Other DHTs}
-	Other DHTs include
-	\begin{itemize}
-		\item Kademlia 
-		\item Pastry and Tapestry
-		\item CAN
-		\item Symphony
-		\item ZHT
-	\end{itemize}
-\end{frame}
+%\subsection{Other DHTs}
+%\begin{frame}{Other DHTs}
+%	Other DHTs include
+%	\begin{itemize}
+%		\item Kademlia 
+%		\item Pastry and Tapestry
+%		\item CAN
+%		\item Symphony %
+%		\item ZHT
+%	\end{itemize}
+%\end{frame}
 
 \section{Completed Work}
 
 \subsection{ChordReduce}
-
-\begin{frame}{ChordReduce}
-
-\end{frame}
-
-
 
 \begin{frame}{Goals}
 
@@ -358,35 +352,126 @@ The big issues in distributed computing can be solved by the mechanisms provided
 		\end{itemize}
 		\item The resulting system must be:
 		\begin{itemize}
-			\item Fault tolerant.
-			\item Scalable.
 			\item Completely decentralized.
+			\item Scalable.
+			\item Fault tolerant.
+			\item Load Balancing.
 		\end{itemize}
 	\end{itemize}
 
 \end{frame}
 
 
-
-\begin{frame}{System Architecture}
-	ChordReduce has three layers:
-	\begin{itemize}
-		\item Chord \cite{Chord}, which handles routing and lookup.
-		\item The Cooperative File System (CFS) \cite{CFS}, which handles storage and data replication.
-		\item The MapReduce layer.
-	\end{itemize}
-
-\end{frame}
-
-
+%
+%\begin{frame}{System Architecture}  %
+%	ChordReduce has three layers:
+%	\begin{itemize}
+%		\item Chord \cite{Chord}, which handles routing and lookup.
+%		\item The Cooperative File System (CFS) \cite{CFS}, which handles storage and data replication.
+%		\item The MapReduce layer.
+%	\end{itemize}
+%
+%\end{frame}
+%
 
 \begin{frame}{System Architecture}
 	\begin{figure}
-	    \includegraphics[width=0.8\linewidth]{CR_architecture}
+	    \includegraphics[width=0.8\linewidth]{figs/CR_architecture}
 	
 	\end{figure}
 \end{frame}
 
+
+
+\note[itemize]{
+		\item Chord \cite{Chord}, which handles routing and lookup.
+		\item The Cooperative File System (CFS) \cite{CFS}, which handles storage and data replication.
+		\item The MapReduce layer.
+
+		\item Files are split up, each block given a key based on their contents.
+		\item Each block is stored according to their key.
+		\item The hashing process guarantees that the keys are distributed near evenly among nodes.
+		\item A keyfile is created and stored where the whole file would have been found.
+		\item To retrieve a file, the node gets the keyfile and sends a request for each block listed in the keyfile	
+}
+
+
+\begin{frame}{Mapping Data}
+	\begin{figure}
+	    \includegraphics[width=0.48\linewidth]{figs/CR_dataflow2}
+	    \caption{ \footnotesize{The stager sends a map task for each key in the keyfile. In larger networks, this process is streamlined by recursively bundling keys and sending them to the best finger.}}
+		
+	\end{figure}
+\end{frame}
+
+
+\note[itemize]{
+\item this process is recursive
+}
+
+
+\begin{frame}{Reducing Results of Data}
+	\begin{figure}
+	    \includegraphics[width=0.50\linewidth]{figs/CR_dataflow3}
+	    \caption{Results are sent back via the overlay. If a node receives multiple results, they are reduced before being sent on.}
+	\end{figure}
+\end{frame}
+
+\note{The paths here are arbitrary edges that I came up with for the example.}
+
+
+\begin{frame}{Experiment Details}
+	Our test was a Monte Carlo approximation of $\pi$.
+	\begin{columns}[T]
+	
+	
+		\begin{column}{.5\textwidth}
+		
+			\begin{figure}
+			    \includegraphics[width=\linewidth]{figs/dartboard}
+			    \caption{The node chooses random $x$ and $y$ between 0 and 1. If $x^{2} + y^{2} < 1^{2} $, the ``dart ''landed inside the circle.}
+			    \label{dartboard}
+			\end{figure}
+			
+			
+		\end{column}
+			
+		\begin{column}{.5\textwidth}
+			\begin{itemize}
+				\item Map jobs were sent to randomly generated hash addresses.
+				\item The ratio of hits to generated results approximates $\frac{\pi}{4}$.
+				\item Reducing the results was a matter of combining the two fields.
+			\end{itemize}
+		\end{column}
+		
+	\end{columns}
+\end{frame}
+
+
+\note[itemize]{
+\item Experiment had these goals
+\begin{enumerate}
+	\item ChordReduce provided significant speedup during a distributed job.
+	\item ChordReduce scaled.
+	\item ChordReduce handled churn during execution.
+\end{enumerate}
+}
+
+\begin{frame}{Experimental Results}
+
+	\begin{figure}
+	    \includegraphics[width=0.65\linewidth]{figs/expTime}
+	    \caption{For a sufficiently large job, it was almost always preferable to distribute it.  When the job is too small, such as with the $10^{7}$ data set, our runtime is dominated by the overhead.  Our results are what we would expect when overhead grows logarithmically to the number of workers.}
+	    \label{expTime}
+	\end{figure}
+
+
+\end{frame}
+\note[itemize]{
+	\item Diminishing returns.
+	\item The $ 10^{7} $ job was dominated by the overhead communication costs.
+
+}
 
 
 
@@ -409,10 +494,16 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	
 \end{frame}
 
+\note[itemize]{
+	\item Anomaly of these results
+}
+
+
+
+
+
 
 \subsection{VHash}
-
-
 \begin{frame}{DHT and Voronoi Relationship}
 	\begin{itemize}
 	
