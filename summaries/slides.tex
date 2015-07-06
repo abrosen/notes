@@ -327,6 +327,14 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 \subsection{Other DHTs}
 \begin{frame}{Other DHTs}
+	Other DHTs include
+	\begin{itemize}
+		\item Kademlia 
+		\item Pastry and Tapestry
+		\item CAN
+		\item Symphony
+		\item ZHT
+	\end{itemize}
 \end{frame}
 
 \section{Completed Work}
@@ -334,8 +342,52 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \subsection{ChordReduce}
 
 \begin{frame}{ChordReduce}
-	content
+
 \end{frame}
+
+
+
+\begin{frame}{Goals}
+
+	\begin{itemize}
+		\item We wanted build a more abstract system for MapReduce.
+		\item We remove core assumptions \cite{hadoopAssumptions}:
+		\begin{itemize}
+			\item The system is centralized.
+			\item Processing occurs in a static network.
+		\end{itemize}
+		\item The resulting system must be:
+		\begin{itemize}
+			\item Fault tolerant.
+			\item Scalable.
+			\item Completely decentralized.
+		\end{itemize}
+	\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{System Architecture}
+	ChordReduce has three layers:
+	\begin{itemize}
+		\item Chord \cite{Chord}, which handles routing and lookup.
+		\item The Cooperative File System (CFS) \cite{CFS}, which handles storage and data replication.
+		\item The MapReduce layer.
+	\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{System Architecture}
+	\begin{figure}
+	    \includegraphics[width=0.8\linewidth]{CR_architecture}
+	
+	\end{figure}
+\end{frame}
+
+
 
 
 \begin{frame}{Churn Results}
