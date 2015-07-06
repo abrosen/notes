@@ -495,7 +495,12 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \end{frame}
 
 \note[itemize]{
-	\item Anomaly of these results
+	\item We tested at rates from 0.0025\% to 0.8\% \textbf{\textit{per second}}, 120 times the fastest rate used to test P2P-MapReduce.
+	
+	\item ChordReduce finished twice as fast under the unrealistic levels churn (0.8\% per second) than no churn (Table \ref{tab:churnSpeed}).
+	
+	\item Churn is a disruptive force; how can it be aiding the network?
+	
 }
 
 
