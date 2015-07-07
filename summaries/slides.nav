@@ -82,50 +82,52 @@
 \headcommand {\beamer@framepages {59}{59}}
 \headcommand {\slideentry {3}{2}{3}{61/61}{VHash}{0}}
 \headcommand {\beamer@framepages {61}{61}}
-\headcommand {\slideentry {3}{2}{4}{62/62}{VHash}{0}}
-\headcommand {\beamer@framepages {62}{62}}
-\headcommand {\slideentry {3}{2}{5}{63/63}{VHash}{0}}
+\headcommand {\slideentry {3}{2}{4}{63/63}{VHash}{0}}
 \headcommand {\beamer@framepages {63}{63}}
-\headcommand {\slideentry {3}{2}{6}{64/64}{VHash}{0}}
+\headcommand {\slideentry {3}{2}{5}{64/64}{VHash}{0}}
 \headcommand {\beamer@framepages {64}{64}}
-\headcommand {\slideentry {3}{2}{7}{65/65}{VHash}{0}}
-\headcommand {\beamer@framepages {65}{65}}
-\headcommand {\slideentry {3}{2}{8}{67/67}{VHash}{0}}
+\headcommand {\slideentry {3}{2}{6}{66/66}{VHash}{0}}
+\headcommand {\beamer@framepages {66}{66}}
+\headcommand {\slideentry {3}{2}{7}{67/67}{VHash}{0}}
 \headcommand {\beamer@framepages {67}{67}}
-\headcommand {\slideentry {3}{2}{9}{68/68}{VHash}{0}}
-\headcommand {\beamer@framepages {68}{68}}
-\headcommand {\beamer@subsectionentry {0}{3}{3}{69}{Sybil Attack Analysis}}\headcommand {\beamer@subsectionpages {51}{68}}
-\headcommand {\slideentry {3}{3}{1}{69/69}{Sybil Attack Analysis}{0}}
-\headcommand {\beamer@framepages {69}{69}}
-\headcommand {\slideentry {3}{3}{2}{70/70}{Sybil Attack Analysis}{0}}
-\headcommand {\beamer@framepages {70}{70}}
-\headcommand {\slideentry {3}{3}{3}{71/71}{Sybil Attack Analysis}{0}}
+\headcommand {\slideentry {3}{2}{8}{71/71}{VHash}{0}}
 \headcommand {\beamer@framepages {71}{71}}
-\headcommand {\slideentry {3}{3}{4}{72/72}{Sybil Attack Analysis}{0}}
+\headcommand {\slideentry {3}{2}{9}{72/72}{VHash}{0}}
 \headcommand {\beamer@framepages {72}{72}}
-\headcommand {\beamer@subsubsectionentry {0}{3}{3}{1}{74}{Results}}
-\headcommand {\slideentry {3}{3}{5}{74/74}{Sybil Attack Analysis}{0}}
+\headcommand {\slideentry {3}{2}{10}{73/73}{VHash}{0}}
+\headcommand {\beamer@framepages {73}{73}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{74}{Sybil Attack Analysis}}\headcommand {\beamer@subsectionpages {51}{73}}
+\headcommand {\slideentry {3}{3}{1}{74/74}{Sybil Attack Analysis}{0}}
 \headcommand {\beamer@framepages {74}{74}}
-\headcommand {\slideentry {3}{3}{6}{75/75}{Sybil Attack Analysis}{0}}
+\headcommand {\slideentry {3}{3}{2}{75/75}{Sybil Attack Analysis}{0}}
 \headcommand {\beamer@framepages {75}{75}}
-\headcommand {\slideentry {3}{3}{7}{76/76}{Sybil Attack Analysis}{0}}
+\headcommand {\slideentry {3}{3}{3}{76/76}{Sybil Attack Analysis}{0}}
 \headcommand {\beamer@framepages {76}{76}}
-\headcommand {\sectionentry {4}{Proposed Work}{77}{Proposed Work}{0}}
-\headcommand {\beamer@sectionpages {36}{76}}
-\headcommand {\beamer@subsectionpages {69}{76}}
-\headcommand {\slideentry {4}{0}{8}{77/77}{}{0}}
+\headcommand {\slideentry {3}{3}{4}{77/77}{Sybil Attack Analysis}{0}}
 \headcommand {\beamer@framepages {77}{77}}
-\headcommand {\beamer@subsectionentry {0}{4}{1}{78}{UrDHT}}\headcommand {\beamer@subsectionpages {77}{77}}
-\headcommand {\slideentry {4}{1}{1}{78/78}{UrDHT}{0}}
-\headcommand {\beamer@framepages {78}{78}}
-\headcommand {\beamer@subsectionentry {0}{4}{2}{80}{DHT Distributed Computing}}\headcommand {\beamer@subsectionpages {78}{79}}
-\headcommand {\slideentry {4}{2}{1}{80/80}{DHT Distributed Computing}{0}}
+\headcommand {\beamer@subsubsectionentry {0}{3}{3}{1}{79}{Results}}
+\headcommand {\slideentry {3}{3}{5}{79/79}{Sybil Attack Analysis}{0}}
+\headcommand {\beamer@framepages {79}{79}}
+\headcommand {\slideentry {3}{3}{6}{80/80}{Sybil Attack Analysis}{0}}
 \headcommand {\beamer@framepages {80}{80}}
-\headcommand {\beamer@subsectionentry {0}{4}{3}{81}{Autonomous Load-Balancing}}\headcommand {\beamer@subsectionpages {80}{80}}
-\headcommand {\slideentry {4}{3}{1}{81/81}{Autonomous Load-Balancing}{0}}
+\headcommand {\slideentry {3}{3}{7}{81/81}{Sybil Attack Analysis}{0}}
 \headcommand {\beamer@framepages {81}{81}}
-\headcommand {\beamer@partpages {1}{83}}
-\headcommand {\beamer@subsectionpages {81}{83}}
-\headcommand {\beamer@sectionpages {77}{83}}
-\headcommand {\beamer@documentpages {83}}
-\headcommand {\def \inserttotalframenumber {50}}
+\headcommand {\sectionentry {4}{Proposed Work}{82}{Proposed Work}{0}}
+\headcommand {\beamer@sectionpages {36}{81}}
+\headcommand {\beamer@subsectionpages {74}{81}}
+\headcommand {\slideentry {4}{0}{8}{82/82}{}{0}}
+\headcommand {\beamer@framepages {82}{82}}
+\headcommand {\beamer@subsectionentry {0}{4}{1}{83}{UrDHT}}\headcommand {\beamer@subsectionpages {82}{82}}
+\headcommand {\slideentry {4}{1}{1}{83/83}{UrDHT}{0}}
+\headcommand {\beamer@framepages {83}{83}}
+\headcommand {\beamer@subsectionentry {0}{4}{2}{85}{DHT Distributed Computing}}\headcommand {\beamer@subsectionpages {83}{84}}
+\headcommand {\slideentry {4}{2}{1}{85/85}{DHT Distributed Computing}{0}}
+\headcommand {\beamer@framepages {85}{85}}
+\headcommand {\beamer@subsectionentry {0}{4}{3}{86}{Autonomous Load-Balancing}}\headcommand {\beamer@subsectionpages {85}{85}}
+\headcommand {\slideentry {4}{3}{1}{86/86}{Autonomous Load-Balancing}{0}}
+\headcommand {\beamer@framepages {86}{86}}
+\headcommand {\beamer@partpages {1}{88}}
+\headcommand {\beamer@subsectionpages {86}{88}}
+\headcommand {\beamer@sectionpages {82}{88}}
+\headcommand {\beamer@documentpages {88}}
+\headcommand {\def \inserttotalframenumber {51}}
