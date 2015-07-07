@@ -556,6 +556,7 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 
 \note{Define
 	\begin{itemize}
+		\item A Voronoi tessellation or Voronoi diagram divides a space into regions, where each region encompasses all the points closest to Voronoi generators (point).
 		\item Voronoi generators
 		\item Voronoi Region
 		\item Voronoi Tessellation/ Diagram
@@ -571,11 +572,22 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 	\end{figure}
 \end{frame}
 
+\note{Define
+	\begin{itemize}
+		\item Triangulation
+		\item Circumcircle
+		\item The Voronoi tessellation and Delaunay Triangulation are coprime problems
+		\begin{itemize}
+			\item 
+			\item 
+		\end{itemize}
+	\end{itemize}
+}
+
 
 \begin{frame}{DHT and Voronoi Relationship }
 	\begin{itemize}
-		\item Coprime
-		\item We can view DHTs in terms of Voronoi and Delaunay
+		\item We can view DHTs in terms of Voronoi tessellation and Delaunay triangulation.
 		\begin{itemize}
 			\item The set of keys the node is responsible for is its Voronoi region.
 			\item The nodes neighbors are it's Delaunay neighbors.
@@ -585,9 +597,21 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 
 \begin{frame}{VHash}
 	\begin{itemize}
-		\item Voronoi-based Distributed Hash Table
+		\item Voronoi-based Distributed Hash Table based on this relationship.
+		\item Uses our approximation to solve for Delaunay neighbors, called DGVH.
+		\item Exchanges information using a gossip based protocol 
+		\item Routing speed is $ O(\sqrt[d]{n} ) $
+		\item Memory Cost
+		\begin{itemize}
+			\item Worst case O(n)
+			\item Expected cost 
+		\end{itemize}
 	\end{itemize}
 \end{frame}
+
+\note[itemize]{
+	\item $d$ is number of dimensions, but we optimize over latency so that's deceptive
+}
 
 \begin{frame}{Distributed Greedy Voronoi Heuristic}
 
