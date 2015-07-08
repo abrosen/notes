@@ -35,7 +35,7 @@ These are many of the same challenges that Peer-to-peer (P2P) file sharing appli
 Many P2P applications use DHTs to address these challenges, since DHTs are designed with these problems in mind.
 We propose that DHTs can be used to create P2P distributed computing platforms that are completely decentralized.
 %Rather than keys being assigned to some data, we can assign keys to tasks and automatically distribute those tasks to the responsible nodes
-There would be no need for some central organized or scheduler to coordinate the nodes in the network.
+There would be no need for some central organizer or scheduler to coordinate the nodes in the network.
 Our framework would not be limited to only a P2P context, but could be applied in data centers, a normally centrally organized context.
 
 
@@ -86,7 +86,7 @@ The most direct application of a DHT distributed computing framework is  a quick
 	\item Any problem that could be phrased as a MapReduce problem.
 	
 \end{itemize}
-Unlike the current distributed applications which utilize DHTs, we want to create a complete framework which can be used to build decentralized applications.
+Unlike the current distributed applications that utilize DHTs, we want to create a complete framework that can be used to build decentralized applications.
 We have found no existing projects that provide a means of building your own DHT or DHT based applications. %without a given DHT in mind at least
 
 
@@ -126,7 +126,7 @@ We will look at these individually:
 	
 	
 \end{description}
-It should be noted that there is some crossover between these categories. 
+Note that there is some crossover between these categories. 
 For example, adding new nodes to the system needs to have a low organizational overhead (scalability) and will change the network configuration, which will need to be updated (fault-tolerance).
 
 
@@ -158,7 +158,7 @@ Other nodes can be notified of the missing node passively through maintenance or
 
 There have been multiple proposed strategies for tackling scalability, and it is these strategies that play the greatest role in driving the variety of DHT architectures. 
 Each DHT must strike a balance between the size of the lookup table and lookup time. 
-The vast majority of DHTs choose to use $\lg(n)$ sized tables and  $\lg(n)$ hops. 
+The vast majority of DHTs choose to use $\lg(n)$ sized tables and  $\lg(n)$ hops, where $ n $ is the number of nodes in the network. 
 Chapter \ref{chapter:background} discusses these tradeoffs in greater detail and how they affect the each DHT.
 
 
@@ -288,7 +288,7 @@ Below are publications with other authors not relevant to the proposed work.
 \subsection{Summary of Proposal}
 
 
-The work we want to do can be divided into three distinct, but mutually dependent parts.
+We divide the proposed work into three distinct, but mutually dependent parts.
 One of these parts, the DHT framework, is a part that will be done jointly with Brendan Benshoof.
 The specifics are given in Chapter \ref{chapter:experiments}.
 

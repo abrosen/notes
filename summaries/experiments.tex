@@ -58,7 +58,7 @@ The steps involved in this are listed below.
 \end{itemize}
 
 Here there is one very clear goal.
-This would be a reimplementation of our original ChordReduce paper with a completely new problems and new results.
+This would be a reimplementation of our original ChordReduce paper with completely new problems and new results.
 
 
 
@@ -68,7 +68,7 @@ The most straightforward way of doing this in a DHT context is to have more powe
 The goals here are straightforward:
 
 \begin{itemize}
-	\item Further establish that the ``strategy'' of randomly inducing churn works at reducing.
+	\item Further establish that the ``strategy'' of randomly inducing churn improves computational speeds.
 	If we successfully establish it exists,  we must determine if the process can be modeled.%stochastically modeled or otherwise predicted via theoretical analysis.
 	\item Create a processor scoring mechanism for creating virtual nodes.  
 	Essentially, we need to create a mechanism to estimate how many virtual nodes a particular piece of hardware can handle.
@@ -89,9 +89,9 @@ The goals here are straightforward:
 		If the node detects its region is too large or it has too much work; it invites other nodes to help.
 		The nodes look at the range in question and offer to help if they have a Sybil that fits and are not overloaded themselves.
 		The inviter looks at the offers of help and selects the best candidate.
-		\item Another invitation based scheme is that each of the nodes submits itself as a potential filler to each of it's sybil locations.
+		\item Another invitation based scheme is that each of the nodes submits itself as a potential filler to each of its Sybil locations.
 		The nodes that would be affected by this node's entry add it to a list of fillers. 
-		When the node decides it needs help, it selects of of the fillers to join.
+		When the node decides it needs help, it selects one of the fillers to join.
 		These invitation based schemes have the advantage of nodes having control of their range. 
 		The question is it ``turtles all the way down'' here?
 		Do we let the replicas also call for help?
