@@ -34,25 +34,23 @@
 Distributed Hash Tables (DHTs) are protocols and frameworks used by peer-to-peer (P2P) systems.
 They are used as the organizational backbone for many P2P file-sharing systems due to their scalability, fault-tolerance, and load-balancing properties.
 These same properties are highly desirable in a distributed computing environment, especially one that wants to use heterogeneous components.
+
 DHTs can be used not only as the framework to build a P2P file-sharing service, but a P2P distributed computing platform.
-
-Our framework is a completely decentralized model for organizing heterogeneous units for distributed computation.
-It incorporates a load-balancing algorithm that is capable of injecting additional nodes during runtime to speed up existing jobs.
-This algorithm also provides a means of redistributing the load among existing workers during runtime.
-
-%applications
+We propose creating a P2P distributed computing framework using distributed hash tables, based on our prototype system ChordReduce.
+This framework would make it simple and quick for developers to create their own distributed computing applications.
 Unlike Hadoop and similar MapReduce frameworks, our framework can be used both in both the context of a datacenter or as part of a P2P computing platform.  
 This opens up new possibilities for building platforms to distributed computing problems.
-By utilizing the load-balancing algorithm, a datacenter could easily leverage additional P2P resources at runtime on an as-needed basis.
-Our framework also allows MapReduce-like or distributed machine learning platforms to be easily deployed in a greater variety of contexts.
+
+One advantage our system will have is an autonomous load-balancing mechanism.
+Nodes will be able independently acquire work from other nodes in the network, rather than sitting idle.
+More powerful nodes in the network will be able use the mechanism to acquire more work, exploiting the heterogeneity of the network.
+
+By utilizing the load-balancing algorithm, a datacenter could easily leverage additional P2P resources at runtime on an as needed basis,
+Our framework will allow MapReduce-like or distributed machine learning platforms to be easily deployed in a greater variety of contexts.
+
 
 \end{abstract}
 
-%TODO: Replace first person singulars with first person plurals
-%TODO: Split proposal into Finished research and proposed experiments.
-%TODO: Rewrite vocab
-%TODO: Add pretty pictures for DHT
-%TODO: Add motivation of Sybil attacks on Botnets
 \include{intro}
 \include{background}
 \include{prevresearch}
