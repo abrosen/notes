@@ -340,6 +340,242 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 \section{Completed Work}
 
+
+\subsection{VHash}
+
+
+
+\begin{frame}{Goals}
+	VHash sprung from two related ideas:
+	\begin{itemize}
+		
+		\item<1-> We wanted a way be able optimize latency by embedding in into the routing overlay. \note<1>{Most DHTs optimize routing for the number of hops, rather than latency.}
+		\begin{itemize}
+			\item<1> Or any other metric we wanted.
+		\end{itemize}
+		\item<2-> We wanted to create a DHT based off of Voronoi tessellation. Unfortunately: \note<2>{ We discovered a mapping between Distributed Hash Tables and Voronoi/Delaunay Triangulations.}
+		\begin{itemize}
+			\item<3-> Distributed algorithms for this problem don't really exist.  \note<3>{I lie, they do exist, but they all are ``run the global algorithm on your local subset.  And if we move out of or above 2D Euclidean space, as Brendan wanted to, no fast algorithms exist at all.  We quickly determined that solving was never really a feasible option. So that leaves approximation.  A distributed algorithm would be helpful for some WSNs solving the boundary coverage problem.}
+			\item<4-> Existing approximation algorithms were unsuitable. \note<4>{Simple approximations have no guarantees of connectivity, which is very bad for a routing topology.  Better algorithms that existed for this problem technically ran in constant time, but had a prohibitively high sampling.  So to understand what I'm talking about here, let's briefly define what a Voronoi tessellation is.}
+		\end{itemize}
+		%		\item<5>  We wanted to the nodes to move in the key space to adjust to . \note{Just a minor challenge no }
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Voronoi Tesselation}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{figs/new_voronoi}
+		\caption{A set of points and the generated Voronoi regions}
+		\label{fig:new_voronoi}
+	\end{figure}
+\end{frame}
+
+\note{Define
+	\begin{itemize}
+		\item A Voronoi tessellation or Voronoi diagram divides a space into regions, where each region encompasses all the points closest to Voronoi generators (point).
+		\item Voronoi generators
+		\item Voronoi Region
+		\item Voronoi Tessellation/ Diagram
+	\end{itemize}
+}
+
+\begin{frame}{Delaunay Triangulation}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{figs/delaunay}
+		\caption{The same set of nodes with their corresponding Delaunay Triangulation.}
+		\label{fig:delaunay}
+	\end{figure}
+\end{frame}
+
+\note{Define
+	\begin{itemize}
+		\item Delaunay Triangulation is a triangulation of a set of points with the following rule:
+		\item No point falls within any of the circumcirles for every triangle in the triangulation, 
+		\item The Voronoi tessellation and Delaunay Triangulation are dual problems
+		\begin{itemize}
+			\item Solving one yields the other.
+			\item We can get the Voronoi diagram by connecting all the centers of circumcircles.
+			\item 
+		\end{itemize}
+	\end{itemize}
+}
+
+
+\begin{frame}{DHT and Voronoi Relationship }
+	\begin{itemize}
+		\item We can view DHTs in terms of Voronoi tessellation and Delaunay triangulation.
+		\begin{itemize}
+			\item The set of keys the node is responsible for is its Voronoi region.
+			\item The nodes neighbors are it's Delaunay neighbors.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{VHash}
+	\begin{itemize}
+		\item Voronoi-based Distributed Hash Table based on this relationship.
+		\item Uses our approximation to solve for Delaunay neighbors, called DGVH.
+		\item Topology updates occur via  gossip-based protocol. 
+		\item Routing speed is $ O(\sqrt[d]{n} ) $
+		\item Memory Cost
+		\begin{itemize}
+			\item Worst case: $O(n)$
+			\item Expected maximum size: $\Theta(\frac{\log n}{\log \log n} )$
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\note[itemize]{
+	\item $d$ is number of dimensions, but we optimize over latency so that's deceptive
+	\item Gossip:  every cycle, a node chooses a peer and swaps peerlist information, then reruns the approximation.
+	\item This would only happen in a contrived case and would give $ O(1) $ routing
+	\item We found a paper that proved $\Theta(\frac{\log n}{\log \log n} )$  is the expected maximum degree of a vertex in a Delaunay Triangulation.
+}
+
+\begin{frame}{Distributed Greedy Voronoi Heuristic}
+	
+	\begin{itemize}
+		\item The majority of Delaunay links cross the corresponding Voronoi edges.
+		\item We can test if the midpoint between two potentially connecting nodes is on the edge of the voronoi region.
+		\item This intuition fails if the midpoint between two nodes does not fall on their voronoi edge.
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{DGVH Heuristic}
+	
+	\begin{algorithmic}[1]  % the numberis how many lines
+		\STATE Given node $n$ and its list of $candidates$.
+		\STATE $peers \leftarrow$ empty set that will contain $n$'s one-hop peers
+		\STATE Sort $candidates$ in ascending order by each node's distance to $n$
+		\STATE Remove the first member of $candidates$ and add it to $peers$
+		\FORALL{$c$ in $candidates$}
+		\STATE $m$ is the midpoint between $n$ and $c$
+		\IF{Any node in $peers$ is closer to $m$ than $n$}
+		\STATE Reject $c$ as a peer
+		\ELSE
+		\STATE Remove $c$ from $candidates$
+		\STATE Add $c$ to $peers$
+		\ENDIF
+		\ENDFOR
+	\end{algorithmic}
+	
+\end{frame}
+
+\note[itemize]{
+	
+	\item The majority of Delaunay links cross the corresponding Voronoi edges.
+	\item We can test if the midpoint between two potentially connecting nodes is on the edge of the voronoi region.
+	\item This intuition fails if the midpoint between two nodes does not fall on their voronoi edge.
+}
+
+\note{
+	\begin{enumerate}
+		\item 'n' is the "myself" node, and the location we are seeking to find the peers of.
+		\item  peers is a set that will build the peerlist in
+		\item We sort the candidates from closest to farthest.
+		\item The closest candidate is always guaranteed to be a peer.
+		\item Iterate through the sorted list of candidates and either add them to the peers set or discard them.
+		\item We calculate the midpoint between the candidate and the center 'n'. 
+		\item If this midpoint is closer to a peer than 'n', then it does not fall on the interface between the location's Voronoi regions.
+		\item in this case discard it
+		\item otherwise add it the current peerlist
+	\end{enumerate}
+}
+
+
+\note{
+	Theoretically, this is worst case $O(n^2)$.
+	
+	However in practice, this is $O(nlog(n) (sorting) + kn)$
+	where$k$ is the number of Delaunay peers.
+	
+	We are well aware that 2d-euclidean algorithms exist in O(nlog(n)) time. 
+	While we use that use case to communicate the algorithm, it is intended to be used in more exotic spaces. 
+	
+	realistically k is the function of the metric space and is O(1) for euclidean spaces.
+	
+}
+
+\begin{frame}{Results}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{figs/error_rate}
+		\caption{As the size of the graph increases, we see approximately 1 error per node.
+			We can also see that the error rate and number of nodes has a linear relationship.}
+		\label{exp_0}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Results}
+	\begin{figure}
+		\label{fig:conv}
+		\begin{subfigure}[b]{.45\linewidth}
+			\centering
+			\includegraphics[height=3cm]{figs/conv_d2}
+			%\caption{This plot shows the accuracy rate of lookups on a 2-dimensional network as it self-organizes.}
+			\label{conv2}
+		\end{subfigure} 
+		\begin{subfigure}[b]{.45\linewidth}
+			\centering
+			\includegraphics[height=3cm]{figs/conv_d3}
+			%\caption{This plot shows the accuracy rate of lookups on a 3-dimensional network as it self-organizes.}
+			\label{conv3}
+		\end{subfigure}\\
+		\begin{subfigure}[b]{.45\linewidth}
+			\centering
+			\includegraphics[height=3cm]{figs/conv_d4}
+			%\caption{This plot shows the accuracy rate of lookups on a 4-dimensional network as it self-organizes.}
+			\label{conv4}
+		\end{subfigure}
+		\begin{subfigure}[b]{.45\linewidth}
+			\centering
+			\includegraphics[height=3cm]{figs/conv_d5}
+			%\caption{This plot shows the accuracy rate of lookups on a 5-dimensional network as it self-organizes.}
+			\label{conv5}
+		\end{subfigure}
+		
+		\caption{These figures show, starting from a randomized network, VHash forms a stable and consistent network topology. %The Y axis is the percentage of successful lookups out of 2000 queries and the X axis is the number of gossips cycles.}
+		}
+		
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Results}
+	\begin{figure}
+		
+		\centering
+		\includegraphics[width=0.5\linewidth]{figs/hist_1000}
+		\label{fig:hist1000}
+		\caption{This how the difference in the performance of Chord and VHash for 10,000 routing samples on a 10,000 node underlay network for differently sized overlays.
+			The Y axis shows the observed frequencies and the X axis shows the number of hops traversed on the underlay network.
+			VHash consistently requires fewer hops for routing than Chord.}
+	\end{figure}
+	
+\end{frame}
+
+
+\begin{frame}{Conclusions}
+	\begin{itemize}
+		\item DGVH is simple approximation for Delaunay Triangulation that guarantees a fully connected graph.
+		\item VHash can optimize over a metric such as latency and achieve superior routing speeds as a result.
+	\end{itemize}
+\end{frame}		
+
+\note[itemize]{
+	\item DGVH is of similar complexity to picking $k$-nearest node or nodes in distance $k$.
+	\item other methods don't guarantee full connectivity
+}
+
+
+
+
+
 \subsection{ChordReduce}
 
 \begin{frame}{Goals}
@@ -522,224 +758,6 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 
 \end{frame}
 
-
-\subsection{VHash}
-
-
-
-\begin{frame}{Goals}
-	VHash sprung from two related ideas:
-	\begin{itemize}
-	
-		\item<1-> We wanted a way be able optimize latency by embedding in into the routing overlay. \note<1>{Most DHTs optimize routing for the number of hops, rather than latency.}
-		\begin{itemize}
-			\item<1> Or any other metric we wanted.
-		\end{itemize}
-		\item<2-> We wanted to create a DHT based off of Voronoi tessellation. Unfortunately: \note<2>{ We discovered a mapping between Distributed Hash Tables and Voronoi/Delaunay Triangulations.}
-		\begin{itemize}
-			\item<3-> Distributed algorithms for this problem don't really exist.  \note<3>{I lie, they do exist, but they all are ``run the global algorithm on your local subset.  And if we move out of or above 2D Euclidean space, as Brendan wanted to, no fast algorithms exist at all.  We quickly determined that solving was never really a feasible option. So that leaves approximation.  A distributed algorithm would be helpful for some WSNs solving the boundary coverage problem.}
-			\item<4-> Existing approximation algorithms were unsuitable. \note<4>{Simple approximations have no guarantees of connectivity, which is very bad for a routing topology.  Better algorithms that existed for this problem technically ran in constant time, but had a prohibitively high sampling.  So to understand what I'm talking about here, let's briefly define what a Voronoi tessellation is.}
-		\end{itemize}
-%		\item<5>  We wanted to the nodes to move in the key space to adjust to . \note{Just a minor challenge no }
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Voronoi Tesselation}
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.5\linewidth]{figs/new_voronoi}
-		\caption{A set of points and the generated Voronoi regions}
-		\label{fig:new_voronoi}
-	\end{figure}
-\end{frame}
-
-\note{Define
-	\begin{itemize}
-		\item A Voronoi tessellation or Voronoi diagram divides a space into regions, where each region encompasses all the points closest to Voronoi generators (point).
-		\item Voronoi generators
-		\item Voronoi Region
-		\item Voronoi Tessellation/ Diagram
-	\end{itemize}
-}
-
-\begin{frame}{Delaunay Triangulation}
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.5\linewidth]{figs/delaunay}
-		\caption{The same set of nodes with their corresponding Delaunay Triangulation.}
-		\label{fig:delaunay}
-	\end{figure}
-\end{frame}
-
-\note{Define
-	\begin{itemize}
-		\item Delaunay Triangulation is a triangulation of a set of points with the following rule:
-		\item No point falls within any of the circumcirles for every triangle in the triangulation, 
-		\item The Voronoi tessellation and Delaunay Triangulation are dual problems
-		\begin{itemize}
-			\item Solving one yields the other.
-			\item We can get the Voronoi diagram by connecting all the centers of circumcircles.
-			\item 
-		\end{itemize}
-	\end{itemize}
-}
-
-
-\begin{frame}{DHT and Voronoi Relationship }
-	\begin{itemize}
-		\item We can view DHTs in terms of Voronoi tessellation and Delaunay triangulation.
-		\begin{itemize}
-			\item The set of keys the node is responsible for is its Voronoi region.
-			\item The nodes neighbors are it's Delaunay neighbors.
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{VHash}
-	\begin{itemize}
-		\item Voronoi-based Distributed Hash Table based on this relationship.
-		\item Uses our approximation to solve for Delaunay neighbors, called DGVH.
-		\item Topology updates occur via  gossip-based protocol. 
-		\item Routing speed is $ O(\sqrt[d]{n} ) $
-		\item Memory Cost
-		\begin{itemize}
-			\item Worst case: $O(n)$
-			\item Expected maximum size: $\Theta(\frac{\log n}{\log \log n} )$
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\note[itemize]{
-	\item $d$ is number of dimensions, but we optimize over latency so that's deceptive
-	\item Gossip:  every cycle, a node chooses a peer and swaps peerlist information, then reruns the approximation.
-	\item This would only happen in a contrived case and would give $ O(1) $ routing
-	\item We found a paper that proved $\Theta(\frac{\log n}{\log \log n} )$  is the expected maximum degree of a vertex in a Delaunay Triangulation.
-}
-
-\begin{frame}{Distributed Greedy Voronoi Heuristic}
-
-	\begin{itemize}
-		\item The majority of Delaunay links cross the corresponding Voronoi edges.
-		\item We can test if the midpoint between two potentially connecting nodes is on the edge of the voronoi region.
-		\item This intuition fails if the midpoint between two nodes does not fall on their voronoi edge.
-	\end{itemize}
-
-\end{frame}
-
-\begin{frame}{DGVH Heuristic}
-
-		\begin{algorithmic}[1]  % the numberis how many lines
-			\STATE Given node $n$ and its list of $candidates$.
-			\STATE $peers \leftarrow$ empty set that will contain $n$'s one-hop peers
-			\STATE Sort $candidates$ in ascending order by each node's distance to $n$
-			\STATE Remove the first member of $candidates$ and add it to $peers$
-			\FORALL{$c$ in $candidates$}
-			\STATE $m$ is the midpoint between $n$ and $c$
-			\IF{Any node in $peers$ is closer to $m$ than $n$}
-			\STATE Reject $c$ as a peer
-			\ELSE
-			\STATE Remove $c$ from $candidates$
-			\STATE Add $c$ to $peers$
-			\ENDIF
-			\ENDFOR
-		\end{algorithmic}
-
-\end{frame}
-
-\note[itemize]{
-
-		\item The majority of Delaunay links cross the corresponding Voronoi edges.
-		\item We can test if the midpoint between two potentially connecting nodes is on the edge of the voronoi region.
-		\item This intuition fails if the midpoint between two nodes does not fall on their voronoi edge.
-}
-
-\note{
-	\begin{enumerate}
-	\item 'n' is the "myself" node, and the location we are seeking to find the peers of.
-	\item  peers is a set that will build the peerlist in
-	\item We sort the candidates from closest to farthest.
-	\item The closest candidate is always guaranteed to be a peer.
-	\item Iterate through the sorted list of candidates and either add them to the peers set or discard them.
-	\item We calculate the midpoint between the candidate and the center 'n'. 
-	\item If this midpoint is closer to a peer than 'n', then it does not fall on the interface between the location's Voronoi regions.
-	\item in this case discard it
-	\item otherwise add it the current peerlist
-	\end{enumerate}
-}
-
-
-\note{
-Theoretically, this is worst case $O(n^2)$.
-
-However in practice, this is $O(nlog(n) (sorting) + kn)$
-where$k$ is the number of Delaunay peers.
-
-We are well aware that 2d-euclidean algorithms exist in O(nlog(n)) time. 
-While we use that use case to communicate the algorithm, it is intended to be used in more exotic spaces. 
-
-realistically k is the function of the metric space and is O(1) for euclidean spaces.
-
-}
-
-\begin{frame}{Results}
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.5\linewidth]{figs/error_rate}
-		\caption{As the size of the graph increases, we see approximately 1 error per node.
-		We can also see that the error rate and number of nodes has a linear relationship.}
-		\label{exp_0}
-	\end{figure}
-\end{frame}
-
-
-\begin{frame}{Results}
-	\begin{figure}
-		\label{fig:conv}
-		\begin{subfigure}[b]{.45\linewidth}
-			\centering
-			\includegraphics[height=3cm]{figs/conv_d2}
-			%\caption{This plot shows the accuracy rate of lookups on a 2-dimensional network as it self-organizes.}
-			\label{conv2}
-		\end{subfigure} 
-		\begin{subfigure}[b]{.45\linewidth}
-			\centering
-			\includegraphics[height=3cm]{figs/conv_d3}
-			%\caption{This plot shows the accuracy rate of lookups on a 3-dimensional network as it self-organizes.}
-			\label{conv3}
-		\end{subfigure}\\
-		\begin{subfigure}[b]{.45\linewidth}
-			\centering
-			\includegraphics[height=3cm]{figs/conv_d4}
-			%\caption{This plot shows the accuracy rate of lookups on a 4-dimensional network as it self-organizes.}
-			\label{conv4}
-		\end{subfigure}
-		\begin{subfigure}[b]{.45\linewidth}
-			\centering
-			\includegraphics[height=3cm]{figs/conv_d5}
-			%\caption{This plot shows the accuracy rate of lookups on a 5-dimensional network as it self-organizes.}
-			\label{conv5}
-		\end{subfigure}
-		
-		\caption{These figures show, starting from a randomized network, VHash forms a stable and consistent network topology. %The Y axis is the percentage of successful lookups out of 2000 queries and the X axis is the number of gossips cycles.}
-		}
-		
-	\end{figure}
-\end{frame}
-
-
-\begin{frame}{Results}
-	\begin{figure}
-		
-		\centering
-		\includegraphics[width=0.5\linewidth]{figs/hist_1000}
-		\label{fig:hist1000}
-		\caption{This how the difference in the performance of Chord and VHash for 10,000 routing samples on a 10,000 node underlay network for differently sized overlays.
-		The Y axis shows the observed frequencies and the X axis shows the number of hops traversed on the underlay network.
-		VHash consistently requires fewer hops for routing than Chord.}
-	\end{figure}
-
-\end{frame}
 
 
 \subsection{Sybil Attack Analysis}
