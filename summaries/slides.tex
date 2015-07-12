@@ -1,11 +1,12 @@
+%\documentclass[11pt,aspectratio=169]{beamer}
 \documentclass[11pt]{beamer}
 \usetheme{Darmstadt}
 %\usecolortheme{dolphin}
 
 %\setbeameroption{show notes}
-\setbeameroption{show only notes}
-\usepackage{pgfpages}
-\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]
+%\setbeameroption{show only notes}
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -207,7 +208,7 @@ The big issues in distributed computing can be solved by the mechanisms provided
 		\centering
 		
 		\caption{A Voronoi diagram for a Chord network, using Chord's definition of closest.}
-		\includegraphics[width=0.3\linewidth]{figs/voro-chord-normal}
+		\includegraphics[width=0.5\linewidth]{figs/voro-chord-normal}
 		\label{fig:voro-chord-normal}
 	\end{figure}
 	
@@ -294,7 +295,7 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \begin{frame}{A Chord Network}
 	\begin{figure}
 		\includegraphics[width=0.55\linewidth]{figs/CR_overlay}
-		\caption{An 8-node Chord ring where $m=8$.  Node 24's fingers are shown.}
+		\caption{An 8-node Chord ring where $m=8$.  Node 24's long peers are shown.}
 		\label{fig:chordreal}
 	\end{figure}
 \end{frame}
