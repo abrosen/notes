@@ -3,7 +3,7 @@
 \usetheme{Darmstadt}
 %\usecolortheme{dolphin}
 
-\setbeameroption{show notes}
+%\setbeameroption{show notes}
 %\setbeameroption{show only notes}
 %\usepackage{pgfpages}
 %\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]
@@ -102,7 +102,7 @@ We want to build a completely decentralized distributed computing framework.
 \begin{frame}{Current Applications}
 	Applications that use or incorporate DHTs:
 	\begin{itemize}
-		\item P2P File Sharing applications, such as Bittorrent.
+		\item P2P File Sharing applications, such as BitTorrent.
 		\item Distributed File Storage.
 		\item Distributed Machine Learning.
 		\item Name resolution in a large distributed database.
@@ -147,7 +147,7 @@ We want to build a completely decentralized distributed computing framework.
 %	\end{itemize}
 %	
 %\end{frame}
-
+\subsection{Why DHTs and Distributed Computing}
 
 \begin{frame}{Strengths of DHTs }
 	DHTs are designed for large P2P applications, which means they need to be (and are):
@@ -185,7 +185,7 @@ We want to build a completely decentralized distributed computing framework.
 			\item The space is large enough to avoid Hash collisions
 		\end{itemize}	 
 }
-\subsection{Why DHTs and Distributed Computing}
+
 
 \begin{frame}{DHTs Address the Specified Challenges}
 The big issues in distributed computing can be solved by the mechanisms provided by Distributed Hash Tables.
@@ -207,7 +207,7 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 \note[itemize]{
 \item All MapReduce problems are embarrassingly parallel by definition.
-\item Individual experiments for genetic algorithms are embarassingly parallel
+\item Individual experiments for genetic algorithms are embarrassingly parallel
 \item Monte-Carlo Markov Chain: sample a probability distribution in order to build a markov chain with desired distribution.
 }
 
@@ -388,9 +388,9 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 \section{Completed Work}
 
-\subsection{Overarching Goal}
 
-\begin{frame}
+
+\begin{frame}{Overarching Goal}
 My research has been focused on:
 	\begin{itemize}
 		\item Abstracting out DHTs.
@@ -401,8 +401,8 @@ My research has been focused on:
 \note[itemize]{
 	\item I want to get down to what the essence of a DHT is, find out what all DHTs have in common, so that I could create a generic DHT.
 	\item I focused on creating a more abstract framework for MapReduce, so I could move it out of the datacenter and into other contexts.
-	\item We'll first discuss genericizing DHTs.
-	}
+	\item We'll first discuss generalizing DHTs.
+}
 
 
 \subsection{VHash}
@@ -478,6 +478,11 @@ My research has been focused on:
 	\end{itemize}
 \end{frame}
 
+\note{
+	It turns out we  can look at distributed hash tables in terms of Voronoi tessellation and Delaunay triangulation. 
+	So if we have a quick way approximate this, we can build a DHT based directly on Voronoi tessellation and Delaunay triangulation.
+}
+
 \begin{frame}{VHash}
 	\begin{itemize}
 		\item Voronoi-based Distributed Hash Table based on this relationship.
@@ -493,8 +498,8 @@ My research has been focused on:
 \end{frame}
 
 \note[itemize]{
-	\item $d$ is number of dimensions, but we optimize over latency so that's deceptive
 	\item Gossip:  every cycle, a node chooses a peer and swaps peerlist information, then reruns the approximation.
+	\item $d$ is number of dimensions, but we optimize over latency so that's deceptive
 	\item This would only happen in a contrived case and would give $ O(1) $ routing
 	\item We found a paper that proved $\Theta(\frac{\log n}{\log \log n} )$  is the expected maximum degree of a vertex in a Delaunay Triangulation.
 }
@@ -502,9 +507,9 @@ My research has been focused on:
 \begin{frame}{Distributed Greedy Voronoi Heuristic}
 	
 	\begin{itemize}
-		\item The majority of Delaunay links cross the corresponding Voronoi edges.
-		\item We can test if the midpoint between two potentially connecting nodes is on the edge of the voronoi region.
-		\item This intuition fails if the midpoint between two nodes does not fall on their voronoi edge.
+		\item Assumption: The majority of Delaunay links cross the corresponding Voronoi edges.
+		\item We can test if the midpoint between two potentially connecting nodes is on the edge of the Voronoi region.
+		\item This intuition fails if the midpoint between two nodes does not fall on their Voronoi edge.
 	\end{itemize}
 	
 \end{frame}
@@ -529,12 +534,7 @@ My research has been focused on:
 	
 \end{frame}
 
-\note[itemize]{
-	
-	\item The majority of Delaunay links cross the corresponding Voronoi edges.
-	\item We can test if the midpoint between two potentially connecting nodes is on the edge of the voronoi region.
-	\item This intuition fails if the midpoint between two nodes does not fall on their voronoi edge.
-}
+
 
 \note{
 	\begin{enumerate}
@@ -562,7 +562,7 @@ My research has been focused on:
 	\[ k\cdot\lg(k) + k \text{ midpoints}  + k^{2} \text{ distances} \]
 	
 	
-	Since $k$ is  bounded by $\Theta(\frac{\log N}{\log \log N} )$ \cite{bern1991expected} (the expected maximum degree of a node), we can translate the above to
+	Since $k$ is  bounded by $\Theta(\frac{\log N}{\log \log N} )$ (the expected maximum degree of a node), we can translate the above to
 	
 	\[O(\frac{\log^{2} N}{\log^{2} \log N} )\]
 	
@@ -575,7 +575,7 @@ My research has been focused on:
 \begin{frame}{Results}
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.5\linewidth]{figs/error_rate}
+		\includegraphics[width=0.75\linewidth]{figs/error_rate}
 		\caption{As the size of the graph increases, we see approximately 1 error per node.
 %			We can also see that the error rate and number of nodes has a linear relationship.
 			}
@@ -657,7 +657,7 @@ My research has been focused on:
 
 	\begin{itemize}
 		\item We wanted build a more abstract system for MapReduce.
-		\item We remove core assumptions \cite{hadoopAssumptions}:
+		\item We remove core assumptions:
 		\begin{itemize}
 			\item The system is centralized.
 			\item Processing occurs in a static network.
@@ -696,8 +696,8 @@ My research has been focused on:
 
 
 \note[itemize]{
-		\item Chord \cite{Chord}, which handles routing and lookup.
-		\item The Cooperative File System (CFS) \cite{CFS}, which handles storage and data replication.
+		\item Chord, which handles routing and lookup.
+		\item The Cooperative File System (CFS), which handles storage and data replication.
 		\item The MapReduce layer.
 
 		\item Files are split up, each block given a key based on their contents.
@@ -1046,6 +1046,4 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 \end{frame}
 
 
-\bibliography{notes,dht,mapreduce,voronoi,dns,botnets,mine}
-\bibliographystyle{plain}
 \end{document}
