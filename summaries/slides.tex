@@ -3,7 +3,7 @@
 \usetheme{Darmstadt}
 %\usecolortheme{dolphin}
 
-%\setbeameroption{show notes}
+\setbeameroption{show notes}
 %\setbeameroption{show only notes}
 %\usepackage{pgfpages}
 %\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]
@@ -48,7 +48,7 @@
 \section{Introduction}
 
 
-\subsection{What I am doing}
+\subsection{Objective}
 \begin{frame}{Objective}
 Our objective is to create a generalized framework for distributed computing using Distributed Hash Tables.
 
@@ -61,18 +61,26 @@ Our objective is to create a generalized framework for distributed computing usi
 We want to build a completely decentralized distributed computing framework.
 \end{frame}
 
+\note[itemize]{
+	\item We want to build a completely decentralized distributed computing framework based on distributed hash tables, or DHTs.
+	\item Doing this will require a generic framework for creating 	distributed hash tables and distributed applications
+}
+
 \subsection{Distributed Computing and Challenges}
 
 \begin{frame}{What do I Mean by Distributed Computing?}
 	A system where we can take a task and break it down into multiple parts, where each part is worked upon individually.
 \end{frame}
 
+\note{A distributed computing framework is a system where we can take a job, break in up into smaller pieces, and send these pieces out to be worked upon by computing agents.}
+
 \begin{frame}{Challenges of Distributed Computing}
 	Distributed Computing platforms should be:
 	\begin{description}
-		\item<1->[Scalable] The larger the network, the more resources need to be spent on maintaining and organizing the network. \note<1>{Remember, computers aren't telepathic. There's always an overhead cost.  It will grow.   The challenge of scalability is designing a protocol that grows this organizational cost at an extremely slow rate. 
+		\item<1->[Scalable] The larger the network, the more resources need to be spent on maintaining and organizing the network. 
+		\note<1>{Remember, computers aren't telepathic. There's always an overhead cost.  It will grow.   The challenge of scalability is designing a protocol that grows in which this cost grows at an extremely slow rate. 
 			For example, a single node keeping track of all members of the system might be a tenable situation up to a certain point, but eventually, the cost becomes too high for a single node.}
-		\item<2->[Fault-Tolerant] As we add more machines, we need to be able to handle the increased risk of hardware failure. \note<2>{Hardware failure is a thing that can happen. Individually the chances are low, but this becomes high when we're talking about millions of machines.  Also, what happens in a P2P environment.}  
+		\item<2->[Fault-Tolerant] As we add more machines, we need to be able to handle the increased risk of failure. \note<2>{Failure Hardware failure is a thing that can happen. Individually the chances are low, but this becomes high when we're talking about millions of machines.  Also, what happens in a P2P environment.}  
 		\item<3->[Load-Balancing] Tasks need to be evenly distributed among all the workers. \note<3>{If we are splitting the task into multiple parts, we need some mechanism to ensure that each worker gets an even (or close enough) amount of work.}
 	\end{description}
 	
@@ -94,10 +102,10 @@ We want to build a completely decentralized distributed computing framework.
 \begin{frame}{Current Applications}
 	Applications that use or incorporate DHTs:
 	\begin{itemize}
-		\item P2P File Sharing applications, such as Bittorrent \cite{bittorrent} \cite{mainline}.
-		\item Distributed File Storage \cite{CFS}.
-		\item Distributed Machine Learning \cite{liparameter}.
-		\item Name resolution in a large distributed database \cite{Mateescu2011440}.
+		\item P2P File Sharing applications, such as Bittorrent.
+		\item Distributed File Storage.
+		\item Distributed Machine Learning.
+		\item Name resolution in a large distributed database.
 	\end{itemize}
 \end{frame}
 
@@ -106,7 +114,7 @@ We want to build a completely decentralized distributed computing framework.
 	We'll explain in greater detail later, but briefly:
 	\begin{itemize}
 		\item DHTs organize a set of nodes, each identified by an \alert{ID} (their key). \note{We use ID for nodes and keys for data so we always know our context.}
-		\item Nodes are responsible for the keys that are closest it their IDs.
+		\item Nodes are responsible for the keys that are closest to their IDs.
 		\item Nodes maintain a list of other peers in the network.
 		\begin{itemize}
 			\item Typically a size $ \log(n)$ subset of all nodes in the network.
@@ -117,47 +125,66 @@ We want to build a completely decentralized distributed computing framework.
 
 
 
+%\begin{frame}{Strengths of DHTs }
+%	DHTs are designed for large P2P applications, which means they need to be (and are):
+%	\begin{itemize}
+%		\item[Scalable] 
+%		\begin{itemize}
+%			\item Each node knows a \emph{small} subset of the entire network.
+%			\item Join/leave operations impact very few nodes.
+%		\end{itemize}
+%		\item[Fault-Tolerant] 
+%		\begin{itemize}
+%			\item The network is decentralized.
+%			\item DHTs are designed to handle \alert{churn}.
+%
+%		\end{itemize}
+%		\item[Load-Balancing]
+%		\begin{itemize}
+%			\item Consistent hashing ensures that nodes and data are close to evenly distributed.
+%			\item Nodes are responsible for the data closest to it.
+%		\end{itemize}
+%	\end{itemize}
+%	
+%\end{frame}
+
+
 \begin{frame}{Strengths of DHTs }
 	DHTs are designed for large P2P applications, which means they need to be (and are):
-	\begin{description}
-		\item[Scalable] 
-		\begin{itemize}
-			\item Each node knows a \emph{small} subset of the entire network.
-			\item Join/leave operations impact very few nodes.
-		\end{itemize}
-		\item[Fault-Tolerant] 
-		\begin{itemize}
-			\item The network is decentralized.
-			\item DHTs are designed to handle \alert{churn}.
-
-		\end{itemize}
-		\item[Load-Balancing]
-		\begin{itemize}
-			\item  Consistent hashing ensures that nodes and data are close to evenly distributed.
-			\item Nodes are responsible for the data closest to it.
-		\end{itemize}
-	\end{description}
+	\begin{itemize}
+		\item Scalable
+		\item Fault-Tolerant
+		\item Load-Balancing
+	\end{itemize}
 	
 \end{frame}
 
 \note[itemize]{
 	\item Remember to mention Napster. 
 	\item Distributed Hash Tables were designed to be used for completely decentralized P2P applications involving millions of nodes. 
-	\item As a result of the P2P focus, DHTs have the following qualities.
 	\item Scalability 
 	\begin{itemize}
+		\item Each node knows a \emph{small} subset of the entire network.
+		\item Join/leave operations impact very few nodes.
 		\item The subset each node knows is such that we have expected $ \lg(n) $ lookup
 	\end{itemize}
-	\item Fault-Tolerance 
-	\begin{itemize}
-		\item Because Joins and node failures affect only nodes in the immediate vicinity, very few nodes are impacted by an individual operation.
-	\end{itemize}
-	\item Load Balancing
-	\begin{itemize}
-		\item The space is large enough to avoid Hash collisions
-	\end{itemize}	
+
 }
 
+\note[itemize]{
+		\item Fault-Tolerance 
+		\begin{itemize}
+			\item The network is decentralized.
+			\item DHTs are designed to handle churn.
+			\item Because Joins and node failures affect only nodes in the immediate vicinity, very few nodes are impacted by an individual operation.
+		\end{itemize}
+		\item Load Balancing
+		\begin{itemize}
+			\item Consistent hashing ensures that nodes and data are close to evenly distributed.
+			\item Nodes are responsible for the data closest to it.
+			\item The space is large enough to avoid Hash collisions
+		\end{itemize}	 
+}
 \subsection{Why DHTs and Distributed Computing}
 
 \begin{frame}{DHTs Address the Specified Challenges}
@@ -169,18 +196,19 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	\begin{itemize}
 		\item Embarrassingly Parallel Computations
 		\begin{itemize}
+			\item Any problem that can be framed using Map and Reduce.
 			\item Brute force cryptography.
 			\item Genetic algorithms.
 			\item Markov chain Monte Carlo methods.
-			\item Any problem that can be framed using Map and Reduce.
 		\end{itemize}
 		\item Can be used in either a P2P context or a more traditional deployment.
 	\end{itemize}
 \end{frame}
 
 \note[itemize]{
-\item Need notes here
-\item Define Monte-Carlo Markov Chain
+\item All MapReduce problems are embarrassingly parallel by definition.
+\item Individual experiments for genetic algorithms are embarassingly parallel
+\item Monte-Carlo Markov Chain: sample a probability distribution in order to build a markov chain with desired distribution.
 }
 
 \section{Background}
@@ -188,10 +216,10 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \subsection{The Components and Terminology}
 
 
-\begin{frame}{Attributes of DHT}
+\begin{frame}{Required Attributes of DHT}
 	\begin{itemize}
 		\item A distance and midpoint function.
-		\item A closeness definition.
+		\item A closeness or ownership definition.
 		\item A Peer management strategy.
 	\end{itemize}
 \end{frame}
@@ -199,7 +227,8 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \note[itemize]{
 	\item There needs to be a way to establish how far things are from one another.
 	Once we have a distance metric, we define what we mean when we say a node is responsible for all data \textit{close} to it.
-	\item We'll go into more detail  about the difference between Distance and  Closeness in Chord
+	\item The closeness metric establishes how a node decides what it is responsible for.
+	\item The peer management strategy encompasses a whole lot: the network topology, the distribution of long links (are they organized and spread out over specified  intervals, are they chosen according to a random distribution?), and the network maintenance.
 	}
 
 
@@ -213,6 +242,9 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	\end{figure}
 	
 \end{frame}
+
+\note{Here, the nodes, the stars on this diagram are responsible for the region covered by the arc matching its color.  This repesents the space containing all keys greater than the ID of it's predecessor and less than or equal to its own ID.}
+
 \begin{frame}{Chord Using A Different Closest Metric}
 	\begin{figure}
 		\centering
@@ -224,7 +256,7 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \end{frame}
 
 
-
+\note{In this figure, the ownership has the more intuitive definition of ``all points with to which I am the node with the shortest distance.''}
 
 
 \begin{frame}{Terms and Variables}
@@ -241,10 +273,10 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \end{frame}
 
 \note[itemize]{
-	\item SHA1 is being depreciated.  
-	\item Short peers are actively maintained, long peers replaced gradulally and are not actively pinged.
+	\item SHA1 is being depreciated, but this is trivial from our perspective.  
+	\item Short peers are actively maintained, long peers replaced gradually and are not actively pinged.
 	\item We use root as it's is a topology agnostic term.
-	}
+}
 
 
 
@@ -260,8 +292,10 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \end{frame}
 
 \note[itemize]{
+	\item SPEED THRU THIS SLIDE
+	\item These are the common function is every DHT:  lookup: find a node, put: store data, get: retrieve data.
 	\item There is usually a delete function as well, but it's not important.
-	\item All nodes use the same general lookup:  Forward the message to the node closest to $key$
+	\item All work the same way: if I can answer the function, great, otherwise return the node I know that's closest to the key, who will then do the same thing.
 }
 
 
@@ -288,7 +322,7 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	\item Draw a Chord network on the wall?
 	\item node $r$ is our root node.
 	\item $ i $ is the index on the list
-	\item English for  the equation, the long peers double in distance from the root node, allowing us to cover at least half the distance to our target in a step
+	\item English for the equation, the long peers double in distance from the root node, allowing us to cover at least half the distance to our target in a step
 	\item In this way, we can achieve an expected $ \lg n $  hops. 
 }
 
@@ -300,7 +334,11 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	\end{figure}
 \end{frame}
 
-
+\note[itemize]{
+	\item The dashed lines are the short links; each node keeps track of its successor and predecessor.
+	\item The dotted lines are node 24's long links; since $ m = 8$  there's 8, but since the network is so small,  4 are duplicates.
+	\item Traffic travels clockwise.
+	}
 
 \begin{frame}{Fault Tolerence in Chord}
 	\begin{itemize}
@@ -310,11 +348,15 @@ The big issues in distributed computing can be solved by the mechanisms provided
 			\item The successor replies with a better successor if one exists.
 		\end{itemize}
 		\item The long peers are gradually updated by performing a lookup on each entry.
-		\item Some implementations use predecessor and successor lists.
+		
 	\end{itemize}
 \end{frame}
 
-
+\note[itemize]{
+	\item The notification allows a sucessor to either update its predecessor if incorrect and the predecessor to update its successor if wrong
+	\item Some implementations use predecessor and successor lists.
+	\item The long peers are replaced much slower; maintenance slowly iterates through the long peers and queries to see if there's better node for that particular long peer.
+}
 
 \begin{frame}{Handling Churn in General}
 	\begin{itemize}
@@ -328,6 +370,10 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \end{frame}
 
 
+\note[itemize]{
+	\item Short peers need to be actively maintained to keep the topology correct.
+	\item	
+}
 %\subsection{Other DHTs}
 %\begin{frame}{Other DHTs}
 %	Other DHTs include
@@ -341,6 +387,22 @@ The big issues in distributed computing can be solved by the mechanisms provided
 %\end{frame}
 
 \section{Completed Work}
+
+\subsection{Overarching Goal}
+
+\begin{frame}
+My research has been focused on:
+	\begin{itemize}
+		\item Abstracting out DHTs.
+		\item Distributed computation using DHTs.
+	\end{itemize}
+\end{frame}
+
+\note[itemize]{
+	\item I want to get down to what the essence of a DHT is, find out what all DHTs have in common, so that I could create a generic DHT.
+	\item I focused on creating a more abstract framework for MapReduce, so I could move it out of the datacenter and into other contexts.
+	\item We'll first discuss genericizing DHTs.
+	}
 
 
 \subsection{VHash}
@@ -490,77 +552,86 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 
 \note{
-	Theoretically, this is worst case $O(n^2)$.
+	DVGH is very efficient in terms of both space and time.
+	Suppose a node $n$ is creating its short peer list from $k$ candidates in an overlay network of $N$ nodes.
+	The candidates must be sorted, which takes $O(k\cdot\lg(k))$ operations.
+	Node $n$ must then compute the midpoint between itself and each of the $k$ candidates.
+	Node $n$ then compares distances to the midpoints between itself and all the candidates.
+	This results in a cost of
 	
-	However in practice, this is $O(nlog(n) (sorting) + kn)$
-	where$k$ is the number of Delaunay peers.
+	\[ k\cdot\lg(k) + k \text{ midpoints}  + k^{2} \text{ distances} \]
 	
-	We are well aware that 2d-euclidean algorithms exist in O(nlog(n)) time. 
-	While we use that use case to communicate the algorithm, it is intended to be used in more exotic spaces. 
 	
-	realistically k is the function of the metric space and is O(1) for euclidean spaces.
+	Since $k$ is  bounded by $\Theta(\frac{\log N}{\log \log N} )$ \cite{bern1991expected} (the expected maximum degree of a node), we can translate the above to
 	
+	\[O(\frac{\log^{2} N}{\log^{2} \log N} )\]
+	
+	In the vast majority of cases, the number of peers is equal to the minimum size of \textit{Short Peers}.
+	This yields $k=(3d+1)^{2}+3d+1$ in the expected case, where the lower bound and expected complexities are $\Omega(1)$.
 }
+
+
 
 \begin{frame}{Results}
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.5\linewidth]{figs/error_rate}
 		\caption{As the size of the graph increases, we see approximately 1 error per node.
-			We can also see that the error rate and number of nodes has a linear relationship.}
+%			We can also see that the error rate and number of nodes has a linear relationship.
+			}
 		\label{exp_0}
 	\end{figure}
 \end{frame}
 
+\note[itemize]{
+	
+	\item The error is approximately 1 missed delaunay neighbor per node, so the entire generated mesh is a subset of the true delaunay trinagulation.
+	\item This error is acceptable since we miss an edge when it is occluded by another node in the way.
+	}
 
 \begin{frame}{Results}
 	\begin{figure}
 		\label{fig:conv}
-		\begin{subfigure}[b]{.45\linewidth}
-			\centering
-			\includegraphics[height=3cm]{figs/conv_d2}
-			%\caption{This plot shows the accuracy rate of lookups on a 2-dimensional network as it self-organizes.}
-			\label{conv2}
-		\end{subfigure} 
-		\begin{subfigure}[b]{.45\linewidth}
-			\centering
-			\includegraphics[height=3cm]{figs/conv_d3}
-			%\caption{This plot shows the accuracy rate of lookups on a 3-dimensional network as it self-organizes.}
-			\label{conv3}
-		\end{subfigure}\\
-		\begin{subfigure}[b]{.45\linewidth}
-			\centering
-			\includegraphics[height=3cm]{figs/conv_d4}
-			%\caption{This plot shows the accuracy rate of lookups on a 4-dimensional network as it self-organizes.}
-			\label{conv4}
-		\end{subfigure}
-		\begin{subfigure}[b]{.45\linewidth}
-			\centering
-			\includegraphics[height=3cm]{figs/conv_d5}
-			%\caption{This plot shows the accuracy rate of lookups on a 5-dimensional network as it self-organizes.}
-			\label{conv5}
-		\end{subfigure}
-		
+		\centering
+		\includegraphics[width=0.75\linewidth]{figs/conv_d4}
+		%\caption{This plot shows the accuracy rate of lookups on a 4-dimensional network as it self-organizes.}
+		\label{conv4}
+	
 		\caption{These figures show, starting from a randomized network, VHash forms a stable and consistent network topology. %The Y axis is the percentage of successful lookups out of 2000 queries and the X axis is the number of gossips cycles.}
 		}
 		
 	\end{figure}
 \end{frame}
 
+\note[itemize]{
+	\item Our first experiment was to confirm that VHash creates a stable mesh.
+
+	}
 
 \begin{frame}{Results}
 	\begin{figure}
 		
 		\centering
-		\includegraphics[width=0.5\linewidth]{figs/hist_1000}
+		\includegraphics[width=0.75\linewidth]{figs/hist_1000}
+		\caption{Comparing the routing effectiveness of Chord and VHash.}
 		\label{fig:hist1000}
-		\caption{This how the difference in the performance of Chord and VHash for 10,000 routing samples on a 10,000 node underlay network for differently sized overlays.
-			The Y axis shows the observed frequencies and the X axis shows the number of hops traversed on the underlay network.
-			VHash consistently requires fewer hops for routing than Chord.}
 	\end{figure}
 	
 \end{frame}
 
+\note[itemize]{
+	\item For this experiment, we constructed a scale free network with 10000 nodes placed at random (which has an approximate diameter of 3 hops) as an underlay network .
+	\item scale free networks model the Internet's topology.
+	\item We then chose a random subset of nodes to be members of the overlay network.
+	\item We then measured the distance in underlay hops between 10000 random source-destination pairs in the overlay.
+	\item VHash generated an embedding of the latency graph utilizing a distributed force directed model, with the latency function defined as the number of underlay hops between it and its peers.
+	
+	
+	\item This how the difference in the performance of Chord and VHash for 10,000 routing samples on a 10,000 node underlay network for differently sized overlays.
+	The Y axis shows the observed frequencies and the X axis shows the number of hops traversed on the underlay network.
+	VHash consistently requires fewer hops for routing than Chord.
+	
+}
 
 \begin{frame}{Conclusions}
 	\begin{itemize}
@@ -701,16 +772,17 @@ The big issues in distributed computing can be solved by the mechanisms provided
 \begin{frame}{Experimental Results}
 
 	\begin{figure}
-	    \includegraphics[width=0.65\linewidth]{figs/expTime}
-	    \caption{For a sufficiently large job, it was almost always preferable to distribute it.  When the job is too small, such as with the $10^{7}$ data set, our runtime is dominated by the overhead.  Our results are what we would expect when overhead grows logarithmically to the number of workers.}
+	    \includegraphics[width=0.75\linewidth]{figs/expTime}
+	    \caption{For a sufficiently large job, it was almost always preferable to distribute it.}
 	    \label{expTime}
 	\end{figure}
 
 
 \end{frame}
 \note[itemize]{
+	\item When the job is too small, such as with the $10^{7}$ data set, our runtime is dominated by the overhead.  
+	\item Our results are what we would expect when overhead grows logarithmically to the number of workers.
 	\item Diminishing returns.
-	\item The $ 10^{7} $ job was dominated by the overhead communication costs.
 
 }
 
