@@ -414,8 +414,8 @@ My research has been focused on:
 	VHash sprung from two related ideas:
 	\begin{itemize}
 		
-		\item<1-> We wanted a way be able optimize latency by embedding in into the routing overlay. \note<1>{Most DHTs optimize routing for the number of hops, rather than latency.}
-		\item<2-> We wanted to create a DHT based off of Voronoi tessellation. Unfortunately: \note<2>{ We discovered a mapping between Distributed Hash Tables and Voronoi/Delaunay Triangulations.}
+		\item<1-> We wanted a way be able optimize latency by embedding it into the routing overlay. \note<1>{Most DHTs optimize routing for the number of hops, rather than latency.}
+		\item<2-> We wanted to create a DHT based off of Voronoi tessellations. Unfortunately: \note<2>{ We discovered a mapping between Distributed Hash Tables and Voronoi/Delaunay Triangulations.}
 		\begin{itemize}
 			\item<3-> Distributed algorithms for this problem don't really exist.  \note<3>{I lie, they do exist, but they all are ``run the global algorithm on your local subset.  And if we move out of or above 2D Euclidean space, as Brendan wanted to, no fast algorithms exist at all.  We quickly determined that solving was never really a feasible option. So that leaves approximation.  A distributed algorithm would be helpful for some WSNs solving the boundary coverage problem.}
 			\item<4-> Existing approximation algorithms were unsuitable. \note<4>{Simple approximations have no guarantees of connectivity, which is very bad for a routing topology.  Better algorithms that existed for this problem technically ran in constant time, but had a prohibitively high sampling.  So to understand what I'm talking about here, let's briefly define what a Voronoi tessellation is.}
