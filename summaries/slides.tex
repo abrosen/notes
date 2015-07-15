@@ -80,7 +80,7 @@ We want to build a completely decentralized distributed computing framework.
 		\item<1->[Scalability] As the network grows, more resources are spent on maintaining and organizing the network. 
 		\note<1>{Remember, computers aren't telepathic. There's always an overhead cost.  It will grow.   The challenge of scalability is designing a protocol  in which this cost grows at an extremely slow rate. 
 			For example, a single node keeping track of all members of the system might be a tenable situation up to a certain point, but eventually, the cost becomes too high for a single node.}
-		\item<2->[Fault-Tolerance] As more machines join the network, there is an increased risk of failure. \note<2>{Failure Hardware failure is a thing that can happen. Individually the chances are low, but this becomes high when we're talking about millions of machines.  Also, what happens in a P2P environment.}  
+		\item<2->[Fault-Tolerance] As more machines join the network, there is an increased risk of failure. \note<2>{Failure Hardware failure is a thing that can happen. Individually the chances are low, but this becomes high when we're talking about millions of machines.  Also, what happens in a P2P environment.  Nodes leaving is treated as a failure.}  
 		\item<3->[Load-Balancing] Tasks need to be evenly distributed among all the workers. \note<3>{If we are splitting the task into multiple parts, we need some mechanism to ensure that each worker gets an even (or close enough) amount of work.}
 	\end{description}
 	
@@ -200,8 +200,9 @@ From a probability standpoint, they are distributed uniformly at random.
 		\item Load Balancing
 		\begin{itemize}
 			\item Consistent hashing ensures that nodes and data are close to evenly distributed.
+			\item This allows a large-scale failure, like California being hit by a massive earthquake, to be absorbed throughout the network, rather than a contiguous portion being knocked out.
 			\item Nodes are responsible for the data closest to it.
-			\item The space is large enough to avoid Hash collisions
+			\item The space is large enough to avoid Hash collisions.
 		\end{itemize}	 
 }
 
@@ -288,14 +289,12 @@ The big issues in distributed computing can be solved by the mechanisms provided
 			\item[Short Peers] The neighboring nodes that define the network's topology.
 			\item[Long Peers] Routing shortcuts.
 		\end{description}
-		\item We'll call the node responsible for a key the $ root $ of the key.
 	\end{itemize}
 \end{frame}
 
 \note[itemize]{
 	\item SHA1 is being depreciated, but this is trivial from our perspective.  
 	\item Short peers are actively maintained, long peers replaced gradually and are not actively pinged.
-	\item We use root as it's is a topology agnostic term.
 }
 
 
@@ -358,6 +357,7 @@ The big issues in distributed computing can be solved by the mechanisms provided
 	\item The dashed lines are the short links; each node keeps track of its successor and predecessor.
 	\item The dotted lines are node 24's long links; since $ m = 8$  there's 8, but since the network is so small,  4 are duplicates.
 	\item Traffic travels clockwise.
+	\item Routing example 24 to 150.
 	}
 
 \begin{frame}{Fault Tolerence in Chord}
@@ -380,12 +380,12 @@ The big issues in distributed computing can be solved by the mechanisms provided
 
 \begin{frame}{Handling Churn in General}
 	\begin{itemize}
-		\item Short peers, the neighbors, are periodically queried to:
+		\item Short peers, the neighbors, are regularly queried to:
 		\begin{itemize}
 			\item See of the node is still alive.
 			\item See if the neighbor knows about better nodes.
 		\end{itemize}
-		\item Long peer failures are replaced by regular maintenance.
+		\item Long peer failures are replaced by periodic maintenance.
 	\end{itemize}
 \end{frame}
 
@@ -420,6 +420,7 @@ My research has been focused on:
 
 \note[itemize]{
 	\item I want to get down to what the essence of a DHT is, find out what all DHTs have in common, so that I could create a generic DHT.
+	\item As I implied earlier, we all these DHTs, but they all have the same features, and I want to generalize them.
 	\item I focused on creating a more abstract framework for MapReduce, so I could move it out of the datacenter and into other contexts.
 	\item We'll first discuss generalizing DHTs.
 }
@@ -474,8 +475,8 @@ My research has been focused on:
 \note{Define
 	\begin{itemize}
 		\item Delaunay Triangulation is a triangulation of a set of points with the following rule:
-		\item No point falls within any of the circumcirles for every triangle in the triangulation, 
-		\item The Voronoi tessellation and Delaunay Triangulation are dual problems
+		\item No point falls within any of the circumcircles for every triangle in the triangulation, 
+		\item The Voronoi tessellation and Delaunay Triangulation are dual problems.
 		\begin{itemize}
 			\item Solving one yields the other.
 			\item We can get the Voronoi diagram by connecting all the centers of circumcircles.
@@ -489,7 +490,7 @@ My research has been focused on:
 		\item We can view DHTs in terms of Voronoi tessellation and Delaunay triangulation.
 		\begin{itemize}
 			\item The set of keys the node is responsible for is its Voronoi region.
-			\item The nodes neighbors are it's Delaunay neighbors.
+			\item The nodes neighbors are its Delaunay neighbors.
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -514,7 +515,7 @@ My research has been focused on:
 \end{frame}
 
 \note[itemize]{
-	\item  VHash is a DHT that works in an arbitrary geometric space.
+	\item We created VHash, a DHT that works in an arbitrary geometric space.
 	\item Gossip:  every cycle, a node chooses a peer and swaps peerlist information, then reruns the approximation.
 	\item $d$ is number of dimensions, but we optimize over latency so that's deceptive
 	\item Short peers are lower bounded by $3d +1$, long peers upper bounded by $ (3d+1)^{2} $
@@ -569,6 +570,16 @@ My research has been focused on:
 }
 
 
+\begin{frame}{DGVH Time Complexity}
+	For $ k $ candidates, the cost is: 
+	\[ k\cdot\lg(k) + k \text{ midpoints}  + k^{2} \text{ distances} \]
+	
+	However, the expected maximum for $k$ is $\Theta(\frac{\log n}{\log \log n} )$, which gives an expected maximum cost of 
+	
+	\[ O(\frac{\log^{2} n}{\log^{2} \log n} ) \]
+	
+\end{frame}
+
 \note{
 	DVGH is very efficient in terms of both space and time.
 	Suppose a node $n$ is creating its short peer list from $k$ candidates in an overlay network of $N$ nodes.
@@ -580,7 +591,7 @@ My research has been focused on:
 	\[ k\cdot\lg(k) + k \text{ midpoints}  + k^{2} \text{ distances} \]
 	
 	
-	Since $k$ is  bounded by $\Theta(\frac{\log N}{\log \log N} )$ (the expected maximum degree of a node), we can translate the above to
+	Since $k$ is  bounded by $\Theta(\frac{\log N}{\log \log N} )$ (the expected maximum degree of a node), we can translate the above to:
 	
 	\[O(\frac{\log^{2} N}{\log^{2} \log N} )\]
 	
@@ -642,23 +653,23 @@ My research has been focused on:
 	
 \end{frame}
 
+
+\note[itemize]{
+	\item For this experiment, we constructed a scale free network with 10000 nodes placed at random (which has an approximate diameter of 3 hops) as an underlay network.
+	\item scale free networks model the Internet's topology.
+	\item We then chose a random subset of nodes to be members of the overlay network.
+	\item A good way to think of it is that the overlay hops are virtual, the underlay hops are physical.
+	\item We then measured the distance in underlay hops between 10000 random source-destination pairs in the overlay.
+	\item VHash generated an embedding of the latency graph utilizing a distributed force directed model, with the latency function defined as the number of underlay hops between it and its peers.	
+}
+
+
 \note[itemize]{
 	\item We embedded the inter-node latency graph into the overlay and assigned peers locations that would reduce latency.
 	\item We did this using a force directed model, which meant that peer locations could move through the metric space.  That was new.
 	\item Essentially, nodes with a high latency that are close to one another repel each other to new locations.
 }
 
-\note[itemize]{
-	\item For this experiment, we constructed a scale free network with 10000 nodes placed at random (which has an approximate diameter of 3 hops) as an underlay network .
-	\item scale free networks model the Internet's topology.
-	\item We then chose a random subset of nodes to be members of the overlay network.
-	\item We then measured the distance in underlay hops between 10000 random source-destination pairs in the overlay.
-	\item VHash generated an embedding of the latency graph utilizing a distributed force directed model, with the latency function defined as the number of underlay hops between it and its peers.
-	
-	
-	
-	
-}
 
 \note[itemize]{
 \item This how the difference in the performance of Chord and VHash for 10,000 routing samples on a 10,000 node underlay network for differently sized overlays.
@@ -880,7 +891,7 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 		\item The Sybil attack is a type of attack against a distributed system such as a DHT.
 		\item The adversary pretends to be more than one identity in the network.
 		\begin{itemize}
-			\item Each of these false identities, called a \alert{Sybil} is treated as a full member of the network.
+			\item Each of these false identities, called a \textbf{Sybil} is treated as a full member of the network.
 		\end{itemize}
 		\item The overall goal is to occlude healthy nodes from one another.
 		\item The Sybil attack is extremely well known, but there is little literature written from the attacker's perspective.
@@ -898,7 +909,6 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 
 \begin{frame}
 	\frametitle{The Sybil Attack in A P2P network}
-	See Whiteboard
 	\begin{itemize}
 		\item We want to inject a Sybil into as many of the regions between nodes as we can.
 		\item The question we wanted to answer is what is the probability that a region can have a Sybil injected into it, given:
@@ -927,7 +937,7 @@ This makes ChordReduce an excellent platform for distributed and concurrent prog
 
 \begin{frame}
     \frametitle{Analysis}
-    The probability you can mash a region between two adjacent nodes in a size $n$ network is:
+    The probability an attacker can mash a region between two adjacent nodes in a size $n$ network is:
      \begin{equation}
     P \approx \frac{1}{n}\cdot num\_ips \cdot num\_ports
     \end{equation}
@@ -958,17 +968,6 @@ The $y$-axis is the probability that a random region between two adjacent normal
 Each line maps to a different network size of $n$.
 The dotted line traces the line corresponding to the Equation \ref{eq:bad}: $ P_{bad\_neighbor} =  \frac{num\_ips \cdot 16383}{num\_ips \cdot 16383 + n - 1}$.}
 
-
-\begin{frame}
-    
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.75\linewidth]{figs/size_prob_all}
-        \caption[a]{These are the same as results shown in Figure \ref{fig:exp2}, but our $x$-axis is the network size $n$ in this case.  
-            Here, each line corresponds to a different number of unique IP addresses the adversary has at their disposal.}
-        \label{fig:size_prob_all}
-    \end{figure}
-\end{frame}
 
 \begin{frame}
     \begin{figure}
