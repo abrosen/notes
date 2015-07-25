@@ -1,4 +1,4 @@
-# finds the sum of all numbers<limit that are multiples of x or y 
+# finds the sum of all numbers<limit that are multiples of x or y
 def sumOfMultiples(x,y,limit):
     total = 0
     for i in range(1,limit):
@@ -7,5 +7,5 @@ def sumOfMultiples(x,y,limit):
     return total
 
 if __name__ == '__main__':
-    print sumOfMultiples(3,5,1000)
-    print sumOfMultiples(3,5,2000)
+    print(sumOfMultiples(3,5,1000))
+    print(sumOfMultiples(3,5,2000))
