@@ -20,8 +20,8 @@ def test():
 		if ans == 0:
 			continue
 		else:
-			print ans
-		
+			print(ans)
+
 
 def doTheThing():
 	test()
