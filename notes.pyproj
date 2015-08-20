@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{f0af7d60-2632-4cb2-8c88-7fd1a50017a0}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>code\euler33.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="code\p022_names.txt" />
+    <Content Include="code\p042_words.txt" />
+    <Content Include="code\p079_keylog.txt" />
+    <Content Include="code\p096_sudoku.txt" />
+    <Content Include="code\p098_words.txt" />
+    <Content Include="code\p099_base_exp.txt" />
+    <Content Include="code\p107_network.txt" />
+    <Content Include="summaries\Datasec Idea.txt" />
+    <Content Include="summaries\figs\can.png" />
+    <Content Include="summaries\figs\chord.png" />
+    <Content Include="summaries\figs\conv_d2.png" />
+    <Content Include="summaries\figs\conv_d3.png" />
+    <Content Include="summaries\figs\conv_d4.png" />
+    <Content Include="summaries\figs\conv_d5.png" />
+    <Content Include="summaries\figs\CR_architecture.png" />
+    <Content Include="summaries\figs\CR_dataflow2.png" />
+    <Content Include="summaries\figs\CR_dataflow3.png" />
+    <Content Include="summaries\figs\CR_overlay.png" />
+    <Content Include="summaries\figs\dartboard.png" />
+    <Content Include="summaries\figs\delaunay.png" />
+    <Content Include="summaries\figs\DGVH.png" />
+    <Content Include="summaries\figs\error_rate.png" />
+    <Content Include="summaries\figs\expSpeed.png" />
+    <Content Include="summaries\figs\expTime.png" />
+    <Content Include="summaries\figs\hist_100.png" />
+    <Content Include="summaries\figs\hist_1000.png" />
+    <Content Include="summaries\figs\hist_500.png" />
+    <Content Include="summaries\figs\hist_overlay_4d.png" />
+    <Content Include="summaries\figs\ip_prob_all.png" />
+    <Content Include="summaries\figs\kademlia.png" />
+    <Content Include="summaries\figs\logo.png" />
+    <Content Include="summaries\figs\new_voronoi.png" />
+    <Content Include="summaries\figs\pastry-table.PNG" />
+    <Content Include="summaries\figs\projSpeed.png" />
+    <Content Include="summaries\figs\projTime.png" />
+    <Content Include="summaries\figs\size_occlusion_chord.png" />
+    <Content Include="summaries\figs\size_prob_all.png" />
+    <Content Include="summaries\figs\voro-chord-alternative.png" />
+    <Content Include="summaries\figs\voro-chord-normal.png" />
+    <Content Include="summaries\figs\voronoi.png" />
+    <Content Include="summaries\System Report.txt" />
+    <Content Include="summaries\viceroy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="code\euler1.py" />
+    <Compile Include="code\euler10.py" />
+    <Compile Include="code\euler107.py" />
+    <Compile Include="code\euler11.py" />
+    <Compile Include="code\euler12.py" />
+    <Compile Include="code\euler13.py" />
+    <Compile Include="code\euler14.py" />
+    <Compile Include="code\euler15.py" />
+    <Compile Include="code\euler150.py" />
+    <Compile Include="code\euler151.py" />
+    <Compile Include="code\euler16.py" />
+    <Compile Include="code\euler17.py" />
+    <Compile Include="code\euler18.py" />
+    <Compile Include="code\euler19.py" />
+    <Compile Include="code\euler2.py" />
+    <Compile Include="code\euler20.py" />
+    <Compile Include="code\euler206.py" />
+    <Compile Include="code\euler21.py" />
+    <Compile Include="code\euler22.py" />
+    <Compile Include="code\euler24.py" />
+    <Compile Include="code\euler25.py" />
+    <Compile Include="code\euler26.py" />
+    <Compile Include="code\euler267.py" />
+    <Compile Include="code\euler27.py" />
+    <Compile Include="code\euler28.py" />
+    <Compile Include="code\euler29.py" />
+    <Compile Include="code\euler3.py" />
+    <Compile Include="code\euler30.py" />
+    <Compile Include="code\euler31.py" />
+    <Compile Include="code\euler32.py" />
+    <Compile Include="code\euler33.py" />
+    <Compile Include="code\euler35.py" />
+    <Compile Include="code\euler36.py" />
+    <Compile Include="code\euler37.py" />
+    <Compile Include="code\euler38.py" />
+    <Compile Include="code\euler4.py" />
+    <Compile Include="code\euler42.py" />
+    <Compile Include="code\euler44.py" />
+    <Compile Include="code\euler48.py" />
+    <Compile Include="code\euler5.py" />
+    <Compile Include="code\euler6.py" />
+    <Compile Include="code\euler67.py" />
+    <Compile Include="code\euler7.py" />
+    <Compile Include="code\euler79.py" />
+    <Compile Include="code\euler8.py" />
+    <Compile Include="code\euler9.py" />
+    <Compile Include="code\euler92.py" />
+    <Compile Include="code\euler96.py" />
+    <Compile Include="code\euler98.py" />
+    <Compile Include="code\eulertools.py" />
+    <Compile Include="code\euler_tools.py" />
+    <Compile Include="code\factorial.py" />
+    <Compile Include="code\kmeans.py" />
+    <Compile Include="code\nn.py" />
+    <Compile Include="code\oo.py" />
+    <Compile Include="code\smallworld.py" />
+    <Compile Include="code\test.py" />
+    <Compile Include="data structures\linkedList.py" />
+    <Compile Include="data structures\towers.py" />
+    <Compile Include="personal\medpatch.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="code" />
+    <Folder Include="data structures" />
+    <Folder Include="personal" />
+    <Folder Include="summaries" />
+    <Folder Include="summaries\figs" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

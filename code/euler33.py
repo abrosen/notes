@@ -1,4 +1,4 @@
-"""
+﻿"""
 The fraction 49/98 is a curious fraction, as an inexperienced mathematician in attempting to simplify it may incorrectly believe that 49/98 = 4/8, which is correct, is obtained by cancelling the 9s.
 
 We shall consider fractions like, 30/50 = 3/5, to be trivial examples.
@@ -19,8 +19,7 @@ xa / xb = a/b
 xa / bx = a/b
 
 """
-
-
+from functools import reduce
 
 def doTheThing():
     ans = []
@@ -36,7 +35,7 @@ def doTheThing():
                     ans.append( (num,dem) )
     num = reduce(lambda x, y: x*y,   map(lambda x: x[0],  ans))
     dem = reduce(lambda x, y: x*y,   map(lambda x: x[1],  ans))
-    print num,dem
+    print(num,dem)
 
 if __name__ == '__main__':
     doTheThing()
