@@ -12,10 +12,80 @@
 \begin{document}
 \maketitle
 
+
+%This summary should include a
+%very brief summary description of the project including specific aims or goals, a
+%statement of the significance or potential impact of the proposed project within the
+%field of study and to the world in general, a statement or two about the general
+%methods to be employed, and a statement about the expected outcome(s) of the project
+%(research question(s) to be answered, new information or data to be uncovered, artistic
+%product to be completed, etc.)
+\begin{abstract}
+	
+\end{abstract}
+
+\newpage
+
+
+
+%Project Description (no more than three pages, single-spaced): This section should
+%outline briefly the past work in the field (i.e. practical, theoretical and empirical work) 
+%as a framework for discussing why the work outlined in the proposal is important to
+%the field of study and to the world in general. The project description should also
+%include the specific aims or goals for the proposed project and provide a clear, detailed
+%account of the methodology to be employed and how those methods will lead to the
+%expected outcomes. A reference list should be included (if appropriate), but references
+%are not subject to the page limitations
+
+
+
+\section{What are DHTs}
+My dissertation focusing on creating a generalized framework for distributed computing based on Distributed Hash Tables (DHTs).
+Distributed Hash Tables are a tool which allows a computers (nodes) to self-organize into a decentralized network for storing and retrieving data.
+
+There are many different types of DHTs, but all DHTs share very important qualities.
+They are \textit{scalable}, which means that each additional node in the network minimally impacts the cost of keeping the network organized.
+DHTs are also highly \textit{fault-tolerant}.
+Unlike many other systems, DHTs assume that nodes will be continuously entering and leaving the network.
+Because of the way DHTs are organized, DHTs can handle large scale failures, such as power outage affecting an entire city.
+The last quality of DHTs is that they are  \textit{load-balancing}. 
+This mean the data the is stored in a DHTs is evenly distributed among nodes in the network.
+
+
+\section{What Have We done so far and why should the reader care}
+
+All of these qualities are highly desirable in a distributed computing, so it was a natural step for us to build distributed computing framework based on DHTs.
+We have shown in previous work that DHTs can be used to distribute work among nodes the same way data is distributed \cite{chordreduce}.
+
+
+\section{What do we plan on doing}
+
+
+\subsection{Why is this exciting }
+Some example problems are Monte-Carlo Methods (of interest to mathematicians and economists), 
+Our framework would not only be of interest to computer scientists.
+The ``plug-and-play'' nature we envision would make it easy for experts in other fields to use our framework to solve computationally intensive problems.
+
+
+\section{What do I need funding for?}
+
+Heterogeneous networks
+
 We have successfully developed our software to achieve this, but need funding to do real world network tests. 
-These tests would allow us to experimentally show that our software conclusively works on
+These tests would allow us to experimentally show that our software conclusively works on a large scale and on heterogeneous networks.
+
+
 
 I need hardware of different types and locations.
 
+
+
 This project would help by enabling allowing  both organizations with large amounts of computing power and average developers with a fewer resources spend less time setting up and configuring their hardware to work together;  the goal is for our software to make distributed computing more of matter of ``plug-and-play.''
+
+
+\newpage
+
+
+\bibliography{mine,dht}
+\bibliographystyle{plain}
 \end{document}
