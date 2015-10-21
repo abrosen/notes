@@ -5,6 +5,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage[left=1.00in, right=1.00in, top=1.00in, bottom=1.00in]{geometry}
 \author{Andrew Rosen}
 \title{Grant Proposal}
@@ -61,49 +62,99 @@ These would include any computationally intensive problems that occur in a wide 
 %are not subject to the page limitations
 
 
-
-\section{What are DHTs}
+\section{Summary}
+\subsection*{What are DHTs}
 My dissertation focusing on creating a generalized framework for distributed computing based on Distributed Hash Tables (DHTs).
 Distributed Hash Tables are a tool which allows a computers (nodes) to self-organize into a decentralized network for storing and retrieving data.
+They have been used extensively to build peer-to-peer (P2P) file-sharing applications as well as distributed storage systems.
+
+DHTs are primarily used in P2P applications, but other applications, such as botnets, use DHTs for their decentralization.
+Our goal to use DHTs primarily for their intuitive way of organizing a distributed system and to further extend the use of DHTs.
+In previous work \cite{chordreduce}, we showed  that a DHT can be to create a distributed computing framework.
+We used the same mechanism used in P2P applications that assigns nodes their location in the network to evenly distribute work among members of a DHT.
+The most direct application of a DHT distributed computing framework is  a quick and intuitive way to solve embarrassingly parallel problems, such as:
+\begin{itemize}
+	\item Brute force cryptography.
+	\item Genetic algorithms.
+	\item Markov chain Monte Carlo methods.
+	\item Random forests.
+	\item Any problem that could be phrased as a MapReduce problem.
+	
+\end{itemize}
+Unlike the current distributed applications that utilize DHTs, we want to create a complete framework that can be used to build decentralized applications.
+We have found no existing projects that provide a means of building your own DHT or DHT based applications. %without a given DHT in mind at least
+
+
+
+
+
+
+
+\subsection*{Completed Work}
 
 There are many different types of DHTs, but all DHTs share very important qualities.
 They are \textit{scalable}, which means that each additional node in the network minimally impacts the cost of keeping the network organized.
 DHTs are also highly \textit{fault-tolerant}.
 Unlike many other systems, DHTs assume that nodes will be continuously entering and leaving the network.
-Because of the way DHTs are organized, DHTs can handle large scale failures, such as power outage affecting an entire city.
+Because of the way DHTs are organized, they can handle large scale failures, such as power outage affecting an entire city.
 The last quality of DHTs is that they are  \textit{load-balancing}. 
-This mean the data the is stored in a DHTs is evenly distributed among nodes in the network.
+This means the data stored in a DHTs is evenly distributed among nodes in the network.
 
-
-\section{What Have We done so far and why should the reader care}
 
 All of these qualities are highly desirable in a distributed computing, so it was a natural step for us to build distributed computing framework based on DHTs.
 We have shown in previous work that DHTs can be used to distribute work among nodes the same way data is distributed \cite{chordreduce}.
+MOAR SENTANCE ChordReduce was a proof of concept
+
+DGVH
 
 
-\section{What do we plan on doing}
+We built UrDHT \cite{urdht}, a generalized framework for building distributed hash tables, using the concepts we discovered creating DGVH.
+The novelty of UrDHT is that it makes it easy for scientists in any field to construct a DHT based application.
+For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
+
+\subsection*{Remaining Work}
+
+Distributed Computing using URDHT
+This is different than ChordReduce because we didn't do large scale tests.
 
 
-\subsection{Why is this exciting }
-Some example problems are Monte-Carlo Methods (of interest to mathematicians and economists), 
+Autonomous load balancing
+Anomaly during experimentation 
+Reverse a security flaw for good of network
+
+
+\subsubsection*{Why is this exciting }
 Our framework would not only be of interest to computer scientists.
 The ``plug-and-play'' nature we envision would make it easy for experts in other fields to use our framework to solve computationally intensive problems.
+Some example problems are Monte-Carlo Methods (of interest to mathematicians and economists), 
 
 
-\section{What do I need funding for?}
+\subsection*{Methodology}
+
+The method to validate our hypotheses and theorical models is through large-scale  real world experiments using variety of devices across the world.
+A cluster won't do
+We need multiple clusters essentially,
+An effective approach is purchasing cloud computing resources from Amazon and Google.
+
+
 
 Heterogeneous networks
+We need lower powered devices, which are individually inexpensive and easily deployable.
+
+I need hardware of different types and locations.
+
+
+
+
 
 We have successfully developed our software to achieve this, but need funding to do real world network tests. 
 These tests would allow us to experimentally show that our software conclusively works on a large scale and on heterogeneous networks.
 
 
 
-I need hardware of different types and locations.
 
-
-
-This project would help by enabling allowing  both organizations with large amounts of computing power and average developers with a fewer resources spend less time setting up and configuring their hardware to work together;  the goal is for our software to make distributed computing more of matter of ``plug-and-play.''
+This project would allow both organizations with large amounts of computing power and average developers with  fewer resources to spend less time setting up and configuring their hardware to work together.  
+The goal is for our software to make distributed computing more of matter of ``plug-and-play,'' allowing researchers to spend less time setting up and maintaining  computing platforms.
 
 
 \bibliography{mine,dht}
@@ -166,10 +217,10 @@ This project would help by enabling allowing  both organizations with large amou
 {\bf Department Representative,} Georgia State University Arts and Sciences Tech Fee Committee, 2013 - 2015\\
 
 \section*{External Funding}
-\textbf{TCPP Travel Grant} for IPDPS 2014
+\textbf{TCPP Travel Grant} for 28th IEEE International Parallel \& Distributed Processing Symposium
 
 \section*{Honors and Awards}
-\textbf{Outstanding Graduate Student Teaching Award}, Georgia State University, 2014
+\textbf{Outstanding Graduate Student Teaching Award}, Department of Computer Science, Georgia State University, 2014
 
 \section*{Employment}
 {\bf Instructor}, Georgia State University, Spring 2012 (CSc 3410), Spring 2013,\\
@@ -179,23 +230,28 @@ This project would help by enabling allowing  both organizations with large amou
 
 \newpage 
 \section{Budget and Justification}
+
+\begin{table}[h!]
 \centering{
-\begin{tabular}{|c|r|}
-	
-	\hline Item & Amount requested \\
-	\hline Cloud Computing Server Time & \$1200 \\ 
-	\hline 10x Raspberry PI 2 & \$400\\
-	\hline Raspberry PI peripherals & \$250\\
-%	\hline Volunteer Recruitment &  \$150 \\
-%	\hline Travel & \$1000 \\
-	\hline \hline Total Amount requested  & \$2000 \\
-	\hline
-\end{tabular} 
+	\begin{tabular}{|c|r|}
+		
+		\hline Item & Amount requested \\
+		\hline Cloud Computing Server Time & \$1300 \\ 
+		\hline 12x Raspberry PI 2 & \$480 \\
+		\hline Raspberry PI peripherals & \$250\\
+		%	\hline Volunteer Recruitment &  \$150 \\
+		%	\hline Travel & \$1000 \\
+		\hline \hline Total Amount requested  & \$2000 \\
+		\hline
+	\end{tabular} 
 }
+
+
+\end{table}
 
 The base cost for a cloud computing machine ranges between \$0.008 and \$0.075 per machine per hour.
 We need at least 100 machines for at least 100 hours of experimentation at the bare minimum.
-Buying cloud computing time from both Google and Amazon would allow us to do realistic networks
+Buying cloud computing time from both Google and Amazon would allow us to do realistic networks.
 
 However, we still need more machines in order to test heterogeneity in the network.
 Raspberry PIs allow us to test the lower end of computing power.
