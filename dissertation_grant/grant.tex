@@ -122,17 +122,20 @@ First, we experimentally demonstrated that DHTs are capable of being used as a f
 Second, DHT based distributed computing can have nodes enter the network at any time, even when a job is running, and be immediately put to work.
 Finally, we discovered that while churn is normally a disruptive force, at high levels it can be helpful to the network.
 
-%\subsubsection*{DGVH}
-%
-%DGVH
+\subsubsection*{DGVH}
+
+DGVH
 
 
 \subsubsection*{UrDHT}
 
 
 We built UrDHT \cite{urdht}, a generalized framework for building distributed hash tables, using the concepts we discovered creating DGVH \cite{dgvh}.
+UrDHT essentially acts as a ``fill-in-the-blanks'' for creating  distributed hash tables.
 The novelty of UrDHT is that it makes it easy for scientists in any field to construct a DHT based application.
 For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
+
+
 
 \subsection*{Remaining Work}
 Now that we have UrDHT, we want to use it to create a platform for distributed computing.
@@ -157,7 +160,7 @@ However, instead of using this concept as an attack on the network's security, w
 
 
 
-\subsubsection*{Motivation}
+\subsubsection*{Ramifications}
 Our research would have many applications within the field of Computer Science.
 Traditional MapReduce frameworks and other distributed computing solutions are limited to being deployed solely in a datacenter \cite{hadoopAssumptions}.
 Distributed computing frameworks built with UrDHT would be able to be deployed any context, be it a data center, a P2P network, or a volunteer computing pool.
@@ -191,7 +194,7 @@ These tests would allow us to experimentally show that our software conclusively
 
 
 
-\section{Vita goes here}
+\section{Vita}
 
 \section*{Education}          
     
@@ -251,7 +254,7 @@ These tests would allow us to experimentally show that our software conclusively
 \textbf{Outstanding Graduate Student Teaching Award}, Department of Computer Science, Georgia State University, 2014
 
 \section*{Employment}
-{\bf Instructor}, Georgia State University, Spring 2012 (CSc 3410), Spring 2013,\\
+{\bf Instructor}, Georgia State University, Fall 2011 and 2012 (CSc 3410), Spring 2014 (CSc 2010), Spring 2015 (CSc 3410)\\
 {\bf Developer}, Georgia Tech Sonification Lab, Atlanta, GA May-Dec 2010\\
 {\bf Undergraduate Researcher}, Georgia Tech Sonification Lab, Atlanta, GA Fall 2007 -Dec 2009
 
@@ -281,20 +284,22 @@ These tests would allow us to experimentally show that our software conclusively
 
 The base cost for a cloud computing machine ranges between \$0.008 and \$0.075 per machine per hour.
 We need at least 100 machines for at least 100 hours of experimentation at the bare minimum.
-Buying cloud computing time from both Google and Amazon would allow us to do realistic networks.
+Buying cloud computing time from both Google and Amazon would allow us to simulate realistic networks that span continents and the globe.
 
-As we mentioned in the summary, we need more machines in order to test heterogeneity in the network.
-Raspberry PIs allow us to test the lower end of computing power.
-Raspberry PIs are credit-card sized computers which are powerful enough to test our software, but much weaker in computational power compared to what we can purchase from Amazon.
-They would allow us to our autonomous load-balancing and see how well our algorithms distribute work between stronger and weaker nodes.
-Furthermore, we could attach some to different network interfaces, making some wired and some wireless, which would allow us to further vary our network topology.
-%
+
 %Recruiting volunteers would add greater amounts of realism to our experiment.
 %Pending IRB approval, we would use these funds to advertise on online technical sites and ask users to run our program.
 %No information would be gathered from the users other than their IP address and a relative measure of their computational power
 
 
 \subsubsection*{Raspberry PI Costs}
+As we mentioned in the summary, we need more machines in order to test heterogeneity in the network.
+Raspberry PIs allow us to test the lower end of computing power.
+Raspberry PIs are credit-card sized computers which are powerful enough to test our software, but much weaker in computational power compared to what we can purchase from Amazon.
+They would allow us to our autonomous load-balancing and see how well our algorithms distribute work between stronger and weaker nodes.
+Furthermore, we could attach some to different network interfaces, making some wired and some wireless, which would allow us to further vary our network topology.
+
 An individual Raspberry PI 2 Model B, the latest version, is approximately \$40 on Amazon.
 These machines are bare bones and do not come with power adaptors, wifi, or SD cards to serve as a hard drive.
+
 \end{document}
