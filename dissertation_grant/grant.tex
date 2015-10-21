@@ -66,20 +66,19 @@ These would include any computationally intensive problems that occur in a wide 
 \subsection*{What are DHTs}
 My dissertation focusing on creating a generalized framework for distributed computing based on Distributed Hash Tables (DHTs).
 Distributed Hash Tables are a tool which allows a computers (nodes) to self-organize into a decentralized network for storing and retrieving data.
-They have been used extensively to build peer-to-peer (P2P) file-sharing applications as well as distributed storage systems.
+They have been used extensively to build peer-to-peer (P2P) file-sharing applications \cite{bittorrent} as well as distributed storage systems \cite{CFS}.
 
 DHTs are primarily used in P2P applications, but other applications, such as botnets, use DHTs for their decentralization.
 Our goal to use DHTs primarily for their intuitive way of organizing a distributed system and to further extend the use of DHTs.
 In previous work \cite{chordreduce}, we showed  that a DHT can be to create a distributed computing framework.
 We used the same mechanism used in P2P applications that assigns nodes their location in the network to evenly distribute work among members of a DHT.
-The most direct application of a DHT distributed computing framework is  a quick and intuitive way to solve embarrassingly parallel problems, such as:
+The most direct application of a DHT distributed computing framework is a quick and intuitive way to solve embarrassingly parallel problems, such as:
 \begin{itemize}
 	\item Brute force cryptography.
 	\item Genetic algorithms.
 	\item Markov chain Monte Carlo methods.
 	\item Random forests.
-	\item Any problem that could be phrased as a MapReduce problem.
-	
+	\item Any problem that could be phrased as a MapReduce \cite{mapreduce} problem.
 \end{itemize}
 Unlike the current distributed applications that utilize DHTs, we want to create a complete framework that can be used to build decentralized applications.
 We have found no existing projects that provide a means of building your own DHT or DHT based applications. %without a given DHT in mind at least
@@ -92,6 +91,7 @@ We have found no existing projects that provide a means of building your own DHT
 
 \subsection*{Completed Work}
 
+
 There are many different types of DHTs, but all DHTs share very important qualities.
 They are \textit{scalable}, which means that each additional node in the network minimally impacts the cost of keeping the network organized.
 DHTs are also highly \textit{fault-tolerant}.
@@ -103,61 +103,89 @@ This means the data stored in a DHTs is evenly distributed among nodes in the ne
 
 All of these qualities are highly desirable in a distributed computing, so it was a natural step for us to build distributed computing framework based on DHTs.
 We have shown in previous work that DHTs can be used to distribute work among nodes the same way data is distributed \cite{chordreduce}.
-MOAR SENTANCE ChordReduce was a proof of concept
 
-DGVH
+\subsubsection*{ChordReduce}
+ChordReduce \cite{chordreduce} was a proof of concept for using distributed hash tables for distributed computing.  
+It used Chord \cite{chord}, a well studied DHT, and exploited its various features to perform MapReduce \cite{mapreduce} tasks, a very popular method for framing distributed computing problems.
+
+Unlike other distributed computing frameworks, we made no assumptions as to the context in which ChordReduce would be used.
+ChordReduce could be used in either a large datacenter or in completely heterogeneous, peer-to-peer context.
+In a heterogeneous network, we assume all the nodes represent different pieces of hardware, with differing levels of computational power and reliability.
+As a result, we needed to rigorously test the fault-tolerance of the system and made an exciting discovery while doing so.
+
+To test fault tolerance, each node essentially flipped a coin weighted in its favor, and when it lost the flip, left the network and reentered as a new node.
+This simulated a P2P concept called \textit{churn}, turbulence in the network caused by the continuous entering and leaving the network.
+Churn is normally a chaotic influence on the network, but we found that at high levels of churn, nodes advantageously redistributed work in such a way that tests with high levels of churn performed better than tests with low levels of churn.
+
+ChordReduce established three important ramifications.
+First, we experimentally demonstrated that DHTs are capable of being used as a framework for distributed computing.
+Second, DHT based distributed computing can have nodes enter the network at any time, even when a job is running, and be immediately put to work.
+Finally, we discovered that while churn is normally a disruptive force, at high levels it can be helpful to the network.
+
+%\subsubsection*{DGVH}
+%
+%DGVH
 
 
-We built UrDHT \cite{urdht}, a generalized framework for building distributed hash tables, using the concepts we discovered creating DGVH.
+\subsubsection*{UrDHT}
+
+
+We built UrDHT \cite{urdht}, a generalized framework for building distributed hash tables, using the concepts we discovered creating DGVH \cite{dgvh}.
 The novelty of UrDHT is that it makes it easy for scientists in any field to construct a DHT based application.
 For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
 
 \subsection*{Remaining Work}
+Now that we have UrDHT, we want to use it to create a platform for distributed computing.
+This differs from our previous work in ChordReduce in a few very important ways.
 
-Distributed Computing using URDHT
-This is different than ChordReduce because we didn't do large scale tests.
+As we mentioned earlier, ChordReduce tested distributed computing on a single type of DHT - Chord.
+UrDHT is much more flexible and can be used to implement many different DHTs.
+We also plan on doing large scale tests with UrDHT, something we weren't able to do with ChordReduce due to limitations of resources.
+Finally, we will tackle more distributed problems than just MapReduce problems, such as Monte-Carlo approximations.
 
 
-Autonomous load balancing
-Anomaly during experimentation 
-Reverse a security flaw for good of network
+The most exciting feature we plan on adding to our distributed computing platform is a strategy we are calling \textit{autonomous load-balancing}.
+We plan on using exploiting the discovery we made about churn during our ChordReduce experiments.
+We want to create strategies which would allow nodes to reassign themselves in the network.
+This would allow nodes to automatically redeploy themselves 
+
+We also plan on creating similar strategies to account for heterogeneity in the network.
+Rather than having stronger nodes reassign themselves, they can represent themselves multiple times in the network, pretending to be multiple nodes.
+The stronger the hardware, the more nodes it can pretend to be.
+This is a reversal of the concept of an attack on a DHT, where an attack attempts to control a DHT by claiming to be multiple nodes in the network \cite{sybil}.
+However, instead of using this concept as an attack on the network's security, we are using it to benefit the network.
 
 
-\subsubsection*{Why is this exciting }
+
+\subsubsection*{Motivation}
+Our research would have many applications within the field of Computer Science.
+Traditional MapReduce frameworks and other distributed computing solutions are limited to being deployed solely in a datacenter \cite{hadoopAssumptions}.
+Distributed computing frameworks built with UrDHT would be able to be deployed any context, be it a data center, a P2P network, or a volunteer computing pool.
+Furthermore, the autonomous load-balancing feature would allow frameworks automatically give nodes with more power more work.
+
 Our framework would not only be of interest to computer scientists.
 The ``plug-and-play'' nature we envision would make it easy for experts in other fields to use our framework to solve computationally intensive problems.
-Some example problems are Monte-Carlo Methods (of interest to mathematicians and economists), 
+Some example problems are Monte-Carlo Methods (of interest to mathematicians and economists) and machine learning (of interest to biologists).
 
+This project would allow both organizations with large amounts of computing power and average developers with  fewer resources to spend less time setting up and configuring their hardware to work together.  
+The goal is for our software to make distributed computing more of matter of ``plug-and-play,'' allowing researchers to spend less time setting up and maintaining  computing platforms.
 
 \subsection*{Methodology}
 
-The method to validate our hypotheses and theorical models is through large-scale  real world experiments using variety of devices across the world.
-A cluster won't do
-We need multiple clusters essentially,
-An effective approach is purchasing cloud computing resources from Amazon and Google.
+The method to validate our hypotheses and theoretical models is through large-scale real world experiments using variety of devices across the world.
+An effective approach to his is purchasing cloud computing resources from Amazon and Google.
 
+%our experiments would required multiple small clusters which span the continent or world.
 
-
-Heterogeneous networks
-We need lower powered devices, which are individually inexpensive and easily deployable.
-
-I need hardware of different types and locations.
-
-
-
-
+While this would test the network by simulating either a P2P environment or centralized datacenter, most of the machines would be relatively the same strength.
+In order to fully test how well our strategies perform in heterogeneous networks, we need lower powered devices, which are individually inexpensive and easily deployable.
 
 We have successfully developed our software to achieve this, but need funding to do real world network tests. 
 These tests would allow us to experimentally show that our software conclusively works on a large scale and on heterogeneous networks.
 
 
 
-
-This project would allow both organizations with large amounts of computing power and average developers with  fewer resources to spend less time setting up and configuring their hardware to work together.  
-The goal is for our software to make distributed computing more of matter of ``plug-and-play,'' allowing researchers to spend less time setting up and maintaining  computing platforms.
-
-
-\bibliography{mine,dht}
+\bibliography{mine,dht,mapreduce}
 \bibliographystyle{plain}
 \newpage
 
@@ -204,7 +232,7 @@ The goal is for our software to make distributed computing more of matter of ``p
 	``UrDHT: A Unified Model for Distributed Hash Tables''
 	Submitted to IPDPS 2016
 	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois
-	``The Sybil Attack on Peer-to-Peer Networks From the Attacker?s Perspective''
+	``The Sybil Attack on Peer-to-Peer Networks From the Attacker's Perspective''
 	In preparation
 	
 \end{enumerate}
@@ -255,7 +283,7 @@ The base cost for a cloud computing machine ranges between \$0.008 and \$0.075 p
 We need at least 100 machines for at least 100 hours of experimentation at the bare minimum.
 Buying cloud computing time from both Google and Amazon would allow us to do realistic networks.
 
-However, we still need more machines in order to test heterogeneity in the network.
+As we mentioned in the summary, we need more machines in order to test heterogeneity in the network.
 Raspberry PIs allow us to test the lower end of computing power.
 Raspberry PIs are credit-card sized computers which are powerful enough to test our software, but much weaker in computational power compared to what we can purchase from Amazon.
 They would allow us to our autonomous load-balancing and see how well our algorithms distribute work between stronger and weaker nodes.
@@ -266,4 +294,7 @@ Furthermore, we could attach some to different network interfaces, making some w
 %No information would be gathered from the users other than their IP address and a relative measure of their computational power
 
 
+\subsubsection*{Raspberry PI Costs}
+An individual Raspberry PI 2 Model B, the latest version, is approximately \$40 on Amazon.
+These machines are bare bones and do not come with power adaptors, wifi, or SD cards to serve as a hard drive.
 \end{document}
