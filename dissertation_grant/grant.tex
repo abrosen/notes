@@ -20,8 +20,31 @@
 %methods to be employed, and a statement about the expected outcome(s) of the project
 %(research question(s) to be answered, new information or data to be uncovered, artistic
 %product to be completed, etc.)
+\newpage
+
 \begin{abstract}
-	
+
+Distributed Hash Tables (DHTs) are protocols and frameworks used by peer-to-peer (P2P) systems.
+They are used as the organizational backbone for many P2P file-sharing systems due to their scalability, fault-tolerance, and load-balancing properties.
+These same properties are highly desirable in a distributed computing environment, especially one that wants to use heterogeneous components.
+
+We show that DHTs can be used not only as the framework to build a P2P file-sharing service, but as a P2P distributed computing platform.
+We propose creating a P2P distributed computing framework using distributed hash tables, based on our prototype system ChordReduce.
+This framework would make it simple and efficient for developers to create their own distributed computing applications.
+Unlike Hadoop and similar MapReduce frameworks, our framework can be used both in both the context of a datacenter or as part of a P2P computing platform.  
+This opens up new possibilities for building platforms to distributed computing problems.
+
+One advantage our system will have is an autonomous load-balancing mechanism.
+Nodes will be able to independently acquire work from other nodes in the network, rather than sitting idle.
+More powerful nodes in the network will be able use the mechanism to acquire more work, exploiting the heterogeneity of the network.
+
+We plan on running large scale experiments using both cloud-computing platforms and small, consumer-grade hardware.
+This variety of computing device will establish the flexibility of our framework and its ability to use the heterogeniety of the network to its advantage.
+
+By utilizing the load-balancing algorithm, a datacenter could easily leverage additional P2P resources at runtime on an as needed basis.
+Our framework will allow MapReduce-like or distributed machine learning platforms to be easily deployed in a greater variety of contexts.
+
+
 \end{abstract}
 
 \newpage
@@ -142,9 +165,17 @@ This project would help by enabling allowing  both organizations with large amou
 {\bf New Graduate Student Orientation Panelist}, Georgia State University, 2014-2015\\
 {\bf Department Representative,} Georgia State University Arts and Sciences Tech Fee Committee, 2013 - 2015\\
 
+\section*{External Funding}
+\textbf{TCPP Travel Grant} for IPDPS 2014
+
+\section*{Honors and Awards}
+\textbf{Outstanding Graduate Student Teaching Award}, Georgia State University, 2014
+
 \section*{Employment}
-{\bf Developer} Georgia Tech Sonification Lab, Atlanta, GA May-Dec 2010\\
-{\bf Undergraduate Researcher} Georgia Tech Sonification Lab, Atlanta, GA Fall 2007 -Dec 2009
+{\bf Instructor}, Georgia State University, Spring 2012 (CSc 3410), Spring 2013,\\
+{\bf Developer}, Georgia Tech Sonification Lab, Atlanta, GA May-Dec 2010\\
+{\bf Undergraduate Researcher}, Georgia Tech Sonification Lab, Atlanta, GA Fall 2007 -Dec 2009
+
 
 \newpage 
 \section{Budget and Justification}
