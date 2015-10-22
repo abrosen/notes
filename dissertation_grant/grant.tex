@@ -40,7 +40,7 @@ Nodes will be able to independently acquire work from other nodes in the network
 More powerful nodes in the network will be able use the mechanism to acquire more work, exploiting the heterogeneity of the network.
 
 We plan on running large scale experiments using both cloud-computing platforms and small, consumer-grade hardware.
-This variety of computing device will establish the flexibility of our framework and its ability to use the heterogeniety of the network to its advantage.
+This variety of computing device will establish the flexibility of our framework and its ability to use the heterogeneity of the network to its advantage.
 
 By utilizing the load-balancing algorithm, a datacenter could easily leverage additional P2P resources at runtime on an as needed basis.
 Our framework will allow MapReduce-like or distributed machine learning platforms to be easily deployed in a greater variety of contexts.
@@ -64,13 +64,13 @@ These would include any computationally intensive problems that occur in a wide 
 
 \section{Summary}
 \subsection*{What are DHTs}
-My dissertation focusing on creating a generalized framework for distributed computing based on Distributed Hash Tables (DHTs).
+My dissertation focuses on creating a generalized framework for distributed computing based on Distributed Hash Tables (DHTs).
 Distributed Hash Tables are a tool which allows a computers (nodes) to self-organize into a decentralized network for storing and retrieving data.
 They have been used extensively to build peer-to-peer (P2P) file-sharing applications \cite{bittorrent} as well as distributed storage systems \cite{CFS}.
 
 DHTs are primarily used in P2P applications, but other applications, such as botnets, use DHTs for their decentralization.
-Our goal to use DHTs primarily for their intuitive way of organizing a distributed system and to further extend the use of DHTs.
-In previous work \cite{chordreduce}, we showed  that a DHT can be to create a distributed computing framework.
+Our goal is to use DHTs primarily for their intuitive way of organizing a distributed system and to further extend the use of DHTs.
+In previous work \cite{chordreduce}, we showed  that a DHT can be used to create a distributed computing framework.
 We used the same mechanism used in P2P applications that assigns nodes their location in the network to evenly distribute work among members of a DHT.
 The most direct application of a DHT distributed computing framework is a quick and intuitive way to solve embarrassingly parallel problems, such as:
 \begin{itemize}
@@ -96,12 +96,12 @@ There are many different types of DHTs, but all DHTs share very important qualit
 They are \textit{scalable}, which means that each additional node in the network minimally impacts the cost of keeping the network organized.
 DHTs are also highly \textit{fault-tolerant}.
 Unlike many other systems, DHTs assume that nodes will be continuously entering and leaving the network.
-Because of the way DHTs are organized, they can handle large scale failures, such as power outage affecting an entire city.
+Because of the way DHTs are organized, they can handle large scale failures, such as a power outage affecting an entire city.
 The last quality of DHTs is that they are  \textit{load-balancing}. 
-This means the data stored in a DHTs is evenly distributed among nodes in the network.
+This means the data stored in a DHT is evenly distributed among nodes in the network.
 
 
-All of these qualities are highly desirable in a distributed computing, so it was a natural step for us to build distributed computing framework based on DHTs.
+All of these qualities are highly desirable in distributed computing, so it was a natural step for us to build distributed computing framework based on DHTs.
 We have shown in previous work that DHTs can be used to distribute work among nodes the same way data is distributed \cite{chordreduce}.
 
 \subsubsection*{ChordReduce}
@@ -121,10 +121,6 @@ ChordReduce established three important ramifications.
 First, we experimentally demonstrated that DHTs are capable of being used as a framework for distributed computing.
 Second, DHT based distributed computing can have nodes enter the network at any time, even when a job is running, and be immediately put to work.
 Finally, we discovered that while churn is normally a disruptive force, at high levels it can be helpful to the network.
-
-\subsubsection*{DGVH}
-
-DGVH
 
 
 \subsubsection*{UrDHT}
@@ -148,9 +144,9 @@ Finally, we will tackle more distributed problems than just MapReduce problems, 
 
 
 The most exciting feature we plan on adding to our distributed computing platform is a strategy we are calling \textit{autonomous load-balancing}.
-We plan on using exploiting the discovery we made about churn during our ChordReduce experiments.
-We want to create strategies which would allow nodes to reassign themselves in the network.
-This would allow nodes to automatically redeploy themselves 
+We plan on exploiting the discovery we made about churn during our ChordReduce experiments.
+We want to create strategies that would allow nodes to reassign themselves in the network.
+This would allow nodes to automatically redeploy themselves to assist with completing the tasks at hand.
 
 We also plan on creating similar strategies to account for heterogeneity in the network.
 Rather than having stronger nodes reassign themselves, they can represent themselves multiple times in the network, pretending to be multiple nodes.
@@ -164,7 +160,7 @@ However, instead of using this concept as an attack on the network's security, w
 Our research would have many applications within the field of Computer Science.
 Traditional MapReduce frameworks and other distributed computing solutions are limited to being deployed solely in a datacenter \cite{hadoopAssumptions}.
 Distributed computing frameworks built with UrDHT would be able to be deployed any context, be it a data center, a P2P network, or a volunteer computing pool.
-Furthermore, the autonomous load-balancing feature would allow frameworks automatically give nodes with more power more work.
+Furthermore, the autonomous load-balancing feature would allow frameworks to automatically give nodes with more power more work.
 
 Our framework would not only be of interest to computer scientists.
 The ``plug-and-play'' nature we envision would make it easy for experts in other fields to use our framework to solve computationally intensive problems.
