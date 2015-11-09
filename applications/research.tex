@@ -21,8 +21,6 @@
 
 My research primarily focuses on Distributed Hash Tables (DHTs), with applications towards peer-to-peer (P2P) networks, Big Data, and Distributed Computing.
 DHTs are primarily used in P2P applications, but other applications, such as botnets, use DHTs for their decentralization.
-Our goal is to use DHTs primarily for their intuitive way of organizing a distributed system and to further extend the use of DHTs.
-
 
 
 I believe that collaboration is vital to academic growth.
@@ -60,7 +58,6 @@ First, we experimentally demonstrated that DHTs are capable of being used as a f
 Second, DHT based distributed computing can have nodes enter the network at any time, even when a job is running, and be immediately put to work.
 Finally, we discovered that while churn is normally a disruptive force, at high levels it can be helpful to the network.
 
-
 All of these qualities are highly desirable in distributed computing, so it was a natural step for us to build distributed computing framework based on DHTs.
 We have shown in previous work that DHTs can be used to distribute work among nodes the same way data is distributed \cite{chordreduce}.
 
@@ -70,6 +67,10 @@ I find great value in abstracting techniques and platforms even further, as that
 This can be seen in my work on Distributed Hash Tables, where I showed that DHTs can be mapped to Voronoi Tessellations and Delaunay Triangulation.
 
 
+We used this insight to create UrDHT \cite{urdht}, a generalized framework for building distributed hash tables.
+UrDHT essentially acts as a ``fill-in-the-blanks'' for creating  distributed hash tables.
+The novelty of UrDHT is that it makes it easy for scientists in any field to construct a DHT based application.
+For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
 
 
 A large part of why I do research is that I want to help people.
