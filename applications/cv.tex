@@ -1,0 +1,323 @@
+\documentclass{res}
+%\usepackage{helvetica} % uses helvetica postscript font (download helvetica.sty)
+\pagestyle{headings}
+\setlength{\topmargin}{-0.6in}  % Start text higher on the page 
+\setlength{\textheight}{9.8in}  % increase textheight to fit more on a page
+\setlength{\headsep}{0.2in}     % space between header and text
+\setlength{\headheight}{12pt}   % make room for header
+\usepackage{fancyhdr}  % use fancyhdr package to get 2-line header
+\usepackage{hyperref}
+\renewcommand{\headrulewidth}{0pt} % suppress line drawn by default by fancyhdr
+\lhead{\hspace*{-\sectionwidth}Andrew Rosen} % force lhead all the way left
+\rhead{Page \thepage}  % put page number at right
+\cfoot{}  % the footer is empty
+\pagestyle{fancy} % set pagestyle for the document
+
+\begin{document}
+\thispagestyle{empty} % this page does not have a header
+
+% Center the name over the entire width of resume:
+ \moveleft.5\hoffset \centerline{\large\bf Andrew B. Rosen}
+% Draw a horizontal line the whole width of resume:
+ \moveleft\hoffset\vbox{\hrule width\resumewidth height 2.5pt}\smallskip
+  \moveleft.5\hoffset\centerline{Curriculum Vitae}
+
+\moveleft\hoffset\vbox{
+\begin{minipage}{0.38\textwidth}
+\begin{flushleft}
+{\bf Postal Address} \\ 
+Andrew B. Rosen\\ 
+Department of Computer Science \\ 
+Georgia State University \\ 
+25 Park Place, Rm. 648 \\ 
+Atlanta, Ga. 30303 
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.7\textwidth}
+\begin{flushright}
+\hfill {\bf Other Contact Information} \\ 
+\hfill (678) 665-1415(mobile) \\ 
+\hfill E-mail: \href{mailto:rosen@cs.gsu.edu}{rosen@cs.gsu.edu} \\ 
+\end{flushright} 
+\end{minipage}
+}
+ 
+\begin{resume} 
+
+\section{Research Interests}
+	\begin{itemize}
+    \item Peer-to-Peer Networks
+	\item Delay and Fault Tolerant Networks
+	\item Distributed Hash Tables
+	\item Interplanetary Internet 
+	\item Astroinformatics
+	
+	\end{itemize}
+\section{Education}          
+    \begin{itemize}    
+    \item {\bf Ph.D.} in Computer Science, Georgia State University. Fall 2016 (Expected)
+    \item {\bf M.S.} in Computer Science, Georgia State University. May 2014, 3.89 GPA 
+    \item {\bf B.S.} in Computer Science, Georgia Institute of Technology. May 2010, 3.00 GPA
+	\item {\bf Minor} in Music, Georgia Institute of Technology. May 2010
+    
+    \end{itemize}   
+
+\section{Awards}
+	\begin{itemize}    
+		\item Outstanding Graduate Teaching Award, 2015
+	\end{itemize}   
+
+\section{Publications}
+	\begin{enumerate}
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois
+			``MapReduce on a Chord Distributed Hash Table''
+			Presentation ICA CON 2014, Poster at IPDPS 2014 PhD Forum
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison
+			``VHASH: Spatial DHT based on Voronoi Tessellation''
+			ICA CON 2014
+	\item  Erin-Elizabeth A. Durham, Andrew Rosen, Robert W. Harrison
+    ``A Model Architecture for Big Data applications using Relational Databases''
+    2014 IEEE BigData - C4BD2014 - Workshop on Complexity for Big Data
+    \item Chinua Umoja, J.T. Torrance, Erin-Elizabeth A. Durham, Andrew Rosen, Dr. Robert Harrison
+    	``A Novel Approach to Determine Docking Locations Using Fuzzy Logic and Shape Determination''
+    	2014 IEEE BigData - Poster and Short Paper
+    \item  Erin-Elizabeth A. Durham, Andrew Rosen, Robert W. Harrison
+    ``Optimization of Relational Database Usage Involving Big Data''
+     IEEE SSCI 2014 - CIDM 2014 - The IEEE Symposium Series on Computational Intelligence and Data Mining
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison
+	 ``A Distributed Greedy Heuristic for Computing Voronoi Tessellations With Applications Towards Peer-to-Peer Network''
+	IEEE IPDPS 2015 - Workshop on Dependable Parallel, Distributed and Network-Centric Systems
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois
+	``UrDHT: A Unified Model for Distributed Hash Tables''
+	Submitted to IPDPS 2016
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois
+    ``The Sybil Attack on Peer-to-Peer Networks From the Attacker’s Perspective''
+    In preparation
+	\item Chaoyang Li, Andrew Rosen,  and Anu G. Bourgeois
+        ``A Novel Approach to Efficiently Detect 3D Full-View Coverage for Camera Sensor Networks''
+        In Preparation
+        
+    \end{enumerate}
+    
+    
+    
+\newpage
+\section{Research and Projects}
+
+{\bf UrDHT, 2015 - Present }
+\begin{itemize}
+	\item We designed and built a framework which maps distributed hash tables to the primitives of Voronoi Tesselation and Delaunay 
+	\item UrDHT allows developers to quickly create new DHT topologies by completing a few simple functions. 
+	\item Prototype implementation in Python.
+	\item Project repo here: \url{https://github.com/UrDHT}
+\end{itemize}
+
+{\bf Sybil Attack Cost Analysis, 2015}
+\begin{itemize}
+	\item Analyzed the computational and monetary cost of performing a large scale Sybil attack.
+	\item Code and Paper here: \url{https://github.com/abrosen/datasec/tree/master/project}
+\end{itemize}
+
+
+
+{\bf Performing MapReduce on a Chord Distributed Hash Table, 2013 - 2014}
+    \begin{itemize}
+    \item We examined using the self-organizing features of a DHT for distributed computing.
+    \item We tested the system by deploying it on Amazon EC2 and computing Monte-Carlo methods and word frequency counts. 
+    \item Code and paper can be found here \url{https://github.com/BrendanBenshoof/pyVHash}
+    \end{itemize}
+    
+{\bf VHash, 2014}
+    \begin{itemize}
+    \item We designed a new DHT that uses Voronoi regions to determine responsibilty for resources.
+    \item We detail algorithms that extend into an arbitrary number of dimensions, a feature lacking in similar works.
+    \item Code and paper can be found here \url{https://github.com/BrendanBenshoof/pyVHash}
+    \end{itemize}   
+
+
+{\bf D$^3$DNS, 2013 }
+    \begin{itemize}
+    \item We created a prototype secure and fault-tolerant replacement for DNS.
+    \item Our solution is reverse compatible with the current system.
+    \item Code: \url{https://github.com/BrendanBenshoof/P2PDNS}
+    \item Paper: \url{https://github.com/BrendanBenshoof/P2PDNS/blob/master/P3DNS.pdf}
+    \end{itemize}
+
+ 
+%    
+%{\bf Analysis of Unevenly Sampled Periodic Data, 2013 - Present}
+%    \begin{itemize}
+%    \item Techniques for analysis are relatively unknown outside of Astronomy, where it has been rigorously covered.
+%    \item Looking for new areas to apply analysis, such as estimation of traffic time.
+%    \end{itemize}
+
+
+{\bf A Survey of Routing Protocols for Vehicular Ad-Hoc Networks, 2012 - Present}
+    \begin{itemize}
+    \item Explores common obstacles experienced in challenged and delay-tolerant networks.
+    \item Examines in-depth various routing protocols for VANETs.
+    \item Current work involves covering protocols for other challenged networks.
+    \item \url{http://www.cs.gsu.edu/~arosen6/survey/survey.pdf}
+    \end{itemize}
+
+{\bf Reducing Traffic and Delays in P2P Systems with Replicated Mutable Files,  2011 - Present}
+    \begin{itemize}
+    \item Reduced overhead of maintenance of mutable files while diverting traffic  away from file sources.
+    \item Strategies can be implemented on other DHT based P2P systems.
+    \item \url{http://www.cs.gsu.edu/~arosen6/papers/IRMLP.pdf}
+    \end{itemize}
+
+%{\bf First Year Retention Rate Analysis, 2011}
+%    \begin{itemize}
+%    \item Data Mining term project.
+%    \item Examined the performance of first-year computer science attending Georgia State University to discover trends in year one retention.
+%    \item \url{http://www.cs.gsu.edu/~arosen6/papers/dm.pdf}
+%    \end{itemize}
+
+{\bf Asthma Educational Game, 2009}
+    \begin{itemize}
+    \item Flash based educational game developed with two other students to teach about
+asthma developed for senior project in Computer Science.
+\item Game is being further developed by a PhD student at Georgia Tech.
+   \end{itemize}
+\newpage
+\section{Teaching}
+
+{\bf CSc 3320  System Level Programming (Spring 2015) }
+\begin{itemize}
+	\item Instructor - class size of 91
+	\item Covered programming in and writing scripts for the Unix operating system.
+	\item Introduced Python as a scripting language to the students.
+	\item Taught more advanced topics in C: pointers and pointer arithmetic, memory management, segmentation faults, and buffer overflows.
+\end{itemize}
+
+
+{\bf CSc 2010 Principles of Computer Science (Spring 2014) }
+\begin{itemize}
+	\item Instructor - class size of 91
+	\item Covered introductory Java topics including syntax, methods, and objects.
+	\item Introduced foundational topics in Computer Science, such as the design an analysis of algorithms, binary, circuits, and architecture.
+\end{itemize}
+
+
+{\bf CSc 3320  System Level Programming (Fall 2013)}
+    \begin{itemize}
+    \item Teaching Assistant - class size of 50
+      \item Helped answer during office hours and during class.  Graded homework and exams.  
+    \end{itemize}
+
+
+{\bf CSc 3210 Computer Organization and Programming (Summer 2013)}
+    \begin{itemize}
+    \item Teaching Assistant - class size of ~30
+      \item Helped answer during office hours.  Graded homework.  Helped maintain course server.
+    \end{itemize}
+
+
+
+{\bf CSc 2010 Intro to Computer Programming - Robots Section (Spring 2011 and Spring 2013) }
+    \begin{itemize}
+      \item Teaching Assistant - class size of 25
+      \item Helped maintain robots.  Helped developed critical thinking skills.  Created tests and quizzes.
+    \end{itemize}
+
+
+{\bf CSc 3410 Data Structures  - CTW (Fall 2011 and  Fall 2012) }
+    \begin{itemize}
+    \item Instructor - class size of 25
+      \item Covered advanced topics in Java.  Covered various data structures such as linked lists, queues, stacks, trees, and graphs.  Emphasized critical thinking skills and object-oriented design.
+    \end{itemize}
+
+
+
+
+
+\section{Appointments}
+
+{\bf 2CI Astroinformatics Fellow,} Georgia State University, Aug 2012 - Present
+     \begin{itemize}
+     \item Refactored database for near-earth stellar objects and developed an automated tool to load data into the database.
+     \item Currently working with Astronomy Deptartment on developing tools for analysis of suspected periodic signals.
+     \item Examining using techniques for analyzing unevenly sampled periodic data in network traffic analysis.
+     \end{itemize}   
+
+
+{\bf Graduate Research Assistant,} Georgia State University, Aug 2011 - Present
+     \begin{itemize}
+     \item Researched the use of self-organizing features of DHTs to in performing distributed computations.
+     \item Researched various protocols used for delay tolerant networking and interplanetary networking.
+     \item Examined application of algorithms from one body of challenged networks to another.
+  
+     \end{itemize}   
+     
+{\bf Graduate Lab Assistant,} Georgia State University, May 2011 - 2013
+     \begin{itemize}
+     \item Deployed and maintained computer labs, faculty, and graduate student machines.
+     \item Constructed and deployed new computers for faculty and graduate students.
+     \item Migrated e-mail server.
+     \end{itemize}
+     
+
+\section{External Funding}
+\textbf{TCPP Travel Grant} for 28th IEEE International Parallel \& Distributed Processing Symposium
+
+
+\section{Service}
+
+
+{\bf Vice Chair,} Georgia State University Chapter of the Association for Computing Machinery (ACM),  May 2012 - Present
+%     \begin{itemize}
+%     \item Coordinate meetings and event preparations.
+%     \item Assume responsibility when the Chair is unavailable.
+%    \end{itemize}   
+
+{\bf Treasurer,} Georgia State University Chapter of the Association for Computing Machinery (ACM), May 2012 - May 2014
+%     \begin{itemize}
+%     \item Plan and maintain budget.
+%     \item Collect fees.
+%    \end{itemize}   
+
+{\bf New Graduate Student Orientation Panelist}, Georgia State University, 2014-2015\\
+
+
+{\bf Department Representative,} Georgia State University Arts and Sciences Tech Fee Committee, 2013 - 2015
+\begin{itemize}
+	\item Voted on submitted proposals to allocate tech fee funds each year.
+	\item Allocated $\approx \$1,000,000$ each year.
+\end{itemize}
+
+
+\section{Employment}
+%{\bf Software Engineer,} OrcaTec, Atlanta, GA Summer 2011
+%	\begin{itemize}
+%		\item Worked on automating procedure for data-mining system.
+%		\item Documented the various components of the system.
+%    	\end{itemize}      
+% 
+{\bf Developer} Georgia Tech Sonification Lab, Atlanta, GA May-Dec 2010
+	\begin{itemize}
+		\item Set up and maintained new lab server.
+		\item Extended the NASA Math Description Engine to incorporate the results of research on developing graph descriptions for the visual impaired.
+		\item Developed a parser for formulas to interface with different software libraries.
+		\item Software was presented to Washington lawmakers.
+		\item \url{http://sonify.psych.gatech.edu/research/sonification_sandbox/index.html}.
+    \end{itemize}      
+    
+{\bf Undergraduate Researcher} Georgia Tech Sonification Lab, Atlanta, GA Fall 2007 -Dec 2009
+	\begin{itemize}
+		\item Helped develop the Sonification Sandbox, a cross-platform tool which creates auditory graphs, by finding and extending libraries to add Excel-like operations, graph formulas, and generate and play midi information.
+		\item Developed a tool to generate Spearcons - auditory icons developed by the Sonification Lab.
+		\item Helped develop a web based tool to measure the use of sound in software by analyzing the source code of program.
+    \end{itemize}      
+    
+
+\section{Programming Skills}
+{\bf Languages:} Python, C, Java.
+
+{\bf Fields:} Distributed Hash Tables, Fault Tolerant Networks, Compilers, Simulations, Databases, Networking, TCP/IP, Data Mining,  HCI
+
+
+
+\end{resume} 
+\section{References available upon request.}
+\end{document} 

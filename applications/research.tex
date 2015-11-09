@@ -17,13 +17,63 @@
 % Empahsize that my research is applicable to big data problems and research
 % Talk about collaberation + inter-disciplinary
 
+\section*{Executive Summary}
+
+My research primarily focuses on peer-to-peer (P2P) networks, with applications to Big Data and Distributed Computing.
+As 
+
+
+DHTs are primarily used in P2P applications, but other applications, such as botnets, use DHTs for their decentralization.
+Our goal is to use DHTs primarily for their intuitive way of organizing a distributed system and to further extend the use of DHTs.
+
+
+
+\section{Past and Current Research}
+
+There are many different types of DHTs, but all DHTs share very important qualities.
+They are \textit{scalable}, which means that each additional node in the network minimally impacts the cost of keeping the network organized.
+DHTs are also highly \textit{fault-tolerant}.
+Unlike many other systems, DHTs assume that nodes will be continuously entering and leaving the network.
+Because of the way DHTs are organized, they can handle large scale failures, such as a power outage affecting an entire city.
+The last quality of DHTs is that they are  \textit{load-balancing}. 
+This means the data stored in a DHT is evenly distributed among nodes in the network.
+
+
+ChordReduce \cite{chordreduce} was a proof of concept for using distributed hash tables for distributed computing.  
+It used Chord \cite{chord}, a well studied DHT, and exploited its various features to perform MapReduce \cite{mapreduce} tasks, a very popular method for framing distributed computing problems.
+
+Unlike other distributed computing frameworks, we made no assumptions as to the context in which ChordReduce would be used.
+ChordReduce could be used in either a large datacenter or in completely heterogeneous, peer-to-peer context.
+In a heterogeneous network, we assume all the nodes represent different pieces of hardware, with differing levels of computational power and reliability.
+As a result, we needed to rigorously test the fault-tolerance of the system and made an exciting discovery while doing so.
+
+To test fault tolerance, each node essentially flipped a coin weighted in its favor, and when it lost the flip, left the network and reentered as a new node.
+This simulated a P2P concept called \textit{churn}, turbulence in the network caused by the continuous entering and leaving the network.
+Churn is normally a chaotic influence on the network, but we found that at high levels of churn, nodes advantageously redistributed work in such a way that tests with high levels of churn performed better than tests with low levels of churn.
+
+ChordReduce established three important ramifications.
+First, we experimentally demonstrated that DHTs are capable of being used as a framework for distributed computing.
+Second, DHT based distributed computing can have nodes enter the network at any time, even when a job is running, and be immediately put to work.
+Finally, we discovered that while churn is normally a disruptive force, at high levels it can be helpful to the network.
+
+
+All of these qualities are highly desirable in distributed computing, so it was a natural step for us to build distributed computing framework based on DHTs.
+We have shown in previous work that DHTs can be used to distribute work among nodes the same way data is distributed \cite{chordreduce}.
+
+
 
 I find great value in abstracting techniques and platforms even further, as that makes it possible to see novel applications for various technologies.  
 This can be seen in my work on Distributed Hash Tables, where I showed that DHTs can be mapped to Voronoi Tessellations and Delaunay Triangulation.
 
 
+
+
 A large part of why I do research is that I want to help people.
 When I started doing undergraduate research, I worked in the Sonification Lab at Georgia Tech.
 There, I helped PhD students implement their research in creating  non-traditional user-interfaces geared towards the visually impaired community.
+
+
+
+\section{Future research}
 
 \end{document}
