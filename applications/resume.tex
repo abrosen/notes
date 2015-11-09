@@ -1,0 +1,115 @@
+\documentclass{res}
+%\usepackage{helvetica} % uses helvetica postscript font (download helvetica.sty)
+\pagestyle{headings}
+\setlength{\topmargin}{-0.6in}  % Start text higher on the page 
+\setlength{\textheight}{9.8in}  % increase textheight to fit more on a page
+\setlength{\headsep}{0.2in}     % space between header and text
+\setlength{\headheight}{12pt}   % make room for header
+\usepackage{fancyhdr}  % use fancyhdr package to get 2-line header
+\usepackage{hyperref}
+\renewcommand{\headrulewidth}{0pt} % suppress line drawn by default by fancyhdr
+\lhead{\hspace*{-\sectionwidth}Andrew Rosen} % force lhead all the way left
+\rhead{Page \thepage}  % put page number at right
+\cfoot{}  % the footer is empty
+\pagestyle{fancy} % set pagestyle for the document
+
+\begin{document}
+\thispagestyle{empty} % this page does not have a header
+
+% Center the name over the entire width of resume:
+ \moveleft.5\hoffset \centerline{\large\bf Andrew B. Rosen}
+% Draw a horizontal line the whole width of resume:
+ \moveleft\hoffset\vbox{\hrule width\resumewidth height 2.5pt}\smallskip
+  \moveleft.5\hoffset\centerline{Curriculum Vitae}
+
+\moveleft\hoffset\vbox{
+\begin{minipage}{0.38\textwidth}
+\begin{flushleft}
+{\bf Postal Address} \\ 
+Andrew B. Rosen\\ 
+Department of Computer Science \\ 
+Georgia State University \\ 
+25 Park Place, Rm. 648 \\ 
+Atlanta, Ga. 30303 
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.7\textwidth}
+\begin{flushright}
+\hfill {\bf Other Contact Information} \\ 
+\hfill (678) 665-1415(mobile) \\ 
+\hfill E-mail: \href{mailto:rosen@cs.gsu.edu}{rosen@cs.gsu.edu} \\ 
+\end{flushright} 
+\end{minipage}
+}
+ 
+\begin{resume} 
+
+\section{Education}          
+    
+{\bf Ph.D.} in Computer Science, Georgia State University. May 2016 (Expected)\\
+{\bf M.S.} in Computer Science, Georgia State University. May 2014, 3.89 GPA \\
+{\bf B.S.} in Computer Science, Georgia Institute of Technology. May 2010, 3.00 GPA\\
+{\bf Minor} in Music, Georgia Institute of Technology. May 2010\\
+	
+\section{Appointments}
+{\bf 2CI Astroinformatics Fellow,} Georgia State University, Aug 2012 - Present\\
+{\bf Graduate Research Assistant,} Georgia State University, Aug 2011 - Present\\
+{\bf Graduate Lab Assistant,} Georgia State University, May 2011 - 2013
+
+\section{Publications}
+\begin{enumerate}
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois
+	``MapReduce on a Chord Distributed Hash Table''
+	Presentation ICA CON 2014, Poster at IPDPS 2014 PhD Forum
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison
+	``VHASH: Spatial DHT based on Voronoi Tessellation''
+	ICA CON 2014
+	\item  Erin-Elizabeth A. Durham, Andrew Rosen, Robert W. Harrison
+	``A Model Architecture for Big Data applications using Relational Databases''
+	2014 IEEE BigData - C4BD2014 - Workshop on Complexity for Big Data
+	\item Chinua Umoja, J.T. Torrance, Erin-Elizabeth A. Durham, Andrew Rosen, Dr. Robert Harrison
+	``A Novel Approach to Determine Docking Locations Using Fuzzy Logic and Shape Determination''
+	2014 IEEE BigData - Poster and Short Paper
+	\item  Erin-Elizabeth A. Durham, Andrew Rosen, Robert W. Harrison
+	``Optimization of Relational Database Usage Involving Big Data''
+	IEEE SSCI 2014 - CIDM 2014 - The IEEE Symposium Series on Computational Intelligence and Data Mining
+	\item Brendan Benshoof, Andrew Rosen, Anu G. Bourgeois, Robert W. Harrison
+	``A Distributed Greedy Heuristic for Computing Voronoi Tessellations With Applications Towards Peer-to-Peer Network''
+	IEEE IPDPS 2015 - Workshop on Dependable Parallel, Distributed and Network-Centric Systems
+	\item Chaoyang Li, Andrew Rosen,  and Anu G. Bourgeois
+	``A Novel Approach to Efficiently Detect 3D Full-View Coverage for Camera Sensor Networks''
+	Submitted to IPDPS 2016 
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois
+	``UrDHT: A Unified Model for Distributed Hash Tables''
+	Submitted to IPDPS 2016
+	\item Andrew Rosen, Brendan Benshoof, Robert W. Harrison, Anu G. Bourgeois
+	``The Sybil Attack on Peer-to-Peer Networks From the Attacker's Perspective''
+	In preparation
+	
+\end{enumerate}
+
+
+\newpage
+
+\section{Service}
+{\bf Vice Chair,} Georgia State University Chapter of the Association for Computing Machinery (ACM),  May 2012 - Present\\
+{\bf Treasurer,} Georgia State University Chapter of the Association for Computing Machinery (ACM), May 2012 - May 2014\\
+{\bf New Graduate Student Orientation Panelist}, Georgia State University, 2014-2015\\
+{\bf Department Representative,} Georgia State University Arts and Sciences Tech Fee Committee, 2013 - 2015\\
+
+\section{External Funding}
+\textbf{TCPP Travel Grant} for 28th IEEE International Parallel \& Distributed Processing Symposium
+
+\section{Honors and Awards}
+\textbf{Outstanding Graduate Student Teaching Award}, Department of Computer Science, Georgia State University, 2014
+
+\section{Employment}
+{\bf Instructor}, Georgia State University, Fall 2011 and 2012 (Data Structures), Spring 2014 (Introduction to Programming), Spring 2015 (System Level Programming)\\
+{\bf Developer}, Georgia Tech Sonification Lab, Atlanta, GA May-Dec 2010\\
+{\bf Undergraduate Researcher}, Georgia Tech Sonification Lab, Atlanta, GA Fall 2007 -Dec 2009
+
+
+
+\end{resume} 
+\section{References available upon request.}
+\end{document}
