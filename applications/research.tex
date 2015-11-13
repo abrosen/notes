@@ -5,6 +5,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage[left=1.00in, right=1.00in, top=1.00in, bottom=1.00in]{geometry}
 \author{Andrew Rosen}
 \title{Research Philosophy}
@@ -17,72 +18,74 @@
 % Empahsize that my research is applicable to big data problems and research
 % Talk about collaberation + inter-disciplinary
 
-\section*{Executive Summary}
+\section{Executive Summary}
 
 
 %I research and develop highly fault-tolerant and robust systems.
 
+
+\subsection{Motivation}
 I research and develop fault-tolerant systems because they are absolutely critical to the Internet and networking, which have become an essential part of our lives.
 Fault-tolerant and robust systems are what hold a complex environment like the Internet together.
 The Internet is made up of millions of computers/ billions of devices, all going wrong all the time.
 The packets are dropped, the routers are poisoned, the hard drives keep crashing, some suit/poor sod tripped over a power cable, the software is full of bugs, we meant to add security but it was adopted before we got the chance, and nobody can connect to the printer.
-
 It is, in a word, chaos.
 Complete chaos that works because smart people decided that failure was an assumption baked into every layer of every protocol.
 
-Fault-tolerance is in many ways the most important part of what makes the Internet and networking work in general , and as companies get bigger and create larger and larger intranets and datacenters, as more people in the third world gain access to the Intenet, adding billions of handheld devices that rival the power of last decade's consumer desktop, this problem is only going to get magnified.
+Fault-tolerance is in many ways the most important part of what makes the Internet and networking work in general.
+As companies grow and create larger and larger intranets and datacenters, as more people gain access to the Intenet, adding billions of handheld devices that rival the power of last decade's consumer desktop, this problem is only going to get magnified.
 
+\subsection{Broad Overview}
 
 My research primarily focuses on Distributed Hash Tables (DHTs), with applications towards peer-to-peer (P2P) networks, Big Data, and Distributed Computing.
-DHTs are primarily used in P2P applications. 
-Their decentralization and robustness make well suited for applications such as file-sharing, content distribution, multi-player video games, botnets, and video chat.
-
-
-
-My past and current research has focused on what makes a DHT, how can we define a DHT at its most abstract level.
-
-
-
-
-I believe i that collaboration is vital to academic growth.
-I have worked with researchers in both Computer Science and other scientific fields, including Astronomy, Biology, and Psychology.
+DHTs are primarily used in P2P applications due to their decentralization and robustness . 
+These qualities make them well suited for applications such as file-sharing, content distribution, multi-player video games, botnets, and video chat.
 
 
 
 
 
-\section{Past and Current Research}
 
+
+
+
+
+
+I found that DHTs can be mapped to Voronoi Tessellation and Delaunay Triangulation, and my coauthors and I created an efficient greedy heuristic for calculating the Voronoi Tessellation.
+
+
+\section{Past and Future Work}
+
+
+My past and current research focuses on using DHTs for distributed computing \cite{chordreduce} and defining a DHT at its most abstract level.
 There are many different types of DHTs, but all DHTs share very important qualities.
 They are \textit{scalable}, which means that each additional node in the network minimally impacts the cost of keeping the network organized.
 DHTs are also highly \textit{fault-tolerant}.
 Unlike many other systems, DHTs assume that nodes will be continuously entering and leaving the network.
 Because of the way DHTs are organized, they can handle large scale failures, such as a power outage affecting an entire city.
-The last quality of DHTs is that they are  \textit{load-balancing}. 
+The last quality of DHTs is that they are \textit{load-balancing}. 
 This means the data stored in a DHT is evenly distributed among nodes in the network.
 
 
-ChordReduce \cite{chordreduce} was a proof of concept for using distributed hash tables for distributed computing.  
-It used Chord \cite{chord}, a well studied DHT, and exploited its various features to perform MapReduce \cite{mapreduce} tasks, a very popular method for framing distributed computing problems.
-
-Unlike other distributed computing frameworks, we made no assumptions as to the context in which ChordReduce would be used.
-ChordReduce could be used in either a large datacenter or in completely heterogeneous, peer-to-peer context.
-In a heterogeneous network, we assume all the nodes represent different pieces of hardware, with differing levels of computational power and reliability.
-As a result, we needed to rigorously test the fault-tolerance of the system and made an exciting discovery while doing so.
-
-To test fault tolerance, each node essentially flipped a coin weighted in its favor, and when it lost the flip, left the network and reentered as a new node.
-This simulated a P2P concept called \textit{churn}, turbulence in the network caused by the continuous entering and leaving the network.
-Churn is normally a chaotic influence on the network, but we found that at high levels of churn, nodes advantageously redistributed work in such a way that tests with high levels of churn performed better than tests with low levels of churn.
-
-ChordReduce established three important ramifications.
-First, we experimentally demonstrated that DHTs are capable of being used as a framework for distributed computing.
-Second, DHT based distributed computing can have nodes enter the network at any time, even when a job is running, and be immediately put to work.
-Finally, we discovered that while churn is normally a disruptive force, at high levels it can be helpful to the network.
-
-All of these qualities are highly desirable in distributed computing, so it was a natural step for us to build distributed computing framework based on DHTs.
-We have shown in previous work that DHTs can be used to distribute work among nodes the same way data is distributed \cite{chordreduce}.
 
 
+\subsubsection*{Ramifications}
+Our research would have many applications within the field of Computer Science.
+Traditional MapReduce frameworks and other distributed computing solutions are limited to being deployed solely in a datacenter \cite{hadoopAssumptions}.
+Distributed computing frameworks built with UrDHT would be able to be deployed any context, be it a data center, a P2P network, or a volunteer computing pool.
+Furthermore, the autonomous load-balancing feature would allow frameworks to automatically give nodes with more power more work.
+
+Our framework would not only be of interest to computer scientists.
+The ``plug-and-play'' nature we envision would make it easy for experts in other fields to use our framework to solve computationally intensive problems.
+Some example problems are Monte-Carlo Methods (of interest to mathematicians and economists) and machine learning (of interest to biologists).
+
+This project would allow both organizations with large amounts of computing power and average developers with  fewer resources to spend less time setting up and configuring their hardware to work together.  
+The goal is for our software to make distributed computing more of matter of ``plug-and-play,'' allowing researchers to spend less time setting up and maintaining  computing platforms.
+
+
+
+
+\section{Misc}
 
 I find great value in abstracting techniques and platforms even further, as that makes it possible to see novel applications for various technologies.  
 This can be seen in my work on Distributed Hash Tables, where I showed that DHTs can be mapped to Voronoi Tessellations and Delaunay Triangulation.
@@ -94,6 +97,18 @@ The novelty of UrDHT is that it makes it easy for scientists in any field to con
 For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
 
 
+
+
+I believe that collaboration is vital to academic growth.
+I have worked with researchers in both Computer Science and other scientific fields, including Astronomy, Biology, and Psychology.
+
+
+
+
+
+
+
+
 A large part of why I do research is that I want to help people.
 When I started doing undergraduate research, I worked in the Sonification Lab at Georgia Tech.
 There, I helped PhD students implement their research in creating  non-traditional user-interfaces geared towards the visually impaired community.
@@ -101,5 +116,10 @@ There, I helped PhD students implement their research in creating  non-tradition
 
 
 \section{Future research}
+
+
+
+\bibliography{mine,dht,mapreduce}
+\bibliographystyle{plain}
 
 \end{document}
