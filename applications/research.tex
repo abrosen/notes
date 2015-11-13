@@ -24,7 +24,7 @@
 %I research and develop highly fault-tolerant and robust systems.
 
 
-\subsection{The Motivation for my Research}
+%\subsection{The Motivation for my Research}
 I research and develop fault-tolerant systems because they are absolutely critical to the Internet and networking, which have become an essential part of our lives.
 Fault-tolerant and robust systems are what hold a complex environment like the Internet together.
 %The Internet is made up of billions of devices, all going wrong all the time.
@@ -35,23 +35,33 @@ The Internet, by all rights, should not work, but it does because smart people d
 Fault-tolerance is in many ways the most important part of what makes the Internet and networking work in general.
 As companies grow and create larger and larger intranets and datacenters, as more people gain access to the Intenet, adding billions of handheld devices that rival the power of last decade's consumer desktop, this problem is only going to get magnified.
 
+
+
 \subsection{Broad Overview}
 
 My research primarily focuses on Distributed Hash Tables (DHTs), with applications towards peer-to-peer (P2P) networks, Big Data, and Distributed Computing.
 DHTs are primarily used in P2P applications due to their decentralization and robustness . 
 These qualities make them well suited for applications such as file-sharing, content distribution, multi-player video games, botnets, and video chat.
+Their qualities also make them suited for distributed computing.
 
-I will briefly summarize the past few years of my work and what direction it can take me here.
 
-My work with distributed hash tables started by creating a framework to perform distributed computing, particularly MapReduce, over a distributed hash table.
-This would mean I could perform MapReduce in a greater variety of contexts, not just in a data center.
+% % % %
+My research on distributed computing over distributed hash table has yielded a platform 
+I have worked with researchers not just in Computer Science, but Psychology, Astronomy, and Biology as well.
+I have seen first hand how fields outside Computer Science draw more and more heavily from distributed computing and big data.
+My platform can be used to solve not just problems in Computer Science, but be used by researchers in other fields to quickly create and deploy systems for solving Big Data problems.
 
-I researched how I could further abstract a DHT.
-I found that DHTs can be mapped to Voronoi Tessellation and Delaunay Triangulation, and my coauthors and I created an efficient greedy heuristic for calculating the Voronoi Tessellation.
 
-My coauthor and I created a framework called UrDHT, which can be viewed as a fully abstracted DHT.
 
-My dissertation focuses on implementing the distributed computing framework on a wider variety of topologies using UrDHT and creating an autonomous load-balancing strategy for nodes within a DHT.
+%I will briefly summarize the past few years of my work and what direction it can take me here.
+%
+%My work with distributed hash tables started by creating a framework to perform distributed computing, particularly MapReduce, over a distributed hash table.
+%This would mean I could perform MapReduce in a greater variety of contexts, not just in a data center.
+%
+%I researched how I could further abstract a DHT.
+%I found that DHTs can be mapped to Voronoi Tessellation and Delaunay Triangulation, and my coauthors and I created an efficient greedy heuristic for calculating the Voronoi Tessellation.
+%
+%My coauthor and I created a framework called UrDHT, which can be viewed as a fully abstracted DHT.
 
 \section{Past and Future Work}
 
@@ -99,14 +109,53 @@ Working with my coauthor, I found that DHTs can be cleanly mapped to Voronoi Tes
 By treating each node as a Voronoi generator, a node's range of keys becomes it's Voronoi region
 and links to nearby nodes correspond with the links forming the Delaunay Triangulations.
 
-We created a fast and greedy heuristic with which each node can quickly construct its own Delaunay Triangulations and  Voronoi Tessellation \cite{dgvh}.
+We created a distributed greedy heuristic with which each node can quickly construct its own Delaunay Triangulations and  Voronoi Tessellation \cite{dgvh}.
+Our heuristic works in any geometric space where the distance is defined.
+
+We used this to create an abstract DHT called UrDHT \cite{urdht}.
+UrDHT can be used to implement the topology and functionality  of any other DHT by defining the space the DHT operates in.
+
+UrDHT essentially acts as a ``fill-in-the-blanks'' for creating  distributed hash tables.
+The novelty of UrDHT is that it makes it easy for scientists in any field to construct a DHT based application.
+For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
+
 
 
 \subsection{Dissertation}
-My disseration has focused on combining all the aspects of my previous research.
+My dissertation focuses on implementing the distributed computing framework on a wider variety of topologies using UrDHT and creating an autonomous load-balancing strategy for nodes within a DHT.
+When I initially created ChordReduce, it used a single DHT, Chord \cite{chord}.
+One of the questions we needed to examine for future research was ``did the choice of DHT topology matter, and to what extent?''
+UrDHT provides an excellent means for answering this question, since it UrDHT makes it easy to construct the topology of other DHTs.
+
+The larger and more interesting question I am asking is how can churn be leveraged to speed up computation.
+I found in previous research that extremely high levels of random churn helped the node complete computation faster.
+This is because the ranges of keys nodes are responsible for are unevenly sized, which means some nodes end up with more work than other nodes.
+
+Because of the rigorous fault-tolerance we built into the system, one of these nodes going offline was only minor inconvenience.
 
 
-\subsubsection*{Ramifications}
+
+%\section{Misc}
+%I find great value in abstracting techniques and platforms even further, as that makes it possible to see novel applications for various technologies.  
+%This can be seen in my work on Distributed Hash Tables, where I showed that DHTs can be mapped to Voronoi Tessellations and Delaunay Triangulation.
+%
+%
+%We used this insight to create UrDHT \cite{urdht}, a generalized framework for building distributed hash tables.
+%UrDHT essentially acts as a ``fill-in-the-blanks'' for creating  distributed hash tables.
+%The novelty of UrDHT is that it makes it easy for scientists in any field to construct a DHT based application.
+%For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
+%
+%I believe that collaboration is vital to academic growth.
+%I have worked with researchers in both Computer Science and other scientific fields, including Astronomy, Biology, and Psychology.
+%
+%A large part of why I do research is that I want to help people.
+%When I started doing undergraduate research, I worked in the Sonification Lab at Georgia Tech.
+%There, I helped PhD students implement their research in creating  non-traditional user-interfaces geared towards the visually impaired community.
+%
+
+
+\section{Future research}
+
 Our research would have many applications within the field of Computer Science.
 Traditional MapReduce frameworks and other distributed computing solutions are limited to being deployed solely in a datacenter \cite{hadoopAssumptions}.
 Distributed computing frameworks built with UrDHT would be able to be deployed any context, be it a data center, a P2P network, or a volunteer computing pool.
@@ -119,40 +168,6 @@ Some example problems are Monte-Carlo Methods (of interest to mathematicians and
 This project would allow both organizations with large amounts of computing power and average developers with  fewer resources to spend less time setting up and configuring their hardware to work together.  
 The goal is for our software to make distributed computing more of matter of ``plug-and-play,'' allowing researchers to spend less time setting up and maintaining  computing platforms.
 
-
-
-
-\section{Misc}
-
-I find great value in abstracting techniques and platforms even further, as that makes it possible to see novel applications for various technologies.  
-This can be seen in my work on Distributed Hash Tables, where I showed that DHTs can be mapped to Voronoi Tessellations and Delaunay Triangulation.
-
-
-We used this insight to create UrDHT \cite{urdht}, a generalized framework for building distributed hash tables.
-UrDHT essentially acts as a ``fill-in-the-blanks'' for creating  distributed hash tables.
-The novelty of UrDHT is that it makes it easy for scientists in any field to construct a DHT based application.
-For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
-
-
-
-
-I believe that collaboration is vital to academic growth.
-I have worked with researchers in both Computer Science and other scientific fields, including Astronomy, Biology, and Psychology.
-
-
-
-
-
-
-
-
-A large part of why I do research is that I want to help people.
-When I started doing undergraduate research, I worked in the Sonification Lab at Georgia Tech.
-There, I helped PhD students implement their research in creating  non-traditional user-interfaces geared towards the visually impaired community.
-
-
-
-\section{Future research}
 
 
 
