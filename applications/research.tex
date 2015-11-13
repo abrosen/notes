@@ -1,4 +1,4 @@
-\documentclass[10pt, a4paper]{article}
+\documentclass[letterpaper]{article}
 \usepackage[latin1]{inputenc}
 \usepackage{amsmath}
 
@@ -24,13 +24,13 @@
 %I research and develop highly fault-tolerant and robust systems.
 
 
-\subsection{Motivation}
+\subsection{The Motivation for my Research}
 I research and develop fault-tolerant systems because they are absolutely critical to the Internet and networking, which have become an essential part of our lives.
 Fault-tolerant and robust systems are what hold a complex environment like the Internet together.
-The Internet is made up of millions of computers/ billions of devices, all going wrong all the time.
-The packets are dropped, the routers are poisoned, the hard drives keep crashing, some suit/poor sod tripped over a power cable, the software is full of bugs, we meant to add security but it was adopted before we got the chance, and nobody can connect to the printer.
-It is, in a word, chaos.
-Complete chaos that works because smart people decided that failure was an assumption baked into every layer of every protocol.
+%The Internet is made up of billions of devices, all going wrong all the time.
+The Internet is made up of billions of devices, each the source of thousands of tiny errors every day.
+The packets are dropped, the routers are poisoned, the hard drives keep crashing, someone tripped over a power cable, the software is full of bugs, the developers meant to add security but it was adopted before we got the chance, and nobody can connect to the printer.
+The Internet, by all rights, should not work, but it does because smart people decided that failure was an assumption that needed to be baked into every layer of every protocol.
 
 Fault-tolerance is in many ways the most important part of what makes the Internet and networking work in general.
 As companies grow and create larger and larger intranets and datacenters, as more people gain access to the Intenet, adding billions of handheld devices that rival the power of last decade's consumer desktop, this problem is only going to get magnified.
@@ -41,21 +41,19 @@ My research primarily focuses on Distributed Hash Tables (DHTs), with applicatio
 DHTs are primarily used in P2P applications due to their decentralization and robustness . 
 These qualities make them well suited for applications such as file-sharing, content distribution, multi-player video games, botnets, and video chat.
 
+I will briefly summarize the past few years of my work and what direction it can take me here.
 
+My work with distributed hash tables started by creating a framework to perform distributed computing, particularly MapReduce, over a distributed hash table.
+This would mean I could perform MapReduce in a greater variety of contexts, not just in a data center.
 
-
-
-
-
-
-
-
-
+I researched how I could further abstract a DHT.
 I found that DHTs can be mapped to Voronoi Tessellation and Delaunay Triangulation, and my coauthors and I created an efficient greedy heuristic for calculating the Voronoi Tessellation.
 
+My coauthor and I created a framework called UrDHT, which can be viewed as a fully abstracted DHT.
+
+My dissertation focuses on implementing the distributed computing framework on a wider variety of topologies using UrDHT and creating an autonomous load-balancing strategy for nodes within a DHT.
 
 \section{Past and Future Work}
-
 
 My past and current research focuses on using DHTs for distributed computing \cite{chordreduce} and defining a DHT at its most abstract level.
 There are many different types of DHTs, but all DHTs share very important qualities.
@@ -64,9 +62,48 @@ DHTs are also highly \textit{fault-tolerant}.
 Unlike many other systems, DHTs assume that nodes will be continuously entering and leaving the network.
 Because of the way DHTs are organized, they can handle large scale failures, such as a power outage affecting an entire city.
 The last quality of DHTs is that they are \textit{load-balancing}. 
-This means the data stored in a DHT is evenly distributed among nodes in the network.
+This means the data stored in a DHT is evenly distributed among nodes in the network using a cryptographic hash function.
 
 
+\subsection{Distributed Computing on A DHT}
+
+The scalability, fault-tolerance, and load-balancing qualities of DHTs are also highly desirable qualities in a distributed computing framework.
+As such, I wanted to see if it was possible to use DHTs to perform distributed computing.
+
+ChordReduce \cite{chordreduce} was a proof of concept for using distributed hash tables for distributed computing.  
+It used Chord \cite{chord}, a well studied DHT, and exploited its various features to perform MapReduce \cite{mapreduce} tasks, a very popular method for framing distributed computing problems.
+
+Unlike other distributed computing frameworks, we made no assumptions as to the context in which ChordReduce would be used.
+ChordReduce could be used in either a large datacenter or in completely heterogeneous, peer-to-peer context.
+In a heterogeneous network, we assume all the nodes represent different pieces of hardware, with differing levels of computational power and reliability.
+As a result, we needed to rigorously test the fault-tolerance of the system and made an exciting discovery while doing so.
+
+To test fault tolerance, each node essentially flipped a coin weighted in its favor, and when it lost the flip, left the network and reentered as a new node.
+This simulated churn, turbulence in the network caused by the continuous entering and leaving the network.
+
+Churn is normally a chaotic influence on the network. 
+However, we found that at high levels of churn, nodes advantageously redistributed work in such a way that tests with high levels of churn performed better than tests with low levels of churn.
+
+ChordReduce established three important ramifications.
+First, we experimentally demonstrated that DHTs are capable of being used as a framework for distributed computing.
+Second, DHT based distributed computing can have nodes enter the network at any time, even when a job is running, and be immediately put to work.
+Finally, we discovered that while churn is normally a disruptive force, at high levels it can be helpful to the network.
+
+
+\subsection{Abstracting DHTs}
+I became interested in finding if there was a way of abstracting DHTs.
+While there has been extensive literature defining what a DHT does, none of these rigorously define how the various pieces of a DHT can be defined.
+For example, each node in a DHT has a range of keys which it is responsible for, but this range is defined differently for every DHT. 
+
+Working with my coauthor, I found that DHTs can be cleanly mapped to Voronoi Tessellations and Delaunay Triangulations.
+By treating each node as a Voronoi generator, a node's range of keys becomes it's Voronoi region
+and links to nearby nodes correspond with the links forming the Delaunay Triangulations.
+
+We created a fast and greedy heuristic with which each node can quickly construct its own Delaunay Triangulations and  Voronoi Tessellation \cite{dgvh}.
+
+
+\subsection{Dissertation}
+My disseration has focused on combining all the aspects of my previous research.
 
 
 \subsubsection*{Ramifications}
