@@ -25,7 +25,7 @@
 
 
 %\subsection{The Motivation for my Research}
-I research and develop fault-tolerant systems because they are absolutely critical to the Internet and networking, which have become an essential part of our lives.
+My research area focuses on developing fault-tolerant systems because they are absolutely critical to networking and the Internet, which have become an essential part of our lives.
 Fault-tolerant and robust systems are what hold a complex environment like the Internet together.
 %The Internet is made up of billions of devices, all going wrong all the time.
 The Internet is made up of billions of devices, each the source of thousands of tiny errors every day.
@@ -35,12 +35,8 @@ The Internet, by all rights, should not work, but it does because smart people d
 Fault-tolerance is in many ways the most important part of what makes the Internet and networking work in general.
 As companies grow and create larger and larger intranets and datacenters, as more people gain access to the Intenet, adding billions of handheld devices that rival the power of last decade's consumer desktop, this problem is only going to get magnified.
 
-
-
-\subsection{Broad Overview}
-
 My research primarily focuses on Distributed Hash Tables (DHTs), with applications towards peer-to-peer (P2P) networks, Big Data, and Distributed Computing.
-DHTs are primarily used in P2P applications due to their decentralization and robustness . 
+DHTs are primarily used in P2P applications due to their decentralization and robustness. 
 These qualities make them well suited for applications such as file-sharing, content distribution, multi-player video games, botnets, and video chat.
 Their qualities also make them suited for distributed computing.
 
@@ -51,10 +47,10 @@ I have worked with researchers not just in Computer Science, but Psychology, Ast
 I have seen first hand how fields outside Computer Science draw more and more heavily from distributed computing and big data.
 My platform can be used to solve not just problems in Computer Science, but be used by researchers in other fields to quickly create and deploy systems for solving Big Data problems.
 
-I like things that keep working when they break.
-
-
-Regex search github for passwords
+%I like things that keep working when they break.
+%
+%
+%Regex search github for passwords
 
 %I will briefly summarize the past few years of my work and what direction it can take me here.
 %
@@ -66,7 +62,7 @@ Regex search github for passwords
 %
 %My coauthor and I created a framework called UrDHT, which can be viewed as a fully abstracted DHT.
 
-\section{Past and Future Work}
+\section{Past and Current Work}
 
 My past and current research focuses on using DHTs for distributed computing \cite{chordreduce} and defining a DHT at its most abstract level.
 There are many different types of DHTs, but all DHTs share very important qualities.
@@ -103,7 +99,7 @@ Second, DHT based distributed computing can have nodes enter the network at any 
 Finally, we discovered that while churn is normally a disruptive force, at high levels it can be helpful to the network.
 
 
-\subsection{Abstracting DHTs}
+\subsection{UrDHT}
 I became interested in finding if there was a way of abstracting DHTs.
 While there has been extensive literature defining what a DHT does, none of these rigorously define how the various pieces of a DHT can be defined.
 For example, each node in a DHT has a range of keys which it is responsible for, but this range is defined differently for every DHT. 
@@ -122,19 +118,29 @@ UrDHT essentially acts as a ``fill-in-the-blanks'' for creating  distributed has
 The novelty of UrDHT is that it makes it easy for scientists in any field to construct a DHT based application.
 For computer scientists, UrDHT provides a means of rigorously comparing different architectures.
 
-
-
-\subsection{Dissertation}
-My dissertation focuses on implementing the distributed computing framework on a wider variety of topologies using UrDHT and creating an autonomous load-balancing strategy for nodes within a DHT.
+I am currently implementing the distributed computing framework on a wider variety of topologies using UrDHT and creating an autonomous load-balancing strategy for nodes within a DHT.
 When I initially created ChordReduce, it used a single DHT, Chord \cite{chord}.
 One of the questions we needed to examine for future research was ``did the choice of DHT topology matter, and to what extent?''
 UrDHT provides an excellent means for answering this question, since it UrDHT makes it easy to construct the topology of other DHTs.
 
+
+\subsection{Autonomous Load Balancing}
 The larger and more interesting question I am asking is how can churn be leveraged to speed up computation.
 I found in previous research that extremely high levels of random churn helped the node complete computation faster.
 This is because the ranges of keys nodes are responsible for are unevenly sized, which means some nodes end up with more work than other nodes.
 
 Because of the rigorous fault-tolerance we built into the system, one of these nodes going offline was only minor inconvenience.
+As the computation continues, however, more and more nodes are idle without any work.
+When one of these nodes leaves the network and rejoins, it either will join in a location where it cannot acquire any additional work, or it will reenter at a location where it can.
+The former case has no impact on the network's running time, whereas the latter redistributes some of the work.
+This was the source of our speedup in our experiments.
+
+If an essentially random application of churn can result in a speedup, is there a strategy I can use to control this process and create a larger benefit to runtime?
+I am currently examining multiple strategies that would leverage the ``benefits'' of churn.
+These strategies would allow nodes to strategically and autonomously redeploy themselves to new locations when needed, which would mean workloads could be redistributed on the fly.
+To address differences in computing power in a heterogeneous network, computationally stronger nodes could represent themselves as multiple nodes within the network.
+This is effectively applying the Sybil attack \cite{sybil}, but in a controlled manner to the network's benefit.
+
 
 
 
@@ -157,24 +163,55 @@ Because of the rigorous fault-tolerance we built into the system, one of these n
 %
 
 
-\section{Future research}
+\section{Future Research}
 
-Our research would have many applications within the field of Computer Science.
-Traditional MapReduce frameworks and other distributed computing solutions are limited to being deployed solely in a datacenter \cite{hadoopAssumptions}.
-Distributed computing frameworks built with UrDHT would be able to be deployed any context, be it a data center, a P2P network, or a volunteer computing pool.
-Furthermore, the autonomous load-balancing feature would allow frameworks to automatically give nodes with more power more work.
+%\paragraph*{Distributed Databases}
 
-Our framework would not only be of interest to computer scientists.
-The ``plug-and-play'' nature we envision would make it easy for experts in other fields to use our framework to solve computationally intensive problems.
-Some example problems are Monte-Carlo Methods (of interest to mathematicians and economists) and machine learning (of interest to biologists).
-
-This project would allow both organizations with large amounts of computing power and average developers with  fewer resources to spend less time setting up and configuring their hardware to work together.  
-The goal is for our software to make distributed computing more of matter of ``plug-and-play,'' allowing researchers to spend less time setting up and maintaining  computing platforms.
+\paragraph*{Wireless Sensor Networks Sleep Strategies} C\u{a}rbunar et al.\ \cite{carbunar2004distributed} demonstrated how Voronoi tessellations could be used to solve the \textit{coverage-boundary} problem in wireless ad-hoc networks.
+The coverage-boundary problem asks which nodes are on the physical edge of the network.
+This problem  has applications such as setting sleep schedules \cite{chen2008voronoi}.
+Since our greedy Voronoi heuristic is designed for a distributed environment, it appears well suited for applications in WANETs. 
 
 
+\paragraph*{Interdisciplinary Applications}
+UrDHT has many applications for interdisciplinary research, as it makes it easy to deploy for distributed problems that occur in a wide variety of disciplines.
+Monte-Carlo approximations are particularly well suited for UrDHT's computation model.
+
+Another set of wide-ranging problems is classification.  
+I can design the system to build a classification model from test samples and distribute this model to the nodes containing data to be classified.
+Some examples problem this can be applied to is classifying supernovae, or evaluating random forests.
 
 
-\bibliography{mine,dht,mapreduce}
+\paragraph*{Content Distribution Networks}
+
+
+\paragraph*{Distributed DNS}
+The Stop Online Piracy Act and Protect IP Act, both introduced and vigorously debated in 2011, brought attention to the fact that DNS could be fractured by filtering by the US government.
+This is a consequence of DNS being centralized  and adopted before security was fully addressed.
+One of my goals is to deploy a fully decentralized and distributed DNS servers using UrDHT.
+A decentralized DNS service was previously considered impracticable \cite{cox2002serving}, but new technology, such as the Blockchain, have addressed a number of previous concerns.
+
+
+
+
+
+%
+%Our research would have many applications within the field of Computer Science.
+%Traditional MapReduce frameworks and other distributed computing solutions are limited to being deployed solely in a datacenter \cite{hadoopAssumptions}.
+%Distributed computing frameworks built with UrDHT would be able to be deployed any context, be it a data center, a P2P network, or a volunteer computing pool.
+%Furthermore, the autonomous load-balancing feature would allow frameworks to automatically give nodes with more power more work.
+%
+%Our framework would not only be of interest to computer scientists.
+%The ``plug-and-play'' nature we envision would make it easy for experts in other fields to use our framework to solve computationally intensive problems.
+%Some example problems are Monte-Carlo Methods (of interest to mathematicians and economists) and machine learning (of interest to biologists).
+%
+%This project would allow both organizations with large amounts of computing power and average developers with  fewer resources to spend less time setting up and configuring their hardware to work together.  
+%The goal is for our software to make distributed computing more of matter of ``plug-and-play,'' allowing researchers to spend less time setting up and maintaining  computing platforms.
+%
+
+
+
+\bibliography{mine,dht,mapreduce,dns,wanet}
 \bibliographystyle{plain}
 
 \end{document}
