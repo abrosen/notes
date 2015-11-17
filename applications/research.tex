@@ -74,7 +74,7 @@ The last quality of DHTs is that they are \textit{load-balancing}.
 This means the data stored in a DHT is evenly distributed among nodes in the network using a cryptographic hash function.
 
 
-\subsection{Distributed Computing on A DHT}
+\subsection{Distributed Computing on a DHT}
 
 The scalability, fault-tolerance, and load-balancing qualities of DHTs are also highly desirable qualities in a distributed computing framework.
 As such, I wanted to see if it was possible to use DHTs to perform distributed computing.
@@ -165,12 +165,16 @@ This is effectively applying the Sybil attack \cite{sybil}, but in a controlled 
 
 \section{Future Research}
 
+
+
+
+
 %\paragraph*{Distributed Databases}
 
 \paragraph*{Wireless Sensor Networks Sleep Strategies} C\u{a}rbunar et al.\ \cite{carbunar2004distributed} demonstrated how Voronoi tessellations could be used to solve the \textit{coverage-boundary} problem in wireless ad-hoc networks.
 The coverage-boundary problem asks which nodes are on the physical edge of the network.
 This problem  has applications such as setting sleep schedules \cite{chen2008voronoi}.
-Since our greedy Voronoi heuristic is designed for a distributed environment, it appears well suited for applications in WANETs. 
+Since our greedy Voronoi heuristic is designed for a distributed environment, it is well suited for applications in WANETs. 
 
 
 \paragraph*{Interdisciplinary Applications}
@@ -183,6 +187,9 @@ Some examples problem this can be applied to is classifying supernovae, or evalu
 
 
 \paragraph*{Content Distribution Networks}
+Content Distribution Networks benefit heavily from the qualities of Distributed Hash Tables.
+One quality provided by UrDHT is the ability to optimize routing over a desired attribute, such as latency or bandwidth.
+
 
 
 \paragraph*{Distributed DNS}
