@@ -9,6 +9,10 @@ def buildDict(words):
 		d[k].append(word)
 	return d
 
+def isSquare():
+	pass
+
+	
 def doTheThing():
 	words = open(FILE).read().split(',')
 	words = list(map(lambda x: x.strip('"'), words))
