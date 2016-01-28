@@ -5,7 +5,7 @@ r = []
 
 def initTowers(size):
     
-    for i in xrange(size,0,-1):
+    for i in range(size,0,-1):
         l.append(i)
     printStep()
     move(size,l, r, m)
@@ -22,10 +22,8 @@ def move(n,start,end,store):
     
         
 def printStep():
-    print l
-    print m
-    print r
-    print
+    print(l), print(m), print(r)
+    print()
 
 
 initTowers(4)

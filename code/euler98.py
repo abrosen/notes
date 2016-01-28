@@ -17,14 +17,16 @@ def isSquare(number):
 # x0 is initial guess
 # f is function, g is derivative
 def newtons(x0,f,g):
-	x =  x0 -  (f(x0)/g(x0))
-	last = x +1
+	x = x0
+	last = x0+1
 	while abs(last - x) > 0.0000000001:
-		last = x 
+		
+		last = x
+		x =  x -  (f(x)/g(x)) 
 	return x
 		
 def sqrt(x0):
-	f = lambda x: x**2 - x0
+	f = lambda x: x**2  - x0 
 	g = lambda x: 2*x
 	return newtons(x0, f, g)
 
@@ -41,4 +43,5 @@ def doTheThing():
 	print(anagrams)
 
 if __name__ == '__main__':
-	doTheThing()
+	# doTheThing()
+	print(sqrt(4))
