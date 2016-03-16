@@ -1,0 +1,527 @@
+%\documentclass[11pt,aspectratio=169]{beamer}
+\documentclass[11pt]{beamer}
+\usetheme{Darmstadt}
+%\usecolortheme{dolphin}
+
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[a4paper]
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{algorithmic}
+\captionsetup{compatibility=false}
+
+\author{Andrew Rosen}
+\title[Teaching Experiences]{Computer Science Curriculum and Teaching}
+
+%\logo{\includegraphics[height=1cm]{figs/logo}}
+%\institute{Georgia State University}
+\date{May 18th, 2016}
+%\subject{}
+%\setbeamercovered{transparent}
+%\setbeamertemplate{navigation symbols}{}
+
+
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tiny{\tableofcontents[currentsection]}
+  \end{frame}
+}
+
+\begin{document}
+	
+	
+	
+\maketitle
+
+
+\section{Introduction}
+
+\subsection{About Me}
+
+\begin{frame}{Research}
+	\begin{itemize}
+		\item Fault Tolerant Systems
+		\item Distributed Hash Tables
+		\item  Non-traditional systems and problems 
+		\begin{itemize}
+			\item DHT Computing, 
+			\item VANETS
+			\item Delay Tolerant Networks
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Teaching}
+	Taught:
+	\begin{itemize}
+		\item Principles of Computer Science
+		\item System Level and C Programming (eg Unix and C)
+		\item Data Structures
+	\end{itemize}
+	
+	TA'd the above and:
+	\begin{itemize}
+		\item Networks
+		\item Security
+		\item Principles of Computer Science (with robots)
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Personal Bias}
+	\begin{itemize}
+		\item I love Python
+		\pause
+		\item Draw on history and other disciplines whenever possible
+		\pause 
+		\begin{itemize}
+			\item Creates real world examples
+			\item Creates better stories
+		\end{itemize}
+		\pause
+		\item I limit the use of slides
+		\begin{itemize}
+			\item I often create my own materials and lecture notes for students
+			\item I live code when I can
+		\end{itemize}
+		\pause
+		\item \LaTeX
+	\end{itemize}
+\end{frame}
+
+\section{The Courses I Taught}
+
+\subsection{Intro to CS}
+\begin{frame}{Principles of Computer Science}
+	\begin{itemize}
+		\item First real programming class
+		\item Arguably the hardest to teach
+		\item Taught 100 class, twice 
+		\item Four lab sections
+		\item Uses Java
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Curriculum}
+	\begin{itemize}
+		\item History and Definitions
+		\item Syntax
+		\item Methods
+		\item Loops and Conditions
+		\item OO Basics and Strings
+		\item Binary
+		\item CS Breadth
+	\end{itemize}
+\end{frame}
+
+
+\subsection{Unix and C}
+
+\begin{frame}{System Level Programming}
+	\begin{itemize}
+		\item Taught once, TA'd once
+		\item 51 students
+		\item Covers proficiency in Unix
+		\item Intermediate C
+		\item Huge amount of subject matter
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Unix Content}
+	\begin{itemize}
+		\item Bash basics and commands
+		\item Permissions
+		\item Regex
+		\item awk/sed/grep and other scripting tools
+		\item Malfeasance
+		\item A tad bit of Python
+		
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{C Content}
+	\begin{itemize}
+		\item Differences between C and Java
+		\item Pointers and pointer arithmetic
+		\item Memory management
+		\item Some brief exposure to compilers and interpreters
+	\end{itemize}
+	
+\end{frame}
+
+\subsection{Data Structures}
+
+\begin{frame}{My Favorite Course: Data Structures}
+	\begin{itemize}
+		\item Taught Twice
+		\item 25 students
+		\item Best class for first time instructors due to :
+			\begin{itemize}
+				\item Class makeup and experience
+				\item Modular content
+			\end{itemize}
+		\item Our course had an emphasis on documentation. 
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}{My Favorite Course: Data Structures}
+	\begin{itemize}
+		\item Taught Twice
+		\item 25 students
+		\item Best class for first time instructors due to:
+		\begin{itemize}
+			\item Class makeup and experience
+			\item Modular content
+		\end{itemize}
+		\item Our course had an emphasis on documentation. 
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}{Content}
+	\begin{itemize}
+		\item Review and last bits of Java
+		
+		\begin{itemize}
+			\item Sometimes grad students w/ different background
+			\item Try/Catch
+			\item File I/O
+		\end{itemize}
+		\pause
+		\item Lists
+		\begin{itemize}
+			\item ArrayList
+			\item Linked Lists
+		\end{itemize}
+		\pause
+		\item Stacks and Queues
+		\begin{itemize}
+			\item Good time to introduce Java's Generics
+		\end{itemize}
+		\pause
+		\item Trees
+		\pause
+		\item Graphs (if time remains)
+	\end{itemize}
+\end{frame}
+
+\section{Challenges and Solutions}
+
+\subsection{General}
+
+\begin{frame}{The Skill Gap}
+	\begin{itemize}
+		\item Skill gap has many sources
+		\item Inform experienced students
+		\item Address skill gap; students feel less intimidated
+		\item Target and gauge the middle row
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Fear and Shyness}
+	
+	Students hate being wrong and are shy\footnote{Sweeping Generalization}.  How do we encourage interaction?
+	\pause
+	\begin{itemize}
+		\item Focus on the middle row
+		\pause
+		
+		\item I use a story about cold reading
+		\begin{itemize}
+			\item People remember hits more than misses.
+		\end{itemize}
+		\pause
+		
+		\item Make yourself available 
+		\pause
+		
+		\item Foster relationships
+		\pause
+		
+		\item Go out of your way to help
+	\end{itemize}
+	\pause
+	These seem obvious, but they require repetition in class.
+\end{frame}
+
+
+\begin{frame}{Unfamiliarity}
+	\begin{itemize}
+		\item CS courses are different.
+		\begin{itemize}
+			\item Most similar to Math
+			\item Expectations most similar to Music
+		\end{itemize}
+		
+		\item Relate unfamiliar concepts to:
+		\begin{itemize}
+			\item The real world
+			\item Other domains
+			\item Previous knowledge
+		\end{itemize}
+		\item Build on what students know
+		\item Revisit old material
+		\item Make it cool
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Example Problem}
+	Recently, NASA demonstrated a laser communication system which was able to transmit data from the Moon to Earth over a link with a bandwidth of 622 megabits/second.  How long would it take an astronaut to send a 500 megabyte video from the Moon to Earth?
+	
+	\begin{itemize}
+		\item The average distance from Earth to its moon is 384,400 kilometers
+		
+		\item Speed of light ~ 300,000,000 $ \frac{m}{s} $
+		
+	\end{itemize}
+\end{frame}
+
+\subsection{Course Specific}
+
+
+\begin{frame}{Beware of the Pitfalls}
+	Know where students begin to fall behind.
+	\begin{itemize}
+		\item Consistent model of assignment in Intro
+		\item Pointers and arrays in C
+		\item Everything is a file in Unix
+		\item Linked Lists and pointers in Data Structures
+	\end{itemize}
+\end{frame}
+\section{Changes}
+
+\begin{frame}
+\begin{quotation}
+	``There are only two kinds of languages: the ones people complain about and the ones nobody uses.''
+\end{quotation}
+-- Bjarne Stroustrup, creator of C++
+\end{frame}
+
+
+\subsection{What I Would Change in Intro}
+\begin{frame}{Why Do We Use Java}
+	\begin{itemize}
+		\item Universal
+		\item A whole lot like C and C++ (and anything based off them)
+		\item Good teaching resources
+		\item References a good enough starting point for pointers
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{I Prefer Python}
+	\begin{itemize}
+		\item No ``black magic'' 
+		\begin{itemize}
+			\item (well less of it is immediately apparent)
+		\end{itemize}
+		\item Easy to teach concepts and pseudocode 
+		\item Syntax is easy and forgiving
+		\item Dictionaries
+	\end{itemize}
+\end{frame}
+
+
+
+\subsection{General Changes}
+
+\begin{frame}{Other Suggestions}
+	\begin{itemize}
+	\item Hard concepts earlier
+	\item More complete examples of code before we make students code.
+	\item Experiment
+		\begin{itemize}
+			\item Active Learning
+			\item Flipped Classroom
+		\end{itemize}
+	\end{itemize}
+		
+\end{frame}
+
+
+\section{Research Background}
+
+\subsection{Distributed Computing and Challenges}
+\begin{frame}{Challenges of Distributed Computing}
+	Distributed Computing platforms experience these challenges:
+	\begin{description}
+		\item<1->[Scalability] As the network grows, more resources are spent on maintaining and organizing the network. 
+		\note<1>{Remember, computers aren't telepathic. There's always an overhead cost.  It will grow.   The challenge of scalability is designing a protocol  in which this cost grows at an extremely slow rate. 
+			For example, a single node keeping track of all members of the system might be a tenable situation up to a certain point, but eventually, the cost becomes too high for a single node.}
+		\item<2->[Fault-Tolerance] As more machines join the network, there is an increased risk of failure. \note<2>{Failure Hardware failure is a thing that can happen. Individually the chances are low, but this becomes high when we're talking about millions of machines.  Also, what happens in a P2P environment.  Nodes leaving is treated as a failure.}  
+		\item<3->[Load-Balancing] Tasks need to be evenly distributed among all the workers. \note<3>{If we are splitting the task into multiple parts, we need some mechanism to ensure that each worker gets an even (or close enough) amount of work.}
+	\end{description}
+	
+\end{frame}
+
+
+\subsection{What Are Distributed Hash Tables?}
+
+\begin{frame}{Distributed Key/Value Stores}
+	\textbf{Distributed Hash Tables }are mechanisms for storing values associated with certain keys.
+	\begin{itemize}
+		\item Values, such as filenames, data, or IP/port combinations are associated with keys.
+		\item These keys are generated by taking the hash of the value.
+		\item We can get the value for a certain key by asking any node in the network.
+	\end{itemize}
+\end{frame}
+
+
+\note{At their core, Distributed Hash Tables are giant lookup  tables.  Given a key, it will return the value associated with that key, if it exists.
+	These keys, or hash keys, are generated by a hash function, such as SHA1 or MD5.
+	These hash functions use black magic using prime numbers and modular arithmetic to return a close to unique identifier associated with a given input.
+	The key about the keys is the same input will always produce the same output.
+	From a probability standpoint, they are distributed uniformly at random.
+}
+
+
+
+\begin{frame}{How Does It Work?}
+	
+	\begin{itemize}
+		\item DHTs organize a set of nodes, each identified by an \textbf{ID}. 
+		\item Nodes are responsible for the keys that are closest to their IDs.
+		\item Nodes maintain a small list of other peers in the network.
+		\begin{itemize}
+			\item Typically a size $ \log(n)$ subset of all nodes in the network.
+		\end{itemize}
+		\item Each node uses a very simple routing algorithm to find a node responsible for any given key.  %Explain what that is
+	\end{itemize}
+\end{frame}
+
+\note[itemize]{
+	
+	\item We'll explain in greater detail later, but briefly:
+	\item DHTs are composed of a set of nodes, each identified by a hashed ID
+	\item Each node is responsible for the key/value pairs that fall within its zone of responsibility, which can be thought of as the nodes closest to it/.
+	\item Nodes keep a list of other nodes in the network, composed of peers that are close to it in terms of ID, and shortcuts to achieve sublinear lookup time.
+	\item To lookup a particular key, the node asks ``Am I responsible for this key?'' If yes, yay! If no, I forward this message to the peer I know who I think is best able answer this question.
+}
+
+\begin{frame}{Current Applications}
+	Applications that use or incorporate DHTs:
+	\begin{itemize}
+		\item P2P File Sharing applications, such as BitTorrent.
+		\item Distributed File Storage.
+		\item Distributed Machine Learning.
+		\item Name resolution in a large distributed database.
+	\end{itemize}
+\end{frame}
+
+\note[itemize]{
+	\item DHTs weren't necessarily designed with large-scale P2P applications in mind, but that use case was never ignored.
+	\item BitTorrent uses a DHT, called MainlineDHT, and has about 20 million nodes active at any given time, and has a churn of about 50 \% per day.
+	
+}
+
+%\begin{frame}{Strengths of DHTs }
+%	DHTs are designed for large P2P applications, which means they need to be (and are):
+%	\begin{itemize}
+%		\item[Scalable] 
+%		\begin{itemize}
+%			\item Each node knows a \emph{small} subset of the entire network.
+%			\item Join/leave operations impact very few nodes.
+%		\end{itemize}
+%		\item[Fault-Tolerant] 
+%		\begin{itemize}
+%			\item The network is decentralized.
+%			\item DHTs are designed to handle \alert{churn}.
+%
+%		\end{itemize}
+%		\item[Load-Balancing]
+%		\begin{itemize}
+%			\item Consistent hashing ensures that nodes and data are close to evenly distributed.
+%			\item Nodes are responsible for the data closest to it.
+%		\end{itemize}
+%	\end{itemize}
+%	
+%\end{frame}
+\subsection{Why DHTs and Distributed Computing}
+
+\begin{frame}{Strengths of DHTs }
+	DHTs are designed for large P2P applications, which means they need to be (and are):
+	\begin{itemize}
+		\item Scalable
+		\item Fault-Tolerant
+		\item Load-Balancing
+	\end{itemize}
+	
+\end{frame}
+
+\note[itemize]{
+	\item Scalability 
+	\begin{itemize}
+		\item Each node knows a \emph{small} subset of the entire network.
+		\item Join/leave operations impact very few nodes.
+		\item The subset each node knows is such that we have expected $ \lg(n) $ lookup
+	\end{itemize}
+	
+}
+
+\note[itemize]{
+	\item Fault-Tolerance 
+	\begin{itemize}
+		\item The network is decentralized.
+		\item DHTs are designed to handle churn.
+		\item Because Joins and node failures affect only nodes in the immediate vicinity, very few nodes are impacted by an individual operation.
+	\end{itemize}
+	\item Load Balancing
+	\begin{itemize}
+		\item Consistent hashing ensures that nodes and data are close to evenly distributed.
+		\item This allows a large-scale failure, like California being hit by a massive earthquake, to be absorbed throughout the network, rather than a contiguous portion being knocked out.
+		\item Nodes are responsible for the data closest to it.
+		\item The space is large enough to avoid Hash collisions.
+	\end{itemize}	 
+}
+
+
+\subsection{Other Relevant Projects}
+\begin{frame}{Other Research}
+	\begin{itemize}
+		\item Mapped DHTs to Voronoi/Delaunay
+		\item Created a greedy heuristic for calculating Voronoi regions
+		\item Sybil Attack Analysis
+	\end{itemize}
+\end{frame}
+
+\section{Incorporation of Research}
+
+\subsection{Networking}
+
+\begin{frame}{P2P}
+	
+\end{frame}
+
+\begin{frame}{Distributed Computing}
+	
+\end{frame}
+
+
+\begin{frame}{MANETs}
+
+\end{frame}
+
+\subsection{Security}
+
+\subsection{While We're On The Subject of Security}
+\end{document}
