@@ -358,6 +358,16 @@
 		
 \end{frame}
 
+\begin{frame}{Live Coding}
+	\begin{itemize}
+		\item Learn from mistakes
+		\item Demonstrate thought process
+		\item Experimentation
+		\item Provides worked examples 
+		
+	\end{itemize}
+\end{frame}
+
 
 \section{Research Background}
 
@@ -495,7 +505,17 @@
 }
 
 
-\subsection{Other Relevant Projects}
+\subsection{Results}
+
+\begin{frame}{Research Projects}
+	\begin{itemize}
+		\item ChordReduce
+		\item UrDHT
+	\end{itemize}
+\end{frame}
+
+
+
 \begin{frame}{Other Research}
 	\begin{itemize}
 		\item Mapped DHTs to Voronoi/Delaunay
@@ -504,24 +524,81 @@
 	\end{itemize}
 \end{frame}
 
-\section{Incorporation of Research}
+\section{Incorporating Research in Class}
 
 \subsection{Networking}
 
 \begin{frame}{P2P}
-	
+	\begin{itemize}
+		\item Networking typically glazes over P2P applications
+		\item Presents another way of discussing fault tolerance
+		\item DHTs are the backbone for most P2P networks
+		\item Generalized model for distributed computing
+		\item Could be used as part of a Special Topics for distributed and decentralized systems.
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{Distributed Computing}
-	
-\end{frame}
+
 
 
 \begin{frame}{MANETs}
-
+\begin{itemize}
+	\item Voronoi Regions are useful for sleep scheduling
+\end{itemize}
 \end{frame}
 
 \subsection{Security}
 
-\subsection{While We're On The Subject of Security}
+
+\begin{frame}{Cryptographic Hashes}
+	\begin{itemize}
+		
+	\item Essential part of DHTs
+	\item Ties into:
+	\begin{itemize}
+		\item Message Authentication
+		\item Signatures
+	\end{itemize}
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}{Security}
+	\begin{itemize}
+		\item Nothing is secure
+		\item Human elements are the weakest
+		\item CIA triad
+		\begin{itemize}
+			\item Little focus paid to "A"
+			
+		\end{itemize}
+		\item Security of distributed systems is an aside.
+		\item Systems are not more secure just because they are decentralized
+		
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}{Attacks on Distributed Systems}
+	\begin{itemize}
+		\item Sybil Attack
+		\begin{itemize}
+			\item Attacker aggressively creates and maintains multiple identities
+			\item Goal is to become at least 33\% of network
+			\item Prefer majority to have complete control.
+		\end{itemize}
+		\item Eclipse Attack is like Sybil but:
+		\begin{itemize}
+			\item Goal is to prevent ``good'' nodes from communicating directly
+			\item Occlude or eclipse all connections
+			\item Attack can poison routing tables and force bad updates
+		\end{itemize}
+		\item How do you prevent these attacks?
+		
+	\end{itemize}
+	
+\end{frame}
+
 \end{document}
