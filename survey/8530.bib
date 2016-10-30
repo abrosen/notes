@@ -1,0 +1,522 @@
+#Organization categories:
+#subsection:  Different tools and datasets for simulations
+#Beaconing covered in VANET task overview
+#PAPER: combine Hisao and zhang for flood resiliant rural routing
+
+#can we look at rural areas like space?  Varying topology won't/might not translate, but lack of infrastructure would.
+@INPROCEEDINGS{HTAR, 
+author={Jeng-Wei Lee and Chun-Chih Lo and Shih-Pu Tang and Mong-Fong Horng and Yau-Hwang Kuo}, 
+booktitle={Advanced Communication Technology (ICACT), 2011 13th International Conference on}, 
+title={A hybrid traffic geographic routing with cooperative traffic information collection scheme in VANET}, 
+year={2011}, 
+month={feb.}, 
+volume={}, 
+number={}, 
+pages={1496 -1501}, 
+abstract={The routing of data in inter-vehicle communication technologies has obtained tremendous amount of researchers' attention during the last few years. Many routing protocols utilize vehicular traffic information as a metric to determine optimal routing paths to transmit data in vehicular environment. Due to the difficulty as well as the enormous deployment costs of static nodes and the arduous effort to obtain non-real-time traffic information, the existing traffic information collection mechanisms could not provide the efficiency that is needed for the VANETs environment. In this paper, we present a novel collaborative real-time traffic information collection mechanism. It includes hybrid traffic information collection, road weight information dissemination, as well as the hybrid traffic geographic routing. The collaborative real-time traffic information collection mechanism effectively collects and disseminates real-time hybrid traffic information such as node density and network traffic load. In most VANET routing protocols, the network traffic load is always ignored and this action may cause network performance degradation in heavy-traffic load networks. In proposed hybrid traffic geographical routing, a forwarding node at a junction adaptively decides on a routing path based on the real-time hybrid traffic information. It consists of successions of road junctions to find the destination node for the data packet. Between two consecutive junctions on the path, geographical forwarding is used to select forwarding nodes on the road. Simulation results not only shows the proposed mechanism has the ability to collect real-time traffic information effectively with only slight control overhead, yet also has the ability to avoid from choosing an already congested path. Simulation results also show that the proposed mechanism outperforms routing protocols like GSR (Geographic Source Routing) and GyTAR (improved Greedy Traffic Aware Routing Protocol) in terms of average del ivery ratio.}, 
+keywords={GSR;GyTAR;VANET routing protocols;average delivery ratio;collaborative real-time traffic information collection mechanism;collaborative realtime traffic information collection mechanism;congested path;cooperative traffic information collection scheme;data packet;data routing;destination node;forwarding nodes;geographic source routing;geographical forwarding;greedy traffic aware routing protocol;heavy-traffic load networks;hybrid traffic geographic routing;hybrid traffic geographical routing;hybrid traffic information collection;intervehicle communication technology;network performance degradation;network traffic load;node density;nonreal-time traffic information;optimal routing paths;real-time hybrid traffic information;road junctions;road weight information dissemination;slight control overhead;static nodes;traffic information collection mechanisms;transmit data;vehicular environment;vehicular traffic information;groupware;information dissemination;performance evaluation;real-time systems;routing protocols;traffic information systems;vehicular ad hoc networks;}, 
+doi={},
+note ={***HTAR examines the physical and contextual location of the nodes to aid in routing.  This collects information about the node density and the load on the network.  The paper proposes hardware for infrastructure and further shows how the protocol is made even more efficient with such aid.},
+url={http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5746088}, 
+ISSN={1738-9445},}
+
+
+@inproceedings{jerbi2006gytar,
+  title={GyTAR: improved greedy traffic aware routing protocol for vehicular ad hoc networks in city environments},
+  author={Jerbi, M. and Meraihi, R. and Senouci, S.M. and Ghamri-Doudane, Y.},
+  booktitle={Proceedings of the 3rd international workshop on Vehicular ad hoc networks},
+  pages={88--89},
+  year={2006},
+  note={VANETS need to handle rapid topological changes, something MANETs are unable to accomplish.  VANETs need to deal with distribution of nodes, extreme mobility, and  obsticles that physically block transmission. many of these challenges apply to sattilites: satillites are highly mobile, move at extremely high speeds but within a predictable path, and have to deal with physical objects that are, dare I say it, astronomical in size, such as massive spheres of rock and giant balls of fire.  Former algorithms, such as A-star and GSR failed to take into account real time conditions, direction, or velocity, extremely pertinent factors to VANETs and the last two are extremely relevant if we using a greedy algorithms, like A-STAR and GSR did. 
+  
+  GyTAR consists of two components: Junction selection and forwarding data between two junctions.  First, let us elaborate on junctions.  A junction is simply where two roads happen to join or create an intersection.  If we were to convert our system of roads into a more familiar representation of vertices and edges, our junctions would be the vertices.  Anyhow, when we are sending some packet, the vehicle currently responsible for it will want to forward that packet on towards the junction that has the best combination of being closest to destination and having the highest traffic density.  The second component forwards packets once we've selected a desired junction.  Our node will now calculate the node to send the packet by looking at the list of all the neighbors, calculating their *predicted* position based on their velocity (direction and magnitude).  The neighbor calculated to be closest to the next junction receives the packets.  This is an improvement over the previous algorithms as it takes into account both the motion of the cars, the geography, and the traffic density.  Despite the fact GyTAR still fails on a local optimum, the authors touch on one of the basic principles of DTN architecture in their recovery strategy - "carry and forward."  When the node can't pass off the packets to a better-placed vehicle, it will hold  onto the data until that situation changes.  In a sense, the node has taken ?implicit? responsibility for that particular piece of data.
+ 
+  In a DTN scenario, a vehicle would take responsibility for whole bundles, which would effectively be as many packets as a single transmission can bear.  At each hop, another vehicle would receive the whole bundle and acknowledge responsibility for the bundle, allowing the sender to free up its buffer.},
+  organization={ACM}
+}
+
+@inproceedings{GSR,
+  title={A routing strategy for vehicular ad hoc networks in city environments},
+  author={Lochert, C. and Hartenstein, H. and Tian, J. and Fussler, H. and Hermann, D. and Mauve, M.},
+  booktitle={Intelligent Vehicles Symposium, 2003. Proceedings. IEEE},
+  pages={156--161},
+  year={2003},
+  note={The acronym VANET wasn't adopted yet.  Again notyes MANET algorithms won't cut it for a VANET.  Unicast routing should be used for 2 way communication, whereas geocast routing should be used when trying to obtain infor about particular geographical regions.  Cities present a much different challenge than a highway setting due to three different factors:  flow of traffic and congestion (multiple stops and lights vs none), traveling along a line as opposed to traveling along a plane in a city, and the fact buildings provide obstruction where some would not mornally exist.  To perform position based routing, we have to know the posiotion of all participants in the netowrk, which can be done GPS devices on the nodes, with direct neighbors being aware of each other via beaconing.
+  
+  A greedy approach for message delivery in position based routing is simply choose the next node closest to the sink.  This is a local, ad-hoc decision that requires no established infrastructure, but it will fail if there is no neighbor closer than self.
+  
+  GSR takes advantage of a map and uses flooding to pass its message forward.},
+  organization={Ieee}
+}
+
+
+@article{seet2004star,
+  title={A-STAR: A mobile ad hoc routing strategy for metropolis vehicular communications},
+  author={Seet, B.C. and Liu, G. and Lee, B.S. and Foh, C.H. and Wong, K.J. and Lee, K.K.},
+  journal={NETWORKING 2004. Networking Technologies, Services, and Protocols; Performance of Computer and Communication Networks; Mobile and Wireless Communications},
+  pages={989--999},
+  year={2004},
+  note ={Not to be confused with the A* search algorithm.  Once again, no sight of the acronym VANET, uses IVCS.  Defines MANET (again). References busnet and how buses can be used as the backbone of a network (I think this can be expanded to mass transit in general).  
+  
+  A-STAR is urban only, which means that this is definitely a 2D network again.  It adopts an approach which the authors call "street awareness."  A-Star computes the anchors by taking into account the vehicular traffic.  This is done by observing the levels of traffic and buses and assigning a higher level of preference to the more densely populated roads. The algorithm then chooses the node closest to the best anchor point.  The paper does note that their anchor point calculation would be better served by using dynamic, rather than statistically generated, information.},
+  publisher={Springer}
+}
+
+
+@article{hart1968formal,
+  title={A formal basis for the heuristic determination of minimum cost paths},
+  author={Hart, P.E. and Nilsson, N.J. and Raphael, B.},
+  journal={Systems Science and Cybernetics, IEEE Transactions on},
+  volume={4},
+  number={2},
+  pages={100--107},
+  year={1968},
+  note={A reference for A* so I can bash the other paper for the extremely poor selection of name},
+  publisher={IEEE}
+}
+
+@inproceedings{lin2010performance,
+  title={Performance study on delay tolerant networks in maritime communication environments},
+  author={Lin, H.M. and Ge, Y. and Pang, A.C. and Pathmasuntharam, J.S.},
+  booktitle={OCEANS 2010 IEEE-Sydney},
+  pages={1--6},
+  year={2010},
+  note={Now we change our focus to a completely different area of networking- maritime networks.  Maritime networks are extremely different animals than vehicular.  Descriptions and characteristics of maritime networks
+  
+  
+  
+  Despite this, the two share an significant number of similarities and are not as different as they initially appear to be.  Both do have a heavy reliance on a satellite network
+  This is even more apparent when delay tolerant networks are introduced to the picture.  descriptions of the DTN strategies used in maritime. 
+  
+  Details of routing
+  Endemic.  Spray and Wait. PRoPHET.
+  
+  Focuses instead on WiMax based technology. ??able to add more on WiMax?  Compare to WAVE ??
+  
+  DTN in maritime routing: Type of intermittently connected network, type that has been shown to benefit from DTN.
+
+  This should be COMPARED THE EPIDEMIC ROUTING RESULTS HERE WITH THOSE IN THE VEHICLE PAPERS.
+  
+  All this points to a symbiotic relationship between the two areas, where a significant advance in one area will provide a boon to the other.},
+  organization={IEEE}
+}
+
+@ARTICLE{6007076, 
+author={Pereira, P. and Casaca, A. and Rodrigues, J. and Soares, V. and Triay, J. and Cervello-Pastor, C.}, 
+journal={Communications Surveys Tutorials, IEEE}, 
+title={From Delay-Tolerant Networks to Vehicular Delay-Tolerant Networks}, 
+year={2011}, 
+month={ }, 
+volume={PP}, 
+number={99}, 
+pages={1 -17}, 
+abstract={This paper provides an introductory overview of Vehicular Delay-Tolerant Networks. First, an introduction to Delay-Tolerant Networks and Vehicular Delay-Tolerant Networks is given. Delay-Tolerant schemes and protocols can help in situations where network connectivity is sparse or with large variations in density, or even when there is no end-to-end connectivity by providing a communications solution for non real-time applications. Some special issues like routing are addressed in the paper and an introductory description of applications and the most important projects is given. Finally, some research challenges are discussed and conclusions are detailed.}, 
+keywords={}, 
+note = {***Overview of VANETS and how they differe from MANETS, and how DTN and VDTN differ from normal operating procedures.  Breifly covers DTN architecture and bundle protocol, simulators.  MULEs (Mobile Ubiquitous LAN Extensions) pick up and drop off data.  Covers various projects.  I won't bother summarizing the rest of the paper; the material is covered by other summaries.  This paper merely provides an extremely useful compilation.},
+url = {http://ieeexplore.ieee.org.ezproxy.gsu.edu/xpls/abs_all.jsp?arnumber=6007076},
+doi={10.1109/SURV.2011.081611.00102}, 
+ISSN={1553-877X},}
+
+@inproceedings{Hsiao2011,
+ author = {Hsiao, Hsu-Chun and Studer, Ahren and Chen, Chen and Perrig, Adrian and Bai, Fan and Bellur, Bhargav and Iyer, Aravind},
+ title = {Flooding-resilient broadcast authentication for VANETs},
+ booktitle = {Proceedings of the 17th annual international conference on Mobile computing and networking},
+ series = {MobiCom '11},
+ year = {2011},
+ isbn = {978-1-4503-0492-4},
+ location = {Las Vegas, Nevada, USA},
+ pages = {193--204},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/2030613.2030635},
+ doi = {http://doi.acm.org/10.1145/2030613.2030635},
+ acmid = {2030635},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ note = {***VANET authetication is vulnerable to signature flooding as limited processing power leaves a unable to cope with operating standards for VANETs.  The vehicle will be unable to verify all messages before the time limit expires.  FastAuth uses a CHT entwined with the properties of mobility to generate smaller signatures.  SelAuth uses a probalistic verifcation approach to tackle the problem of verifying signatures received from multihop transmissions. Sel auth is show to be highly sucessful.},
+ keywords = {VANETs, broadcast authentication, flooding resilience, signatures},
+}
+ 
+@inproceedings{Yoo2011,
+ author = {Yoo, Hongseok and Kim, Dongkyun},
+ title = {Space-division repetition-based broadcasting protocol for reliable beaconing in VANETs},
+ booktitle = {Proceedings of the 6th ACM workshop on Performance monitoring and measurement of heterogeneous wireless and wired networks},
+ series = {PM2HW2N '11},
+ year = {2011},
+ isbn = {978-1-4503-0902-8},
+ location = {Miami, Florida, USA},
+ pages = {1--8},
+ numpages = {8},
+ url = {http://doi.acm.org/10.1145/2069087.2069089},
+ doi = {http://doi.acm.org/10.1145/2069087.2069089},
+ acmid = {2069089},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ note = {Discusses beacons- short, one-hop status messages sent by vehicles- and reliable beaconing, which is the act of sending a beacon and informing the other vehicles of the sender's existance.  The paper discusses methods on how to accomplish this task reliably using repition based protocols.  Tackles the interference challenges.  Uses its physical location in the form of road cells to determine transmission timeslots.  Maximum beconing time is?},
+ keywords = {VANETs, beaconing, broadcasting},
+} 
+
+
+@inproceedings{Ibrahim2008,
+ author = {Ibrahim, Khaled and Weigle, Michele C.},
+ title = {Towards an optimized and secure CASCADE for data aggregation in vanets},
+ booktitle = {Proceedings of the fifth ACM international workshop on VehiculAr Inter-NETworking},
+ series = {VANET '08},
+ year = {2008},
+ isbn = {978-1-60558-191-0},
+ location = {San Francisco, California, USA},
+ pages = {84--85},
+ numpages = {2},
+ url = {http://doi.acm.org/10.1145/1410043.1410061},
+ doi = {http://doi.acm.org/10.1145/1410043.1410061},
+ note= {*Cascade provides traffic information to vehicles.  Vehicles in the network broadcast their kinematic information multiple times a second.  Each vehicle aggregates  information in its local every 4 seconds and broadcasts that as well.  This provides 2 sources of information for a vehicle to infer traffic data from. The local view is divided into clusters.  The authors found cluster size of 126m and approx 4 lanes wide provides the maximized the local view while minimizing the size of the frame to send data.  The paper also recommends security protocols for dealing with malicious senders.},
+ acmid = {1410061},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {aggregation, data compaction, security, vanets},
+} 
+
+
+@inproceedings{Mittag2009,
+ author = {Mittag, Jens and Thomas, Florian and H\"{a}rri, J{\'e}r\^{o}me and Hartenstein, Hannes},
+ title = {A comparison of single- and multi-hop beaconing in VANETs},
+ booktitle = {Proceedings of the sixth ACM international workshop on VehiculAr InterNETworking},
+ series = {VANET '09},
+ year = {2009},
+ isbn = {978-1-60558-737-0},
+ location = {Beijing, China},
+ pages = {69--78},
+ numpages = {10},
+ url = {http://doi.acm.org/10.1145/1614269.1614282},
+ doi = {http://doi.acm.org/10.1145/1614269.1614282},
+ acmid = {1614282},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ note = {Examines multi-hop beaconing and leveraging piggybacking onto single hop beaconing messages to perform multi-hop beaconing.  Why would I want to do this? Reduce traffic presumably.  Broadcast storm.},
+ keywords = {VANETs, analysis, beaconing, multi-hop, piggybacking},
+} 
+
+@article{scott2007bundle,
+  title={Bundle protocol specification},
+  author={Scott, K.L. and Burleigh, S.},
+  year={2007},
+  note= {****Intended to be used in a delay tolerant network, where there are periods of no connectivity, extreme delays, and high bit errzdkflsfjsdla;j rates.   The document desribes all the technical aspects and requirements of a BP.},
+  url = {https://wiki.tools.ietf.org/html/rfc5050},
+}
+
+@article{cerf2007rfc,
+  title={RFC 4838, Delay-Tolerant Networking Architecture},
+  author={Cerf, V. and Burleigh, S. and Hooke, A. and Torgerson, L. and Durst, R. and Scott, K. and Fall, K. and Weiss, H.},
+  journal={IRTF DTN Research Group},
+  note = {**** Talks about DTN and requirements to get it working.  Describes the operating environments and network requirements. },
+  year={2007},
+}
+
+@article{burleigh2003delay,
+  title={Delay-tolerant networking: an approach to interplanetary internet},
+  author={Burleigh, S. and Hooke, A. and Torgerson, L. and Fall, K. and Cerf, V. and Durst, B. and Scott, K. and Weiss, H.},
+  journal={Communications Magazine, IEEE},
+  volume={41},
+  number={6},
+  pages={128--136},
+  year={2003},
+  note = {The standard repertoire of protocols used to keep the internet functioning are ill suited for the requirements demanded from DTNs.  In the case of IPN, we have huge latency, low throughput, windows of connectivity that are minutes long under ideal circumstances. TCP won't work for many reasons, not least of which that we require at least one RRT to initiate a connection, even before we start working.  Order matters in tcp.  TCP also only retransmits E2E, highly inefficient.  BGP won't work because it relies on TCP and won't be able to react to short windows of opportunity.  In IPN, we'll be dealing with a somewhat predictable connectivity, but this isn't handled by BGP.  This paper also covers how CFDP is a transport layer that can operate under these constarints.  We send data without watiing for acks, maintain huge buffers, and don't initiate connections.  The Architecture of a DTN is examined in greater detail in the remainder of the paper.  Use this paper as a reference.  Make note of the explanation for bundle protocol.},
+  publisher={IEEE},
+}
+
+@inproceedings{fall2003delay,
+  title={A delay-tolerant network architecture for challenged internets},
+  author={Fall, K.},
+  booktitle={Proceedings of the 2003 conference on Applications, technologies, architectures, and protocols for computer communications},
+  pages={27--34},
+  year={2003},
+  note={Covers much of the same territory as burleigh.  Defines challenged networks.  These networks have to deal with latency, low, throughput, disconnections, long queues, etc.  TCP/IP is examined for use, but TCP is found wanting due to the effect of high latency. IP cannot do fragment retransmission and TTL's maximum value is too small. SMTP is too chatty, uses TCP.  Most of these problems arise from the current implementation of fate-sharing.  Using the bundle protocol to hand off is more effective. Make note of the postal service analogy, esp in regards to careful handling and insurance.},
+  organization={ACM},
+}
+
+
+@article{zhang2008routing,
+  title={Routing protocols for vehicular Ad Hoc networks in rural areas},
+  author={Zhang, M. and Wolff, R.},
+  journal={Communications Magazine, IEEE},
+  volume={46},
+  number={11},
+  pages={126--131},
+  year={2008},
+  publisher={IEEE},
+  note = {Most VANET research is focused denser networks, such as urban and suburban.  Rural areas make for sparse networks with possibly negligible infrastructure. The paper explores a theoretical routing protocol for these situations, a protocol similar to epidemic routing.  Results of simulations showed that epidemic routing is effective but can cause flooding.  Border routing protocols were shown to work well where the network is frequently partitioned and dealing with topology challenges.  },
+  url={http://www.coe.montana.edu/ee/rwolff/Papers/Rural_VANETsv5_figures_at%20end.pdf},
+}
+
+
+@article{harras2006transport,
+  title={Transport layer issues in delay tolerant mobile networks},
+  author={Harras, K. and Almeroth, K.},
+  journal={NETWORKING 2006. Networking Technologies, Services, and Protocols; Performance of Computer and Communication Networks; Mobile and Wireless Communications Systems},
+  pages={463--475},
+  year={2006},
+  note={DTMN.  Reliability in DTMN.  Sending messages and getting acks can be done four different ways: hop-by-hop, active receipt, passive receipt, network-bridged receipt.  The latter, the most interesting,  assumes a cellular network is available for sending and receiving acks, due to the small size of ack messages.  It is also the method that tested best.}, 
+  publisher={Springer},
+}
+
+
+@ARTICLE{4450627, 
+author={Fan Li and Yu Wang}, 
+journal={Vehicular Technology Magazine, IEEE}, 
+title={Routing in vehicular ad hoc networks: A survey}, 
+year={2007}, 
+month={june }, 
+volume={2}, 
+number={2}, 
+pages={12 -22}, 
+abstract={Vehicular ad hoc network (VANET) is an emerging new technology integrating ad hoc network, wireless LAN (WLAN) and cellular technology to achieve intelligent inter-vehicle communications and improve road traffic safety and efficiency. VANETs are distinguished from other kinds of ad hoc networks by their hybrid network architectures, node movement characteristics, and new application scenarios. Therefore, VANETs pose many unique networking research challenges, and the design of an efficient routing protocol for VANETs is very crucial. In this article, we discuss the research challenge of routing in VANETs and survey recent routing protocols and related mobility models for VANETs.}, 
+keywords={cellular technology;intelligent inter-vehicle communication;road traffic safety;routing protocol;vehicular ad hoc network;wireless LAN;ad hoc networks;cellular radio;road safety;road traffic;routing protocols;traffic engineering computing;wireless LAN;}, 
+url= {http://ieeexplore.ieee.org.ezproxy.gsu.edu/xpls/abs_all.jsp?arnumber=4450627},
+doi={10.1109/MVT.2007.912927}, 
+note ={Important paper. History: IVC 1980s
+
+
+The primary goal of for routing techniques is minimize the amount of time and overhead costs inflicted by communication.
+
+MANETs do not generally use infrastructure as a rule, however VANETs sometimes use cellular gateways or fixed access points along intersections.  This give us three classification of VANETs based on their archetecture: completely ad-hoc,  use the cellular towers and/or WLAN access points, or a combination of the two.  footnote(While one could assert that access points might be made available the sides of roads, this is infeasible due to the costs involved.)
+
+While VANETS have many of the same qualities as other ad-hoc networks, they are distinguished by a number of unique factors:
+
+The high speeds of vehicles:
+
+Highly variable topology: Due to the aforementioned high speeds, the topology of the network, ie which nodes are connected or can connect , will not remain stable. For example, two vehicles driving \(20\frac{m}{sec}\) in opposite directions with a maximum transmission range of \(200 m\) might have as short as 10 seconds to establish a connection and exchange information.
+
+Disconnected network
+
+Geographical information requirements
+
+1D or 2D topology
+
+"Hard delay constraints"
+
+
+Integration with OBS systems
+
+Types of routing: 
+adhoc: DSR, distance vector
+position based:  GPSR., GSR,A-STAR
+cluster based routing: COIN
+Broadcast routing:
+Geocast Routing
+
+
+},
+ISSN={1556-6072},}
+
+@article{gil2008extending,
+  title={Extending vehicular CAN fieldbuses with delay-tolerant networks},
+  author={Gil-Castineira, F. and Gonzalez-Castano, F.J. and Franck, L.},
+  journal={Industrial Electronics, IEEE Transactions on},
+  volume={55},
+  number={9},
+  pages={3307--3314},
+  year={2008},
+  publisher={IEEE},
+  url={http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=4558159},
+  note = {This article has tons of other useful information and citations.  CAN, as far as I can tell, works on the elements inside the vehicle.  The goal was to show that a DTN VANET is better than a non DTN VANET.  
+  
+  Disregard infrastructures.  They aren't always available.
+  This paper lists the various aspects of MANETs: self-organization (adhoc), mobility, multihopping, energy conservation, scalability, and security.
+  VANET: Predictable mobility, high mobility, variable topology, large scale, partitioned networks,no energy constraints.
+  
+  TCP/IP is inadequate because partitioning prevents E2E connectivity, and TCP/IP is point to point focused.  We also need both synchronous and asynchronous organization.
+  
+  DTN uses store and forward.  DTN created the incentive for  Data Mules.
+  
+ Bundle protocol explanation.
+ 
+ Comparison done with controlled flooding because it is used in challenged networks.  Much better PLR, although packets took a long time to arrive,
+
+ Showed that hours of ODB messages can be exchanged by using DTNs.
+  
+  },
+}
+
+
+@article{füßlervehicular,
+  title={Vehicular Ad-Hoc Networks: From Vision to Reality and Back},
+  author={F{\"u}{\ss}ler, H. and Transier, S.S.M. and Effelsberg, W.},
+  url ={http://www.network-on-wheels.de/downloads/Fuessler-etal_WONS07_VANETs-vision-and-back.pdf},
+  note ={Asserts that pressure from the industry to create solutions to real world problems, as opposed to theoretical applications.  Gives an excellent overview of how focus on manets changed to focus on vanets.  Some advances were impeded by the fact that manet research was kept very general. Definately good paper to use in the history descriptions.}
+}
+
+@article{sathiamoorthydistributed,
+  title={Distributed Storage Codes Reduce Latency in Vehicular Networks},
+  author={Sathiamoorthy, M. and Dimakis, A.G. and Krishnamachari, B. and Bai, F.},
+  url = {http://anrg.usc.edu/www/publications/papers/VANETCodingMiniCamera.pdf},
+  note = {My presentation on the topic. http://dl.dropbox.com/u/23857109/diststor.pdf}
+}
+
+@article{wisitpongphan2007routing,
+  title={Routing in sparse vehicular ad hoc wireless networks},
+  author={Wisitpongphan, N. and Bai, F. and Mudalige, P. and Sadekar, V. and Tonguz, O.},
+  journal={Selected Areas in Communications, IEEE Journal on},
+  volume={25},
+  number={8},
+  pages={1538--1556},
+  year={2007},
+  url = {http://www.cs.ucy.ac.cy/courses/EPL657/Papers-2008/Routing%20in%20Sparse%20Vehicular%20Ad%20Hoc%20Wireless%20Networks.pdf},
+  note= {REALLY IMPORTANT examines the network disconnection problem that VANETs have to deal with.  Disconnection is demonstrated as a fundamental problem for VANETs to address.  Proposed multiple metrics to examine this problem: probability of disconnection from various parts of the network.  Also used re-healing time, the minimal delay for packet delivery.
+  
+  Examines store-carry-forward approach. This works in fragmented networks while ad-hoc methods such as distance vectors and DSR do not, but say this applies only to non-critical traffic. 
+  
+  Car following model is and simple mathematical describes vehicular behavior under free-flow and congested traffic in the single lanes.  this model is limited by the fact that is geared towards a civil engineering problem, rather than a network connectivity problem.   footnote(Not to mention this model also assumes that drivers maintain a safe distance. As a resident of Atlanta, I can assure you that this is never the case).  however, it provides stats on vehicle spacing, which is what we need 
+  
+  Data is collected from real samples
+  
+  Defines clusters.  The rest of the paper is analytics and simulations of variables.
+  
+  
+  
+  },
+  publisher={IEEE}
+}
+
+
+@article{manoharan2010robust,
+  title={A Robust Routing Protocol for VANETs using Cellular Automata},
+  author={Manoharan, R. and andM Ramprasath, P.A.J.S.},
+  journal={International J. of Recent Trends in Engineering and Technology},
+  volume={3},
+  number={2},
+  url = {http://www.searchdl.org/journal/IJRTET2010/3-2-123(1).PDF},
+  note = {MOPR protocol(movment prediction based routing) Celluar mappings can be used to speed up route recovery.},
+  year={2010}
+}
+
+@inproceedings{dias2011vdtn,
+  title={WWW\@ VDTN-A Web browsing application for Vehicular Delay-Tolerant Networks},
+  author={Dias, J.A. and Isento, J.N. and Pereira, M.P. and Silva, B.M. and Soares, V.N.G.J. and Rodrigues, J.J.P.C. and Pereira, P. and Casaca, A. and Cervell{\'o}-Pastor, C. and Gallego, J.},
+  booktitle={Computer Aided Modeling and Design of Communication Links and Networks (CAMAD), 2011 IEEE 16th International Workshop on},
+  pages={11--15},
+  year={2011},
+  url = {http://mariel.inesc-id.pt/~prbp/publica/www-vdtn-camad2011.pdf},
+  note = {VDTN is mainly accomplish by enforcing a store carry forward paradigm. Presents various other projects used for web browsing.  Used epidemic routing},
+  organization={IEEE}
+}
+
+
+@article{gongjun2010reliable,
+  title={Reliable Routing in Vehicular Ad hoc Networks.},
+  author={Gongjun, Y. and Mitton, N. and Li, X. and others},
+  year={2010},
+  url = {http://hal.archives-ouvertes.fr/docs/00/50/47/15/PDF/VANETrouting.pdf},
+  note={Classifies various routing methods  by infrastructure, flooding, mobility, and geographic position. Connectivity based routing: flooding is great if all nodes are within range.  Otherwise, flooding can generate numerous duplicates. Covers the various paradigms.  This is the paper you want write if you were covering just routing.}
+}
+
+@article{kumar2011qualitative,
+  title={Qualitative Based Comparison of Routing Protocols for VANET},
+  author={Kumar, S. and Narayan, KD and Kumar, J.},
+  journal={Journal of Information Engineering and Applications},
+  volume={1},
+  number={4},
+  pages={13--17},
+  url = {http://www.iiste.org/Journals/index.php/JIEA/article/download/804/709},
+  note={Classifies by topology based routing, position based, seographic source, cluster,  geocast, and broadcast.},
+  year={2011}
+}
+
+@inproceedings{isento2011ftp,
+  title={FTP\@ VDTN—A file transfer application for Vehicular Delay-Tolerant Networks},
+  author={Isento, J.N. and Dias, J.A. and Neves, J.C. and Soares, V.N.G.J. and Rodrigues, J.J.P.C. and Nogueira, A. and Salvador, P.},
+  booktitle={EUROCON-International Conference on Computer as a Tool (EUROCON), 2011 IEEE},
+  pages={1--4},
+  year={2011},
+  organization={IEEE},
+  note={Investigates transfer between two terminal nodes via a vdtn.  The end points in this case are stationary.  Goes over some test beds},
+  url = {http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5929349}
+}
+
+
+@article{book2012ccsds,
+  title={RED BOOK: BUNDLE PROTOCOL SPECIFICATION},
+  author={CCSDS},
+  year={2012},
+  note={specification.  self-explanatory.  This also has another great overview of DTN. Note the BP RFC is considered experimental; it should not be used normally.  Contains a lot of the nitty gritty details},
+  url = {http://public.ccsds.org/sites/cwe/rids/Lists/CCSDS%207342R1/Attachments/734x2r1.pdf}
+}
+
+@article{nzouonta2009vanet,
+  title={VANET routing on city roads using real-time vehicular traffic information},
+  author={Nzouonta, J. and Rajgure, N. and Wang, G. and Borcea, C.},
+  journal={Vehicular Technology, IEEE Transactions on},
+  volume={58},
+  number={7},
+  pages={3609--3626},
+  year={2009},
+  url = {http://web.njit.edu/~gwang/publications/TVT09.pdf},
+  note={Yet another survey.  They are pretty popular.  This examines protocols that use real-time vehicular information.},
+  publisher={IEEE}
+}
+
+@article{wang2010unreliable,
+  title={Unreliable CCSDS file delivery protocol (CFDP) over cislunar communication links},
+  author={Wang, R. and Shrestha, B.L. and Wu, X. and Wang, T. and Ayyagari, A. and Tade, E. and Horan, S. and Hou, J.},
+  journal={Aerospace and Electronic Systems, IEEE Transactions on},
+  volume={46},
+  number={1},
+  pages={147--169},
+  year={2010},
+  url = {http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5417153},
+  note={Talks about international standard for file transmission  Another paper that commments about TCP.
+  CFDP is a protocol that encompasses both the application and transport layer jobs.  
+  
+  CONNECT THIS TO BE RELEVANT TO THE BUNDLE PROTOCOL or DTN ARCH.
+  CFDP has two primary modes of operation.  The first is an end to end transmission over a single link.  The second, an extended operation mode, is used for scenarios where no direct link between the source and destination exist.  Reliability, when selected, is accomplish using one of four NAK modes.},
+  publisher={IEEE}
+}
+
+
+
+@inproceedings{boreli2009intelligent,
+  title={Intelligent middleware for high speed maritime mesh networks with satellite communications},
+  author={Boreli, R. and Ge, Y. and Iyer, T. and Dwertmann, C. and Pathmasuntharam, J.S.},
+  booktitle={Intelligent Transport Systems Telecommunications,(ITST), 2009 9th International Conference on},
+  pages={370--375},
+  year={2009},
+  note={Discusses maritime middleware and how it communicates with satellites.  Legacy satillites are still in use.  Possible to leveage them for hi speed communications and applications for VoIp.  DTN is briefly touched on in discussing the mesh protocol module, but in the form of disruption tolerent networking.  DTN is also proposed as the next avenue of research for this topic, an excellent next step.},
+  organization={IEEE}
+}
+############new stuff
+
+
+@article{Altman2011,
+ author = {Altman, Eitan and De Pellegrini, Francesco},
+ title = {Forward correction and fountain codes in delay-tolerant networks},
+ journal = {IEEE/ACM Trans. Netw.},
+ issue_date = {February 2011},
+ volume = {19},
+ number = {1},
+ month = feb,
+ year = {2011},
+ issn = {1063-6692},
+ pages = {1--13},
+ numpages = {13},
+ url = {http://dx.doi.org/10.1109/TNET.2010.2091968},
+ doi = {10.1109/TNET.2010.2091968},
+ acmid = {1959442},
+ publisher = {IEEE Press},
+ address = {Piscataway, NJ, USA},
+ keywords = {delay-tolerant networks (DTNs), forward correction, fountain codes, mobile ad hoc networks},
+ note={The naive approach for routing is the epidemic routing.  Examines the tradeoff between network resources and delay.  The source will distribute not just the original chunks but additional redundant chunks. The primary contribution of the paper is the examination of two-hop relaying. }
+} 
+
+@inproceedings{nordemann2012transparent,
+  title={Transparent and autonomous store-carry-forward communication in Delay Tolerant Networks (DTNs)},
+  author={Nordemann, F. and Tonjes, R.},
+  booktitle={Computing, Networking and Communications (ICNC), 2012 International Conference on},
+  pages={761--765},
+  year={2012},
+  organization={IEEE},
+  note={Implements store-carry-forward so that there is no need for application changes.  Instead of the network layer returning an ICMP destination unreachable message, the packets are sent to a piggyback software module, which handles the store carry forward mechanics.  Tests in OMNeT++ show that the piggyback module creates higher data transfer and lower delays.}
+}
+
+@article{petz2012architecture,
+  title={An Architecture for Context-Aware Adaptation of Routing in Delay-Tolerant Networks},
+  author={Petz, A. and Hennessy, A. and Walker, B. and Fok, C.L. and Julien, C.},
+  year={2012}
+}
