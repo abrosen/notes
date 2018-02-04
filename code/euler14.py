@@ -19,7 +19,7 @@ def generateCollatz(limit):
 
 def main():
     seq = generateCollatz(1000000)
-    print max(seq, key=seq.get)
+    print(max(seq, key=seq.get))
 
 if __name__ == '__main__':
     main()
