@@ -1,5 +1,5 @@
 \documentclass[sigconf]{acmart}
-
+%\usepackage{cite}
 %opening
 \title{Recording Your Lectures for Fun and (Possible) Profit}
 \author{Andrew Rosen}
@@ -18,8 +18,27 @@
 
 \section{Introduction}
 
-This paper is intended for an audience 
+
+This paper advocates that every CS teacher record their lectures.
+Recording your lectures has many benefits for the students, some benefits for you \cite{Nobody06}
+
+This paper is intended for an audience of teachers, primarily people who teach using a laptop.
+While this text is geared towards a tech-savvy audience of Computer Science educators, I believe 
+
+
+
+
+\begin{itemize}
+	\item In Section \ref{why}, we discuss the motivations for this paper and for recording your lecture
+\end{itemize}
 \section{Why}
+\label{why}
+Rec
+
+
+The idea of recording all of a professor's lecture in high fidelity is something that has become possible only 
+The emergence of codecs such as AV1 (not to be confused with .avi files) means that even as storage becomes more cheaper and plentiful, high quality files are getting smaller and smaller \cite{AV1comp}, with less restrictive licenses. 
+Consumer cameras get better every year and can record in UHD.
 
 
 \begin{itemize}
@@ -32,23 +51,41 @@ This paper is intended for an audience
 \subsection{Effects on Attendance}
 
 
+\subsection{Why Aren't We doing this already}
+
 \section{Enterprise Options}
 I've listed this first because this is probably the most straightforward option.
+Your institution may be paying for this already.
 
-Your institution may have 
+
+
+
+options like panopto  offer a "one stop shop" hosting your data AND your
 
 
 \subsection{Cons}
 Your students will need to access
 
 \section{Open Source Recording}
-The first 
 
 
 
 
-\subsection{Required Hardware and Equipment}
+\section{Required Hardware and Equipment}
+A modern laptop is all that is required.
 
+\subsubsection{Example laptops}
+\subsubsection{Specs}
+
+Regardless of the hardware, using an industrial strength IDE such as IntelliJ or Eclipse and any recording software can be taxing to any laptop.
+Two ways to mitigate this is to have the IDE open before recording.
+Alternatively, migrate away from Intellij, Eclipse, and the like and use a more lightweight editor, such as Sublime Text, Atom, Visual Studio Code, Geany, or the old classics of Vim and Emacs.
+
+
+
+If you are just recording powerpoint slides or capturing the board with the webcamera, you should run into no difficulties.
+
+I also highly recommend having your laptop plugged in  so that you get maximum performance.
 
 \subsection{Additional Equipment}
 
@@ -59,8 +96,6 @@ The first
 	\item Your hardware must be good
 	\item Student questions can't be heard by your mic.
 \end{itemize}
-
-\subsection{}
 
 \section{Editing}
 
@@ -73,20 +108,32 @@ The first
 Google is now in charge of making sure your stuff is accessable.
 
 
+Youtube doesn't go down very often.  But it does sometimes \cite{outage2018} and (June 2: 3:30 Outage)
+
 \subsubsection{Negative Considerations}
 
 It's Youtube
 
-\subsubsection{Vimeo}
+Youtube comments are their own special hell.
+
+
+Reuploading
+
+
+\subsection{Vimeo}
 
 \subsubsection{Positive Considerations}
-Professional
+Professional looking
+Customizable embedding
 
 \subsubsection{Negative Considerations}
+V
+
 Pay for hosting
 
+Also goes down occasionally.
 
-\subsubsection{Drive}
+\subsection{Drive}
 
 
 
@@ -94,9 +141,31 @@ Pay for hosting
 You may have to pay for hosting
 
 
+\subsection{I'LL DO IT MYSELF}
+
+
+\subsubsection{Pros}
+TOTAL CONTROL
+\subsubsection{Cons}
+
+Really?  Where are you going to find the time?
+Home server? You probably won't have the bandwidth
+Server at school?  IT deptartment is going to LOVE you.
+
+
+\section{My Implementation and Student Feedback}
 
 \section{Recap}
 
+
+
 \section{A Note on Licenses}
 
+
+
+Your school may not like dicovering that the content of their classes is now available online.
+
+\section{A Note on Accessibility}
+\bibliographystyle{acm}
+\bibliography{recording}
 \end{document}
