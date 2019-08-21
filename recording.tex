@@ -8,8 +8,10 @@
 
 
 \begin{abstract}
-	Recording your lectures may seem overwhelming, but in reality is actually quite easy to do.
-	
+	Recording your lectures may seem overwhelming, but in reality is actually quite easy to do.  
+	This paper serves as a guide to do so.
+	We explore the benefits to students and instructors for recording lectures, such as review material, mitigating illnesses and outbreaks, and future use for flipped classrooms. 
+	We discuss the software options available to record lectures and weigh the benefits and consequences of various hosting options.
 \end{abstract}
 \begin{document}
 
@@ -24,22 +26,24 @@ This paper advocates that every CS teacher record their lectures.
 Recording your lectures has many benefits for the students, some benefits for you \cite{Nobody06}
 
 This paper is intended for an audience of teachers, primarily people who teach using a laptop.
-While this text is geared towards a tech-savvy audience of Computer Science educators, I believe 
 
 
 
 
 \begin{itemize}
-	\item In Section \ref{why}, we discuss the motivations for this paper and for recording your lecture
+	\item In Section \ref{why}, we discuss the motivations for this paper and impacts  on students for recording your lecture.
 \end{itemize}
 \section{Motivation}
 \label{why}
 Rec
 
+Recording lectures has been
 
-The idea of recording all of a professor's lecture in high fidelity is something that has become possible only 
+recording all of a professor's lecture in high fidelity is something that has become possible only in recent years.
+Modern laptops come with at least 1080p screens and powerful processors able to handle both recording 
+
 The emergence of codecs such as AV1 (not to be confused with .avi files) means that even as storage becomes more cheaper and plentiful, high quality files are getting smaller and smaller \cite{AV1comp}, with less restrictive licenses. 
-Consumer cameras get better every year and can record in UHD.
+Consumer cameras get better every year and can record in UHD (2160p resolutions or greater).
 
 
 \subsection{Student Reference and study aid}
@@ -64,7 +68,10 @@ Students often come to class sick CITE, thus infecting other students.
 
 %https://www.cdc.gov/meningococcal/outbreaks/index.html
 %https://web.archive.org/web/20190604160258/https://www.cdc.gov/meningococcal/outbreaks/index.html
-
+%https://www.tandfonline.com/doi/abs/10.1080/00039896.1962.10663216?journalCode=vzeh20
+%https://academic.oup.com/jpubhealth/article/22/4/492/1527001
+%https://jamanetwork.com/journals/jamapediatrics/article-abstract/380566
+%https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4577933/
 
 
 
@@ -76,7 +83,7 @@ Experiment with flipped class room.
 \subsection{Effects on Attendance}
 One concern instructors may have about recording lectures is that it may create an incentive for students to skip class \cite{larkin2010but}.
 
-In fact, N
+
 
 
 Recording lectures has been found to have no negative effects on attendance (cite for this) \cite{shimoff2001effects}, if not increased effects on attendance \cite{shimoff2001effects}
@@ -87,7 +94,8 @@ If for some reason, students do stop attending or you want to ensure students wi
 	\item Create more active learning exercises.
 \end{itemize}
 
-Regardless, the author does suggest that for your first time recording, a simple approach that requires less work will yield best results.  After that, make incremental changes throughout the semester.
+Regardless, we suggest that for your first time recording, a simple approach that requires less work will yield best results.  
+After that, make incremental changes throughout the semester.
 
 \footnote{Also, ensuring that the course is not held at 8am or some other early hour will be more likely to ensure attendance.}
 
@@ -104,10 +112,8 @@ Legal concerns (punt, ask your chair, or host on drive.)
 I've listed this first because this is probably the most straightforward option.
 Your institution may be paying for this already.
 
-
-
-
-options like panopto  offer a "one stop shop" hosting your data AND your
+Your university, college, or department might already have a license or contract with an enterprise solution.
+Companies such has Panopto  offer a "one stop shop" hosting your data AND recording.
 
 
 \subsection{Cons}
@@ -118,53 +124,70 @@ The current best open source option for both recording and streaming (transmitti
 
 OBS Studio is an extremely configurable, cross-platform recording program that is currently used by many streamers and has popular usage on Twitch, a video game streaming platform that brings in over one million viewers daily.
 
-It also has a number of filters built in, including a  ``Chroma Key'' filter, which can be used to remove a green screen if one is used.
+It also has a number of filters built in, including a  ``Chroma Key'' filter, which can be used to remove a green screen if one is used (more on this later).
 
 
 
 \section{Required Hardware and Equipment}
 A modern laptop is all that is required.
 
+Additional equipment costs up to around \$200, with tax, depending on the needs.
+
 \subsubsection{Example laptops}
 \subsubsection{Specs}
 
-Regardless of the hardware, using an industrial strength IDE such as IntelliJ or Eclipse and any recording software can be taxing to any laptop.
-Two ways to mitigate this is to have the IDE open before recording.
-Alternatively, migrate away from Intellij, Eclipse, and the like and use a more lightweight editor, such as Sublime Text, Atom, Visual Studio Code, Geany, or the old classics of Vim and Emacs.
 
 
 
-If you are just recording powerpoint slides or capturing the board with the webcamera, you should run into no difficulties.
 
-I also highly recommend having your laptop plugged in  so that you get maximum performance.
 
 \subsection{Additional Equipment}
 
+For example, I used have used a good quality microphone (\$100), a 1080p 60fps webcam (\$70), and a foldable greenscreen (\$40), to produce high qulality video recordings at home
 
 
 \subsection{Concerns}
 \begin{itemize}
-	\item Your hardware must be good
-	\item Student questions can't be heard by your mic.
+	\item Your hardware must be good. Using an industrial strength IDE such as IntelliJ or Eclipse and any recording software can be taxing to older laptops.
+	There are a few  ways to mitigate this  if getting a better laptop is problematic. 
+	First is to have the IDE open before recording.
+	Alternatively, migrate away from Intellij, Eclipse, and the like and use a more lightweight editor, such as Sublime Text, Atom, Visual Studio Code, Geany, or the old classics of Vim and Emacs.
+	Another fix is to change the recording encoding setting to perform less encoding during recording; the result of this is that the file sizes will be higher, but it will be less taxing on the CPU.
+	
+	High end laptops (\$1000+ laptops with GTX 1050 graphics cards or better) can make use of hardware encoding, such as NVENC, which uses the graphics card to do the heavy lifting of the recording, which frees up a lot of processing power for the computer (INSERT PIC HERE).
+	
+	
+	If you are just recording powerpoint slides or capturing the board with the webcamera, you should run into no difficulties.
+	
+	I also highly recommend having your laptop plugged in  so that you get maximum performance.
+	\item Student questions can't be heard by your mic.  This is both a good thing, as it will alleviate privacy concerns of students, but students  reviewing the recording will be missing some information.  Thus, get into the habit of repeating and summarizing student queries when recording.  This will also help in large lectures, where the students present in the lecture won't necessarily hear the question either.
+	
 \end{itemize}
 
 \section{Editing}
 
 \section{Hosting}
 
+In this section, we explore and look at the benefits .  This sections assumes that you are not using an enterprise option, such as Panopto, as that typically proivides a hosting solution with it.
+
 \subsection{YouTube}
+One of the most well known websites in the world, YouTube is nearly synonymous with video hosting and streaming.
 
 
 \subsubsection{Positive Considerations}
 Google is now in charge of making sure your stuff is accessible.
 
 
+Accessable basically on every device.
+
+Analytics
+
 
 Auto generated subtitle files
 
 Youtube doesn't go down very often.  But it does sometimes \cite{outage2018} and (June 2: 3:30 Outage) \cite{outage2019}
 
-\subsubsection{Negative Considerations}
+\subsubsection{Negative Considerations and Mitigation}
 
 It's Youtube
 
@@ -177,12 +200,17 @@ Additional steps need to be taken to allow students to obtain an offline copy of
 
 Legal ramifications of double dipping
 
+related videos are not acutally 
 
 \subsection{Vimeo}
+Vimeo is a competitor of Youtube, located in New York City.
+While they provide the same basic service to the viewer as youtube, Vimeo has a number of significant differences that are worth considering.
 
 \subsubsection{Positive Considerations}
 Professional looking
 Customization embedding
+No Ads
+Can make videos easy to download
 
 \subsubsection{Negative Considerations}
 
@@ -210,8 +238,9 @@ You may have to pay for hosting
 \subsection{Fine, I'll do it myself}
 
 One final option some readers might consider is to host the recordings on their own video server.
+
 \subsubsection{Pros}
-TOTAL CONTROL
+The pros of this solution.
 \subsubsection{Cons}
 
 Really?  Where are you going to find the time?
@@ -227,7 +256,7 @@ Server at school?  IT deptartment is going to LOVE you.
 
 \section{A Note on Licenses}
 
-
+State laws on recording (one party consent vs two party consent)
 
 Your school may not like dicovering that the content of their classes is now available online.
 
