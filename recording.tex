@@ -120,9 +120,9 @@ Companies such has Panopto  offer a "one stop shop" hosting your data AND record
 Your students will need to access
 
 \section{Open Source Recording}
-The current best open source option for both recording and streaming (transmitting video live) is OBS Studio.
+The current best open source option for both recording and streaming (transmitting video live) is OBS Studio. (cite image)
 
-OBS Studio is an extremely configurable, cross-platform recording program that is currently used by many streamers and has popular usage on Twitch, a video game streaming platform that brings in over one million viewers daily.
+OBS Studio is an extremely configurable, cross-platform recording program that is currently used by many streamers and has popular usage on Twitch, a video game streaming platform that brings in over one million viewers daily.  (image of hbomberguy or eu4 on twitch, example live stream )
 
 It also has a number of filters built in, including a  ``Chroma Key'' filter, which can be used to remove a green screen if one is used (more on this later).
 
@@ -168,7 +168,8 @@ For example, I used have used a good quality microphone (\$100), a 1080p 60fps w
 
 \section{Hosting}
 
-In this section, we explore and look at the benefits .  This sections assumes that you are not using an enterprise option, such as Panopto, as that typically proivides a hosting solution with it.
+In this section, we explore and look at the benefits of different solutions to host your videos.  
+This sections assumes that you are not using an enterprise option, such as Panopto, as that typically provides a hosting solution with it.
 
 \subsection{YouTube}
 One of the most well known websites in the world, YouTube is nearly synonymous with video hosting and streaming.
@@ -176,23 +177,25 @@ One of the most well known websites in the world, YouTube is nearly synonymous w
 
 \subsubsection{Positive Considerations}
 Google is now in charge of making sure your stuff is accessible.
+Videos are stored in Google datacenters\footnote{As we're not privy to the internal organization of datacenters within Alphabet, we'll just be referring to anything owned by Alphabet as owned by Google} and are cached at servers in numerous ISP, which means that your videos are very unlikely to be unaccessible by students. 
+%https://peering.google.com/#/
+
+In addition, easy to access from every platform.
+
+Analytic  (show image)
 
 
-Accessable basically on every device.
-
-Analytics
-
-
+One benefit unique to hosting videos on YouTube is the automatic subtitle files \cite{liao2013large}
 Auto generated subtitle files
 
-Youtube doesn't go down very often.  But it does sometimes \cite{outage2018} and (June 2: 3:30 Outage) \cite{outage2019}
 
 \subsubsection{Negative Considerations and Mitigation}
+YouTube doesn't go down very often.  
+But it does sometimes \cite{outage2018} (June 2: 3:30 Outage) \cite{outage2019}, and when it does, student will probably complain to you 
 
-It's Youtube
-
-Youtube comments are their own special hell.
-
+YouTube comments are their own special hell.
+Personally, we use comments as part of a ``bug bounty'' for our students.
+If we make some error during in our videos, students can leave a comment describing the error for a point of extra credit.
 
 Reuploading
 
@@ -201,6 +204,11 @@ Additional steps need to be taken to allow students to obtain an offline copy of
 Legal ramifications of double dipping
 
 related videos are not acutally 
+
+
+Videos getting flagged.
+
+Trolls.  God help you if you bring up feminism in video games or similar topics in an ethics course you decide to post on YouTube.  Expect harassment, up to and including death threats. %thing that ant specie con
 
 \subsection{Vimeo}
 Vimeo is a competitor of Youtube, located in New York City.
@@ -213,13 +221,15 @@ No Ads
 Can make videos easy to download
 
 \subsubsection{Negative Considerations}
+The biggest difference betweeen 
+
 
 
 Pay for hosting
 
 Also goes down occasionally.
 
-\subsection{Drive}
+\subsection{Drive or Static Webpage}
 
 Easy offline copies
 
