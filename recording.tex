@@ -22,10 +22,17 @@
 \section{Introduction}
 
 
-This paper advocates that every CS teacher record their lectures.
-Recording your lectures has many benefits for the students, some benefits for you
+This paper advocates that every Computer Science teacher record their lectures.
 
-This paper is intended for an audience of teachers, primarily people who teach using a laptop.
+Recording your lectures has many benefits for the students, providing them with a way to supplement their studies, makeup lectures they missed due to illness \cite{traphagan2010impact}, and reduce they stress and work involved in notetaking
+In addition, the instructor can benefit from the recordings after a implementing them for at least a semester, such as using previous semester's work to experiment with flipped classes, creating a portfolio, and reviewing your work. 
+
+However, one strong reason that instructors may choose to avoid recording their lecture is the percieved additional overhead and work required \cite{maynor2013student}.
+Besides the actual act of recording a lecture, an instructor needs to somehow make it available to the students, which requires finding a service to host the lecture, not to mention the need to setup and learn how to use the lecture recording software.
+These only some of the difficulties an instructor my think of when considering how to create recordings.
+
+The goal of this paper is to provide 
+
 
 
 Professors record because they feel like it or bc they are commanded to.
@@ -35,15 +42,28 @@ others
 %Availability of recorded lectures is associated withlowerﬁnalgrades(Fernandes,Maley&Cruickshank,2008),higherﬁnalgrades(Traphagan et al,2010)orwithnosigniﬁcantdifferenceingrades(Babb&Ross,2009;Brotherton&Abowd, 2004; Wieling & Hofman, 2010), which is rather incovient 
 
 \begin{itemize}
-	\item In Section \ref{why}, we discuss the motivations for this paper and impacts  on students for recording your lecture.
+	\item In Section \ref{why}, we discuss the motivations for this paper and provide an overview of the literature studying the impacts on students as a result of recording lectures.  Much of the focus of the cited research focused on the effects on attendance and student performance.
+	\item We present the benefits and costs of using an enterprise option, such as Panopto  or echo360,  to handle the recording and hosting needs for a course in Section \ref{enter}.
+	\item Section \ref{opensource} covers Open Broadcaster Software Studio (OBS), an extremely popular recording and broadcasting software.
+	\item Section \ref{hardware} covers both the baseline hardware requirements, as well as optional equipment to help with your recording.
+	\item Section \ref{edit} discusses the option of editing your videos, as well as some basic techniques to make your edits look cleaner and more professional.
+	\item Section \ref{hosting} compares and contrasts the three main options for hosting your videos: YouTube, Vimeo, or on the cloud or a server.
+	\item Section \ref{implementation} covers our own personal implementation of the advice and technologies we present here.
+	\item Section \ref{legal} talks about the common licences you may see with, as well as some legal issue to be aware of.
 \end{itemize}
 \section{Motivation}
 \label{why}
-Rec
 
-Recording lectures has been
+%We began to record our lectures in the Fall 2016 semester in order serve students who were taking an online version of this course on a satellite campus.
+%The class was canceled due to logistical reasons, but well after we had already laid the groundwork for recording our lectures.
+%We had not previously recorded our lectures, but after getting our software setup, we implemented recording in all of courses.
+%The stude
 
-recording all of a professor's lecture in high fidelity is something that has become possible only in recent years.
+
+Recording lectures has been talking about for the past few decades, and research into the effects has been going on for almost just as long.
+However, the recording all of a professor's lecture in high fidelity is something that has become possible only in recent years.
+This is dues to a number of factors: multiple companies
+
 Modern laptops come with at least 1080p screens and powerful processors able to handle both recording 
 
 The emergence of codecs such as AV1 \cite{AV1comp} (not to be confused with .avi files) means that even as storage becomes more cheaper and plentiful, high quality files are getting smaller and smaller, with less restrictive licenses. 
@@ -55,25 +75,7 @@ Larkin but they wontcome to class restiance to academic \
 fear class may be optional
 Students would still come to class and the recordings were used to aid in studying or to make up a lecture that was missed.
 
-%The move to increasingly flexible platforms for student learning and experience
-%through provision of online lecture recordings is often interpreted by educators as
-%students viewing attendance at lectures as optional. The trend toward the use of this
-%technology is often met with resistance from some academic staff who argue that
-%student attendance will decline. This study aimed to explore students’ use of online
-%lectures and to measure the impact of them on student attendance at lectures. A pre
-%and post evaluation methodology was undertaken using a self administered
-%questionnaire that gathered both quantitative and qualitative data. Overall attendance
-%was recorded at each lecture throughout the semester. Results indicated that
-%attendance remained high throughout the semester and while only a minority of
-%students used the recordings, those who did found them to be helpful. Most students
-%used them to either supplement their learning or to make up for a lecture that they
-%had not been able to attend. This study provides evidence that contrary to popular
-%belief, Generation Y students in general, do not aspire to replace lectures with
-%downloadable, online versions. Many of the students in this study valued the
-%opportunity for interactive learning provided by face to face teaching. Finally, a model
-%that outlines the attributes that contribute to quality teaching is used to describe how
-%this technology can contribute to positive student experiences and can enhance
-%reflective teaching practice.
+
 
 
 %Thus,competence or otherwise in relation to technology specifically, cannot necessarily be explained through generational attributes alone.
@@ -148,9 +150,12 @@ Attention span is not as bad as you think it is; 10-15 minute limit overblown \c
 One study reported ~80\% found recordings helpful \cite{maynor2013student}
 
 
+Disabilty resources
+
 \subsubsection{Effect on Grades}
 
 Better knowledge base, but not better analysis or other critical thinking.\cite{bos2016use}
+
 
 
 No significant impact on student learning outcomes compared to students who don't use the recordings \cite{leadbeater2013evaluating}.
@@ -189,7 +194,7 @@ Students often come to class sick CITE, thus infecting other students.
 One often-voiced concern instructors have about recording lectures is that it may create an incentive for students to skip class \cite{larkin2010but} \cite{young2008lectures}.
 
 
-
+Students don't replace lectures with online recordings.\cite{larkin2010but}
 
 Studies on this have been mixed and somewhat contradictory \cite{bos2016use}
 
@@ -261,6 +266,7 @@ Portfolio creation
 Tech shouldn't be a concern; largest concern is plugging in the laptop (which can be finicy)
 
 \section{Enterprise Options}
+\label{enter}
 I've listed this first because this is probably the most straightforward option.
 
 Your university, college, or department might already have a license or contract with an enterprise solution.
@@ -269,15 +275,16 @@ Companies such has Panopto or Echo360 offer a "one stop shop" hosting your data 
 
 Editor on cloud means their computers do the rendering if you make edits
 
+\subsection{Cons}
+
 However, there are drawbacks.
 First, files may be proprietary format, thus requiring an extra step to edit
 Provided Editor may not be strong or easy to use or have the features you want
 may not be able to control offline content precisely enough
 
-\subsection{Cons}
-Your students will need to access
 
 \section{Open Source Recording}
+\label{opensource}
 The current best open source option for both recording and streaming (transmitting video live) is OBS Studio. (cite image)
 
 OBS Studio is an extremely configurable, cross-platform recording program that is currently used by many streamers and has popular usage on Twitch, a video game streaming platform that brings in over one million viewers daily.  (image of hbomberguy or eu4 on twitch, example live stream )
@@ -287,6 +294,7 @@ It also has a number of filters built in, including a  ``Chroma Key'' filter, wh
 
 
 \section{Required Hardware and Equipment}
+\label{hardware}
 A modern laptop is all that is required.
 
 
@@ -323,37 +331,45 @@ For example, I used have used a good quality microphone (\$100), a 1080p 60fps w
 \end{itemize}
 
 \section{Editing}
+\label{edit}
 
 \section{Hosting}
+\label{hosting}
 
 In this section, we explore and look at the benefits of different solutions to host your videos.  
-This sections assumes that you are not using an enterprise option, such as Panopto, as that typically provides a hosting solution with it.
+This sections assumes that you are not using an enterprise option, such as Panopto or echo360, as that service provides a hosting solution with it.
+The three primary choices an instructor has are YouTube, Vimeo, or storing your files on a server.
 
 \subsection{YouTube}
-One of the most well known websites in the world, YouTube is nearly synonymous with video hosting and streaming.
+One of the most well known websites in the world, YouTube is nearly synonymous with video hosting and streaming, with good reason.
+YouTube reports users watching a billion hours of video each day.\cite{ytstats}
 
 
-\subsubsection{Positive Considerations}
-Google is now in charge of making sure your stuff is accessible.
-Videos are stored in Google datacenters\footnote{As we're not privy to the internal organization of datacenters within Alphabet, we'll just be referring to anything owned by Alphabet as owned by Google} and are cached at servers in numerous ISP, which means that your videos are very unlikely to be unaccessible by students. 
+Choosing YouTube as your hosting platform has a number of inherent benefits.
+First and foremost, making sure your videos are always accessible is now the job of one of the biggest players on the Internet.
+Videos are stored in Google datacenters\footnote{As we're not privy to the internal organization of datacenters within Alphabet, we'll just be referring to anything owned by Alphabet as owned by Google} and are cached at servers with numerous ISPs \cite{peering}, which means that your videos are very unlikely to be inaccessible by students. 
 %https://peering.google.com/#/
-
-In addition, easy to access from every platform.
-
+YouTube's website
 Analytic  (show image)
 
 
 One benefit unique to hosting videos on YouTube is that will autogenerate subtitles in the detected spoken language \cite{liao2013large} and sync it with the video.  While the speech-to-text algorithm isn't perfect, it provides a huge reduction in effort in making videos more accessible, especially as YouTube provides an online tool to easily modify these subtitle files.
 
 
+Watermark
+
 Speed adjuster
 
 \subsubsection{Negative Considerations and Mitigation}
+
+So, why \textit{wouldn't} YouTube be the only choice in this section?
+After all, those benefits  
 YouTube doesn't go down very often.  
 But it does sometimes \cite{outage2018} (June 2: 3:30 Outage) \cite{outage2019}, and when it does, student will probably complain to you 
 
 YouTube comments are their own special hell.
 Personally, we use comments as part of a ``bug bounty'' for our students.
+Delay all comments for review or turn them off.
 If we make some error during in our videos, students can leave a comment describing the error for a point of extra credit.
 
 Reuploading
@@ -422,6 +438,7 @@ It may also make it trickier for students to watch the recordings on mobile devi
 
 
 \section{My Implementation and Student Feedback}
+\label{implementation}
 
 Our implementation for recording is fairly straightforward.
 We install OBS \cite{bailey2017open} on the instructor's laptop, which is equipped with an Intel i7-8550U processor, which is more than enough to handle the recording.
@@ -439,6 +456,9 @@ Our campus has a reliable high speed internet connection and thus requires less 
 From personal experience, we generally don't recommend uploading the recordings at home, as most residential internet plans have a much lower upload bandwidth than download bandwidth.
 In other words, just because you can download things at home quickly won't necessarily mean you can upload quickly.
 
+BUG BOUNTY
+
+
 The overhead for adoption is about 1 hour to learn how to use OBS, then about 10 minutes to upload the recording.
 
 
@@ -448,6 +468,7 @@ The overhead for adoption is about 1 hour to learn how to use OBS, then about 10
 
 
 \section{A Note on Licenses and Legal Issues}
+\label{legal}
 
 Laws on privacy and recording vary from country to country and state to state.
 In the United States, state laws regarding this can broadly be divided into two categories.
@@ -458,6 +479,10 @@ Let your students know that you take their privacy seriously and the \textit{you
 
 This is especially important if your classroom is configured in a non-traditional setup, such as in a room designed for group-work with the lectern at the center, where the camera might catch students who are seated \textit{behind} the instructor.
 
+
+
+FERPA and recording
+don't record your roster or student's emails.
 
 %Your school may not like discovering that the content of their classes is now available online.
 
