@@ -2,7 +2,7 @@
 %\usepackage{cite}
 %opening
 \title{Recording Your Lecture Fun and (Your Student's) Profit}
-\author{Ponder Stibbons}
+\author{Ponder Stibbons and Other Wizzards}
 \affiliation{\institution{Unseen University}}
 \email{ps@uu.discworld.edu}
 
@@ -19,12 +19,34 @@
 
 
 
+
 \section{Introduction}
+\label{why}
+
+
+
+Recording lectures has been talking about for the past few decades, and research into the effects has been going on for almost just as long.
+However, the recording all of a professor's lecture in high fidelity is something that has become possible only in recent years.
+This is dues to a number of factors: multiple companies offering ``one-stop shops'' for lecture recording and hosting, laptops with 1080p screens and 720p or greater webcams becoming the norm even for more budget oriented laptops, and laptops processors able to handle the stress of recording and running resource hungry IDEs like Eclipse and IntelliJ.
+In addition, the continual emergence of new codecs such as AV1 \cite{AV1comp} (not to be confused with .avi files) means that even as storage becomes more cheaper and plentiful, high-resolution and high-bitrate video files are getting smaller and smaller, with less restrictive licenses. 
+
+We began to record our lectures in the Fall 2016 semester in order serve students who were taking an online version of this course on a satellite campus.
+The class was canceled due to logistical reasons, but well after we had already laid the groundwork for recording our lectures, so we went ahead and recorded the lectures anyway and made it available to all our students.
+Our students reported an immense amount of satisfaction with having our recordings available.
+The recordings helped them review for their exams, allowed them to make up lectures when they were sick or had some emergency, and reduced their stress overall.
+
+Because the student 
+
+
+
+
+
+
 
 
 This paper advocates that every Computer Science teacher record their lectures.
 
-Recording your lectures has many benefits for the students, providing them with a way to supplement their studies, makeup lectures they missed due to illness \cite{traphagan2010impact}, and reduce they stress and work involved in notetaking
+Recording your lectures has many benefits for the students, providing them with a way to supplement their studies, makeup lectures they missed due to illness \cite{traphagan2010impact}, and reduce they stress and work involved in note-taking
 In addition, the instructor can benefit from the recordings after a implementing them for at least a semester, such as using previous semester's work to experiment with flipped classes, creating a portfolio, and reviewing your work. 
 
 However, one strong reason that instructors may choose to avoid recording their lecture is the percieved additional overhead and work required \cite{maynor2013student}.
@@ -42,32 +64,18 @@ others
 %Availability of recorded lectures is associated withlowerﬁnalgrades(Fernandes,Maley&Cruickshank,2008),higherﬁnalgrades(Traphagan et al,2010)orwithnosigniﬁcantdifferenceingrades(Babb&Ross,2009;Brotherton&Abowd, 2004; Wieling & Hofman, 2010), which is rather incovient 
 
 \begin{itemize}
-	\item In Section \ref{why}, we discuss the motivations for this paper and provide an overview of the literature studying the impacts on students as a result of recording lectures.  Much of the focus of the cited research focused on the effects on attendance and student performance.
-	\item We present the benefits and costs of using an enterprise option, such as Panopto  or echo360,  to handle the recording and hosting needs for a course in Section \ref{enter}.
+	\item In Section \ref{research}, we discuss the uses of the .  Much of the focus of the cited research focused on the effects on attendance and student performance.
+	\item We present the benefits and costs of using an enterprise option, such as Panopto or echo360, to handle the recording and hosting needs for a course in Section \ref{enter}.
 	\item Section \ref{opensource} covers Open Broadcaster Software Studio (OBS), an extremely popular recording and broadcasting software.
 	\item Section \ref{hardware} covers both the baseline hardware requirements, as well as optional equipment to help with your recording.
 	\item Section \ref{edit} discusses the option of editing your videos, as well as some basic techniques to make your edits look cleaner and more professional.
 	\item Section \ref{hosting} compares and contrasts the three main options for hosting your videos: YouTube, Vimeo, or on the cloud or a server.
 	\item Section \ref{implementation} covers our own personal implementation of the advice and technologies we present here.
-	\item Section \ref{legal} talks about the common licences you may see with, as well as some legal issue to be aware of.
+	\item Section \ref{legal} talks about the common licenses you may see with, as well as some legal issue to be aware of.
 \end{itemize}
-\section{Motivation}
-\label{why}
-
-%We began to record our lectures in the Fall 2016 semester in order serve students who were taking an online version of this course on a satellite campus.
-%The class was canceled due to logistical reasons, but well after we had already laid the groundwork for recording our lectures.
-%We had not previously recorded our lectures, but after getting our software setup, we implemented recording in all of courses.
-%The stude
 
 
-Recording lectures has been talking about for the past few decades, and research into the effects has been going on for almost just as long.
-However, the recording all of a professor's lecture in high fidelity is something that has become possible only in recent years.
-This is dues to a number of factors: multiple companies
-
-Modern laptops come with at least 1080p screens and powerful processors able to handle both recording 
-
-The emergence of codecs such as AV1 \cite{AV1comp} (not to be confused with .avi files) means that even as storage becomes more cheaper and plentiful, high quality files are getting smaller and smaller, with less restrictive licenses. 
-Consumer cameras get better every year and can record in UHD (2160p resolutions or greater).
+However, 
 
 
 
@@ -134,6 +142,8 @@ Students would still come to class and the recordings were used to aid in studyi
 %need for a range of learning modes in engineering education, appealing to a diverse
 %set of individual learning styles. Future work is described in the context of these
 %findings.
+\section{Uses of Recording and Prior Research}
+\label{research}
 \subsection{Student Reference and study aid}
 
 
@@ -282,6 +292,7 @@ First, files may be proprietary format, thus requiring an extra step to edit
 Provided Editor may not be strong or easy to use or have the features you want
 may not be able to control offline content precisely enough
 
+Monetary cost is well outside the range of single professor taking it over.
 
 \section{Open Source Recording}
 \label{opensource}
@@ -437,7 +448,7 @@ It may also make it trickier for students to watch the recordings on mobile devi
 %Server at school?  IT deptartment is going to LOVE you.
 
 
-\section{My Implementation and Student Feedback}
+\section{My Implementation}
 \label{implementation}
 
 Our implementation for recording is fairly straightforward.
@@ -463,6 +474,8 @@ The overhead for adoption is about 1 hour to learn how to use OBS, then about 10
 
 
 
+Flipped lectures and snow days
+
 %\section{Recap}
 
 
@@ -481,8 +494,10 @@ This is especially important if your classroom is configured in a non-traditiona
 
 
 
+Another thing to be aware of when recording 
 FERPA and recording
 don't record your roster or student's emails.
+
 
 %Your school may not like discovering that the content of their classes is now available online.
 
