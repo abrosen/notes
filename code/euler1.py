@@ -1,3 +1,4 @@
+# euler Problem 1
 # finds the sum of all numbers<limit that are multiples of x or y
 def sumOfMultiples(x,y,limit):
     total = 0
